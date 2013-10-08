@@ -1,0 +1,3501 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"callback",
+				"callbackArray"
+			],
+			[
+				"getM",
+				"getMeasurementType"
+			],
+			[
+				"rmMeasu",
+				"rmMeasurements"
+			],
+			[
+				"EpivizF",
+				"EpivizFeatureDataPack"
+			],
+			[
+				"Epiviz",
+				"EpivizFeatureDevice"
+			],
+			[
+				"EpivizDevice",
+				"EpivizDeviceMgr"
+			],
+			[
+				"ignor",
+				"ignoreRedundant"
+			],
+			[
+				"Comp",
+				"CompressedIRangesList"
+			],
+			[
+				"unlist",
+				"unlistData"
+			],
+			[
+				"Compress",
+				"CompressedHitsList"
+			],
+			[
+				"C",
+				"CompressedIRangesList"
+			],
+			[
+				"IntervalForest",
+				"IntervalForestCall"
+			],
+			[
+				"eleme",
+				"elementMetadata"
+			],
+			[
+				"pre",
+				"preProcess_findOverlaps_query"
+			],
+			[
+				"ori",
+				"origSelect"
+			],
+			[
+				"cach",
+				"cached_r_ranges"
+			],
+			[
+				"p_par",
+				"p_partitionIndices"
+			],
+			[
+				"r_part",
+				"r_partitionLengths"
+			],
+			[
+				"subset",
+				"subsetByOverlaps"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "R/EpivizDeviceMgr-class.R",
+			"settings":
+			{
+				"buffer_size": 17161,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "R/EpivizServer-class.R",
+			"settings":
+			{
+				"buffer_size": 6803,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "inst/tests/test-server.r",
+			"settings":
+			{
+				"buffer_size": 1157,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "vignettes/IntroToEpivizr.Rmd",
+			"settings":
+			{
+				"buffer_size": 10665,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "inst/tests/helper-startmgr.R",
+			"settings":
+			{
+				"buffer_size": 568,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "R/EpivizData-class.R",
+			"settings":
+			{
+				"buffer_size": 4223,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "R/EpivizTrackData-class.R",
+			"settings":
+			{
+				"buffer_size": 734,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "R/EpivizBlockData-class.R",
+			"settings":
+			{
+				"buffer_size": 1536,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "R/EpivizBpData-class.R",
+			"settings":
+			{
+				"buffer_size": 2896,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "R/EpivizFeatureData-class.R",
+			"settings":
+			{
+				"buffer_size": 5094,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "inst/tests/test-register.R",
+			"settings":
+			{
+				"buffer_size": 2478,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "R/register-methods.R",
+			"settings":
+			{
+				"buffer_size": 2648,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "DESCRIPTION",
+			"settings":
+			{
+				"buffer_size": 1392,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "NAMESPACE",
+			"settings":
+			{
+				"buffer_size": 240,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "Packages/User/pushdata.sublime-build",
+	"command_palette":
+	{
+		"height": 392.0,
+		"selected_items":
+		[
+			[
+				"ssymark",
+				"Set Syntax: Markdown"
+			],
+			[
+				"disc",
+				"Package Control: Discover Packages"
+			],
+			[
+				"pack",
+				"Preferences: Browse Packages"
+			],
+			[
+				"package",
+				"Package Control: Discover Packages"
+			],
+			[
+				"pacakge",
+				"Package Control: Discover Packages"
+			],
+			[
+				"ssymar",
+				"Set Syntax: Markdown"
+			],
+			[
+				"ssymak",
+				"Set Syntax: Markdown"
+			],
+			[
+				"ssyma",
+				"Set Syntax: Markdown"
+			],
+			[
+				"ssyr",
+				"Set Syntax: R"
+			],
+			[
+				"packl",
+				"Package Control: List Packages"
+			],
+			[
+				"gq",
+				"Git: Quick Commit"
+			],
+			[
+				"gc",
+				"Git: Commit"
+			],
+			[
+				"ga",
+				"Git: Add Current File"
+			],
+			[
+				"gst",
+				"Git: Status"
+			],
+			[
+				"git",
+				"Git: Commit"
+			],
+			[
+				"gstat",
+				"Git: Status"
+			],
+			[
+				"gsta",
+				"Git: Status"
+			],
+			[
+				"gad",
+				"Git: Add Current File"
+			],
+			[
+				"gist",
+				"Git: Status"
+			],
+			[
+				"gqc",
+				"Git: Quick Commit"
+			],
+			[
+				"gitstat",
+				"Git: Status"
+			],
+			[
+				"gitcom",
+				"Git: Commit"
+			],
+			[
+				"gitcommi",
+				"Git: Commit"
+			],
+			[
+				"gitst",
+				"Git: Status"
+			],
+			[
+				"gitad",
+				"Git: Add Current File"
+			],
+			[
+				"setting",
+				"Preferences: Settings - User"
+			],
+			[
+				"packin",
+				"Package Control: Install Package"
+			],
+			[
+				"ssymat",
+				"Set Syntax: MATLAB"
+			],
+			[
+				"ssmat",
+				"Set Syntax: MATLAB"
+			],
+			[
+				"ssylat",
+				"Set Syntax: LaTeX"
+			],
+			[
+				"ss",
+				"Set Syntax: Markdown"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"ssm",
+				"Set Syntax: Makefile"
+			],
+			[
+				"set syntax: Mark",
+				"Set Syntax: MultiMarkdown"
+			],
+			[
+				"set",
+				"Set Syntax: XSL"
+			],
+			[
+				"s",
+				"Set Syntax: Markdown"
+			]
+		],
+		"width": 602.0
+	},
+	"console":
+	{
+		"height": 209.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": true,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/hcorrada/Projects/epivizr/inst/tests/test-update.R",
+		"/Users/hcorrada/Projects/epivizr/inst/tests/helper-startmgr.R",
+		"/Users/hcorrada/Projects/epivizr/R/EpivizData-class.R",
+		"/Users/hcorrada/Projects/epivizr/R/EpivizTrackData-class.R",
+		"/Users/hcorrada/Projects/epivizr/R/EpivizBlockData-class.R",
+		"/Users/hcorrada/Projects/epivizr/R/EpivizBpData-class.R",
+		"/Users/hcorrada/Projects/epivizr/R/EpivizDeviceMgr-class.R",
+		"/Users/hcorrada/Projects/epivizr/R/EpivizChart-class.R",
+		"/Users/hcorrada/Projects/epivizr/R/EpivizServer-class.R",
+		"/Users/hcorrada/Projects/epivizr/R/register-methods.R",
+		"/Users/hcorrada/Projects/epivizr/R/EpivizFeatureData-class.R",
+		"/Users/hcorrada/Projects/epivizr/inst/tests/test-addMeasurements.R",
+		"/Users/hcorrada/Projects/epivizr/inst/tests/test-addCharts.R",
+		"/Users/hcorrada/Projects/epivizr/inst/tests/test-manageCharts.R",
+		"/Users/hcorrada/Projects/epivizr/inst/tests/test-manageDevices.R",
+		"/Users/hcorrada/Projects/epivizr/vignettes/IntroToEpivizr.Rmd",
+		"/Users/hcorrada/Projects/epivizr/inst/tests/test-fetch.r",
+		"/Users/hcorrada/Projects/epivizr/R/EpivizDevice-class.R",
+		"/Users/hcorrada/Projects/epivizr/inst/tests/helper-makeEset.R",
+		"/Users/hcorrada/Projects/epivizr/vignettes/CHECK:",
+		"/Users/hcorrada/Projects/epivizr/inst/tests/test-manageMeasurements.R",
+		"/Users/hcorrada/Projects/epivizr/inst/tests/test-manage.r",
+		"/Users/hcorrada/Projects/epivizr/DESCRIPTION",
+		"/Users/hcorrada/Projects/epivizr/NAMESPACE",
+		"/Users/hcorrada/Projects/epivizr/inst/tests/test-creation.r",
+		"/Users/hcorrada/Projects/epivizr/inst/tests/test-register.R",
+		"/Users/hcorrada/Projects/epivizr/R/EpivizDevice.r",
+		"/Users/hcorrada/Projects/epivizr/R/EpivizBlockDevice-class.R",
+		"/Users/hcorrada/Projects/epivizr/R/EpivizTrackDevice-class.R",
+		"/Users/hcorrada/Projects/epivizr/R/EpivizBpDevice-class.R",
+		"/Users/hcorrada/Projects/epivizr/R/EpivizFeatureDevice-class.R",
+		"/Users/hcorrada/Projects/epivizr/man/EpivizDeviceMgr-class.Rd",
+		"/Users/hcorrada/Projects/epivizr/inst/tests/test-newDevice.R",
+		"/Users/hcorrada/Projects/epivizr/R/newDevice-methods.R",
+		"/Users/hcorrada/Projects/epivizr/README.md",
+		"/Users/hcorrada/Projects/epivizr/inst/doc/IntroToEpivizr.html",
+		"/Users/hcorrada/Projects/epivizr/inst/doc/IntroToEpivizr.Rmd",
+		"/Users/hcorrada/Projects/epivizr/inst/tests/test-server.r",
+		"/Users/hcorrada/Projects/epivizr/R/EpivizDeviceMgr.r",
+		"/Users/hcorrada/Projects/epivizr/R/epivizr-package.r",
+		"/Users/hcorrada/tmp/testit.R",
+		"/Users/hcorrada/Projects/IRanges/inst/unitTests/test_IRanges-class.R",
+		"/Users/hcorrada/Projects/IRanges/R/PartitionedIRanges-class.R",
+		"/Users/hcorrada/Projects/IRanges/R/IntervalForest-class.R",
+		"/Users/hcorrada/Projects/IRanges/R/findOverlaps-methods.R",
+		"/Users/hcorrada/Projects/IRanges/man/IntervalTree-class.Rd",
+		"/Users/hcorrada/Projects/IRanges/TODO",
+		"/Users/hcorrada/Projects/IRanges/.gitignore",
+		"/Users/hcorrada/Projects/IRanges/man/IntervalForest-class.Rd",
+		"/Users/hcorrada/Projects/GenomicRanges/R/findOverlaps-methods.R",
+		"/Users/hcorrada/Projects/GenomicRanges/R/GIntervalTree-class.R",
+		"/Users/hcorrada/Projects/GenomicRanges/R/findOverlaps-GIntervalTree-methods.R",
+		"/Users/hcorrada/Projects/GenomicRanges/inst/unitTests/test_GIntervalTree-class.R",
+		"/Users/hcorrada/Projects/GenomicRanges/inst/unitTests/test_GIntervalTree_findOverlaps.R",
+		"/Users/hcorrada/Projects/GenomicRanges/NAMESPACE",
+		"/Users/hcorrada/Projects/GenomicRanges/DESCRIPTION",
+		"/Users/hcorrada/Projects/IRanges/NAMESPACE",
+		"/Users/hcorrada/Projects/IRanges/inst/unitTests/test_IntervalForest.R",
+		"/Users/hcorrada/Projects/IRanges/src/IntervalTree.c",
+		"/Users/hcorrada/Projects/IRanges/DESCRIPTION",
+		"/Users/hcorrada/Dropbox/apSVM Paper/wikumProposal/proposalOutline.txt",
+		"/Users/hcorrada/Projects/methyl/exps/rafaBlocks/analysis3.R",
+		"/Users/hcorrada/PycharmProjects/sitterscirclecoop/sitterscirclecoop/templates/index.html",
+		"/Users/hcorrada/PycharmProjects/sitterscirclecoop/sitterscirclecoop/decorators.py",
+		"/Users/hcorrada/PycharmProjects/sitterscirclecoop/sitterscirclecoop/urls.py",
+		"/Users/hcorrada/PycharmProjects/sitterscirclecoop/sitterscirclecoop/views/main.py",
+		"/Users/hcorrada/Projects/epiviz/doc/NatMethods/epiviz_outline.txt",
+		"/Users/hcorrada/Projects/epiviz/doc/epiviz-paper/EpiViz.tex",
+		"/Users/hcorrada/Documents/travel/Trips in July",
+		"/Users/hcorrada/Projects/healthvis/appengine/application/static/coffee/manybox.coffee",
+		"/Users/hcorrada/tmp/uvtest/main.c",
+		"/Users/hcorrada/Dropbox/metastats/paper/revision/response/response.tex",
+		"/Users/hcorrada/Dropbox/metastats/paper/revision/paper/supp/metastats_online.tex",
+		"/Users/hcorrada/Teaching/CMSC702/Spring2013/text/hidden_text/HW3.text",
+		"/Users/hcorrada/Projects/healthvis/bump_version.py",
+		"/Users/hcorrada/Projects/healthvis/test_embed.html",
+		"/Users/hcorrada/Projects/healthvis/test_ws.html",
+		"/Users/hcorrada/Projects/GenomicIntervalTree.wiki/First-Implementation.md",
+		"/Users/hcorrada/Projects/GenomicIntervalTree.wiki/Home.md",
+		"/Users/hcorrada/Teaching/CMSC702/Spring2013/text/hidden_text/HW2_solution.html",
+		"/Users/hcorrada/Teaching/CMSC702/Spring2013/text/homeworks/Makefile",
+		"/Users/hcorrada/Teaching/CMSC702/Spring2013/Makefile",
+		"/Users/hcorrada/Teaching/CMSC702/Spring2013/text/index.text",
+		"/Users/hcorrada/Teaching/CMSC702/Spring2013/text/hidden_text/midtermRNA_solution.text",
+		"/Users/hcorrada/Teaching/CMSC702/Spring2013/text/index.html",
+		"/Users/hcorrada/Sites/index.shtml",
+		"/Users/hcorrada/Projects/rcsdp/pkg/Work/Makefile",
+		"/Users/hcorrada/Projects/rcsdp/pkg/src/Makevars.in",
+		"/Users/hcorrada/Documents/UMDCS/admin/cbcbHiring2013/presentations.text",
+		"/Users/hcorrada/Teaching/CMSC702/Spring2013/grading/data_head",
+		"/Users/hcorrada/Teaching/CMSC702/Spring2013/grading/702Groups.txt",
+		"/Users/hcorrada/Teaching/CMSC702/Spring2013/text/hidden_text/HW2_presolution.r",
+		"/Users/hcorrada/Teaching/PracticalMachineLearning/Fall2012/hidden-text/data_head",
+		"/Users/hcorrada/Teaching/CMSC702/Spring2013/text/hidden_text/projects.text",
+		"/Users/hcorrada/Projects/barcode/src/succs/pkg/vignettes/Makefile",
+		"/Users/hcorrada/Teaching/CMSC702/Spring2013/text/hidden_text/HW1_solution.html",
+		"/Users/hcorrada/Teaching/CMSC702/Spring2013/text/hidden_text/HW1_solution.text",
+		"/Users/hcorrada/Teaching/CMSC702/Spring2013/text/hidden_text/HW1_PartIV_solution.text",
+		"/Users/hcorrada/Teaching/CMSC702/Spring2013/text/homeworks/HW2.text",
+		"/Users/hcorrada/Teaching/CMSC702/Spring2013/text/homeworks/HW2_old.text",
+		"/Users/hcorrada/Teaching/CMSC702/Spring2013/text/hidden_text/HW1_answers.text",
+		"/Users/hcorrada/Teaching/CMSC702/Spring2013/text/hidden_text/Makefile",
+		"/Users/hcorrada/Teaching/CMSC702/Spring2013/src/midtermRNA.text",
+		"/Users/hcorrada/Teaching/CMSC702/Spring2013/text/hidden_text/midtermRNA.text",
+		"/Users/hcorrada/Downloads/survival.svg",
+		"/Users/hcorrada/gollum_wiki/journal/files/people.text",
+		"/Users/hcorrada/Teaching/CMSC702/Spring2013/grading/presentations.txt",
+		"/Users/hcorrada/gollum_wiki/journal/files/genentech_talk.md",
+		"/Users/hcorrada/Projects/barcode/src/succs/R/succs-methods.R",
+		"/Users/hcorrada/Documents/jobs/cv/corrada_bravo_references.txt",
+		"/Users/hcorrada/gollum_wiki/journal/2013_01_15.md",
+		"/Users/hcorrada/gollum_wiki/journal/2013_01_14.md",
+		"/Users/hcorrada/gollum_wiki/journal/2013_01_12.md",
+		"/Users/hcorrada/gollum_wiki/journal/2013_01_11.md",
+		"/Users/hcorrada/gollum_wiki/methyl/minfi_blocks.md",
+		"/Users/hcorrada/gollum_wiki/srfim/filtering.md",
+		"/Users/hcorrada/gollum_wiki/journal/2013_01_10.md",
+		"/Users/hcorrada/Documents/UMDCS/admin/cbcbHiring2013/bansal_invite.txt",
+		"/Users/hcorrada/Documents/UMDCS/admin/cbcbHiring2013/yosef_invite.txt",
+		"/Users/hcorrada/Documents/UMDCS/admin/cbcbHiring2013/khan_invite.txt",
+		"/Users/hcorrada/gollum_wiki/journal/2013_01_09.md",
+		"/Users/hcorrada/gollum_wiki/invite.txt",
+		"/Users/hcorrada/Library/Application Support/Sublime Text 2/Packages/User/Git.sublime-settings",
+		"/Users/hcorrada/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings",
+		"/Users/hcorrada/Desktop/cbcb_hiring_2013.txt",
+		"/Users/hcorrada/Teaching/PracticalMachineLearning/Fall2012/text/homeworks/HW09.text",
+		"/Users/hcorrada/Teaching/PracticalMachineLearning/Fall2012/text/lectures/EnsembleMethods.ppt",
+		"/Users/hcorrada/Teaching/PracticalMachineLearning/Fall2012/text/homeworks/HW06.text"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"start",
+			"startEp",
+			"naviga",
+			"addMeas",
+			"stopS",
+			"stopSer",
+			"getMeasurementTy",
+			"getMeasurementType",
+			"getMeasure",
+			"inDisplay",
+			"id",
+			"addDevice",
+			"listDe",
+			"addDevice",
+			"TODO",
+			"plot",
+			"addDevi",
+			"browser",
+			"broser",
+			"checkCo",
+			"x",
+			"addMeasurement",
+			"devId",
+			"devices",
+			"newDevice",
+			"slideshow",
+			"Made it here",
+			"as.liste",
+			"ogr",
+			"mcols(ogr)",
+			"mdCols",
+			"EpivizDeviceMgr",
+			"addDev",
+			"mdCols",
+			".newDevice",
+			"navigate",
+			"clearCache",
+			"sendRequest",
+			"setMethod",
+			"getDataWithValues",
+			"means_de",
+			"tree",
+			"Null",
+			"RangeList",
+			"IRangeL",
+			"partition",
+			"processSelfMatching",
+			"checkIdent",
+			"checkIdentical",
+			"ranges",
+			"IntervalForest",
+			"length",
+			"forest",
+			"query",
+			"tree",
+			"Interva",
+			"tree",
+			"=qpartition",
+			" =",
+			"partition",
+			"query",
+			"partition",
+			"RangesList",
+			"findOverlaps",
+			"restri",
+			"promo",
+			"intervalfor",
+			"drop",
+			"test_RangesList_reduce",
+			"Compress",
+			"Comp",
+			"CompressedIRangesList",
+			"Compress",
+			"Compre",
+			"setMethod(\"shift\"",
+			"setMethod(\"shift\",\"Compressed",
+			"shift",
+			"setMethod(\"validObj",
+			"validObject<-",
+			"validObject <-",
+			"IntegerIntervalForest_le",
+			"_IntegerIntervalForest_",
+			"_IntegerIntervalForest_len",
+			"_length",
+			"CompressedIntegerList",
+			"return(TRUE)",
+			"return",
+			"levels",
+			"makePretty",
+			"Ranges",
+			"subsetBy",
+			"overlapsAn",
+			"countO",
+			" .",
+			"partitio",
+			"partition",
+			"type",
+			"subject",
+			"tree",
+			"GenomicRanges",
+			"IntervalForest",
+			"Rprintf",
+			"m",
+			"r_elt",
+			"result_ints",
+			"cur_partition",
+			"nclusters0",
+			"index",
+			"login",
+			"index",
+			"output_class",
+			"data",
+			"save",
+			"addDev",
+			"Rprintf",
+			"<<<<<",
+			"<<<<",
+			"====",
+			"\n        ",
+			"ren",
+			"Hi",
+			"ChromHMM",
+			"warning",
+			" [",
+			"<tr>",
+			"\n<",
+			"table",
+			"702"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 13,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "R/EpivizDeviceMgr-class.R",
+					"settings":
+					{
+						"buffer_size": 17161,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								11090,
+								11098
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"bh_regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close"
+							],
+							"csslint_options":
+							{
+								"adjoining-classes": "warning",
+								"box-model": true,
+								"box-sizing": "warning",
+								"compatible-vendor-prefixes": "warning",
+								"display-property-grouping": true,
+								"duplicate-background-images": "warning",
+								"duplicate-properties": true,
+								"empty-rules": true,
+								"errors": true,
+								"fallback-colors": "warning",
+								"floats": "warning",
+								"font-faces": "warning",
+								"font-sizes": "warning",
+								"gradients": "warning",
+								"ids": "warning",
+								"import": "warning",
+								"important": "warning",
+								"known-properties": true,
+								"outline-none": "warning",
+								"overqualified-elements": "warning",
+								"qualified-headings": "warning",
+								"regex-selectors": "warning",
+								"rules-count": "warning",
+								"shorthand": "warning",
+								"star-property-hack": "warning",
+								"text-indent": "warning",
+								"underscore-property-hack": "warning",
+								"unique-headings": "warning",
+								"universal-selector": "warning",
+								"vendor-prefix": true,
+								"zero-units": "warning"
+							},
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8": true,
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"perl_linter": "perlcritic",
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 2.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": true,
+							"sublimelinter_gutter_marks_theme": "simple",
+							"sublimelinter_mark_style": "none",
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"C++": "c",
+								"Python Django": "python",
+								"Ruby on Rails": "ruby"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/R/R.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 6598.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "R/EpivizServer-class.R",
+					"settings":
+					{
+						"buffer_size": 6803,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2431,
+								2431
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"bh_regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close"
+							],
+							"csslint_options":
+							{
+								"adjoining-classes": "warning",
+								"box-model": true,
+								"box-sizing": "warning",
+								"compatible-vendor-prefixes": "warning",
+								"display-property-grouping": true,
+								"duplicate-background-images": "warning",
+								"duplicate-properties": true,
+								"empty-rules": true,
+								"errors": true,
+								"fallback-colors": "warning",
+								"floats": "warning",
+								"font-faces": "warning",
+								"font-sizes": "warning",
+								"gradients": "warning",
+								"ids": "warning",
+								"import": "warning",
+								"important": "warning",
+								"known-properties": true,
+								"outline-none": "warning",
+								"overqualified-elements": "warning",
+								"qualified-headings": "warning",
+								"regex-selectors": "warning",
+								"rules-count": "warning",
+								"shorthand": "warning",
+								"star-property-hack": "warning",
+								"text-indent": "warning",
+								"underscore-property-hack": "warning",
+								"unique-headings": "warning",
+								"universal-selector": "warning",
+								"vendor-prefix": true,
+								"zero-units": "warning"
+							},
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8": true,
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"perl_linter": "perlcritic",
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 2.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": true,
+							"sublimelinter_gutter_marks_theme": "simple",
+							"sublimelinter_mark_style": "none",
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"C++": "c",
+								"Python Django": "python",
+								"Ruby on Rails": "ruby"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/R/R.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1502.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "inst/tests/test-server.r",
+					"settings":
+					{
+						"buffer_size": 1157,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								107,
+								107
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"bh_regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close"
+							],
+							"csslint_options":
+							{
+								"adjoining-classes": "warning",
+								"box-model": true,
+								"box-sizing": "warning",
+								"compatible-vendor-prefixes": "warning",
+								"display-property-grouping": true,
+								"duplicate-background-images": "warning",
+								"duplicate-properties": true,
+								"empty-rules": true,
+								"errors": true,
+								"fallback-colors": "warning",
+								"floats": "warning",
+								"font-faces": "warning",
+								"font-sizes": "warning",
+								"gradients": "warning",
+								"ids": "warning",
+								"import": "warning",
+								"important": "warning",
+								"known-properties": true,
+								"outline-none": "warning",
+								"overqualified-elements": "warning",
+								"qualified-headings": "warning",
+								"regex-selectors": "warning",
+								"rules-count": "warning",
+								"shorthand": "warning",
+								"star-property-hack": "warning",
+								"text-indent": "warning",
+								"underscore-property-hack": "warning",
+								"unique-headings": "warning",
+								"universal-selector": "warning",
+								"vendor-prefix": true,
+								"zero-units": "warning"
+							},
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8": true,
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"perl_linter": "perlcritic",
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 2.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": true,
+							"sublimelinter_gutter_marks_theme": "simple",
+							"sublimelinter_mark_style": "none",
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"C++": "c",
+								"Python Django": "python",
+								"Ruby on Rails": "ruby"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/R/R.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "vignettes/IntroToEpivizr.Rmd",
+					"settings":
+					{
+						"buffer_size": 10665,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3619,
+								3680
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"bh_regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close"
+							],
+							"csslint_options":
+							{
+								"adjoining-classes": "warning",
+								"box-model": true,
+								"box-sizing": "warning",
+								"compatible-vendor-prefixes": "warning",
+								"display-property-grouping": true,
+								"duplicate-background-images": "warning",
+								"duplicate-properties": true,
+								"empty-rules": true,
+								"errors": true,
+								"fallback-colors": "warning",
+								"floats": "warning",
+								"font-faces": "warning",
+								"font-sizes": "warning",
+								"gradients": "warning",
+								"ids": "warning",
+								"import": "warning",
+								"important": "warning",
+								"known-properties": true,
+								"outline-none": "warning",
+								"overqualified-elements": "warning",
+								"qualified-headings": "warning",
+								"regex-selectors": "warning",
+								"rules-count": "warning",
+								"shorthand": "warning",
+								"star-property-hack": "warning",
+								"text-indent": "warning",
+								"underscore-property-hack": "warning",
+								"unique-headings": "warning",
+								"universal-selector": "warning",
+								"vendor-prefix": true,
+								"zero-units": "warning"
+							},
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8": true,
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"perl_linter": "perlcritic",
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 2.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": true,
+							"sublimelinter_gutter_marks_theme": "simple",
+							"sublimelinter_mark_style": "none",
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"C++": "c",
+								"Python Django": "python",
+								"Ruby on Rails": "ruby"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 926.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "inst/tests/helper-startmgr.R",
+					"settings":
+					{
+						"buffer_size": 568,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								412,
+								412
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"bh_regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close"
+							],
+							"csslint_options":
+							{
+								"adjoining-classes": "warning",
+								"box-model": true,
+								"box-sizing": "warning",
+								"compatible-vendor-prefixes": "warning",
+								"display-property-grouping": true,
+								"duplicate-background-images": "warning",
+								"duplicate-properties": true,
+								"empty-rules": true,
+								"errors": true,
+								"fallback-colors": "warning",
+								"floats": "warning",
+								"font-faces": "warning",
+								"font-sizes": "warning",
+								"gradients": "warning",
+								"ids": "warning",
+								"import": "warning",
+								"important": "warning",
+								"known-properties": true,
+								"outline-none": "warning",
+								"overqualified-elements": "warning",
+								"qualified-headings": "warning",
+								"regex-selectors": "warning",
+								"rules-count": "warning",
+								"shorthand": "warning",
+								"star-property-hack": "warning",
+								"text-indent": "warning",
+								"underscore-property-hack": "warning",
+								"unique-headings": "warning",
+								"universal-selector": "warning",
+								"vendor-prefix": true,
+								"zero-units": "warning"
+							},
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8": true,
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"perl_linter": "perlcritic",
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 2.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": true,
+							"sublimelinter_gutter_marks_theme": "simple",
+							"sublimelinter_mark_style": "none",
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"C++": "c",
+								"Python Django": "python",
+								"Ruby on Rails": "ruby"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/R/R.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "R/EpivizData-class.R",
+					"settings":
+					{
+						"buffer_size": 4223,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3816,
+								3827
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"bh_regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close"
+							],
+							"csslint_options":
+							{
+								"adjoining-classes": "warning",
+								"box-model": true,
+								"box-sizing": "warning",
+								"compatible-vendor-prefixes": "warning",
+								"display-property-grouping": true,
+								"duplicate-background-images": "warning",
+								"duplicate-properties": true,
+								"empty-rules": true,
+								"errors": true,
+								"fallback-colors": "warning",
+								"floats": "warning",
+								"font-faces": "warning",
+								"font-sizes": "warning",
+								"gradients": "warning",
+								"ids": "warning",
+								"import": "warning",
+								"important": "warning",
+								"known-properties": true,
+								"outline-none": "warning",
+								"overqualified-elements": "warning",
+								"qualified-headings": "warning",
+								"regex-selectors": "warning",
+								"rules-count": "warning",
+								"shorthand": "warning",
+								"star-property-hack": "warning",
+								"text-indent": "warning",
+								"underscore-property-hack": "warning",
+								"unique-headings": "warning",
+								"universal-selector": "warning",
+								"vendor-prefix": true,
+								"zero-units": "warning"
+							},
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8": true,
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"perl_linter": "perlcritic",
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 2.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": true,
+							"sublimelinter_gutter_marks_theme": "simple",
+							"sublimelinter_mark_style": "none",
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"C++": "c",
+								"Python Django": "python",
+								"Ruby on Rails": "ruby"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/R/R.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2249.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "R/EpivizTrackData-class.R",
+					"settings":
+					{
+						"buffer_size": 734,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"bh_regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close"
+							],
+							"csslint_options":
+							{
+								"adjoining-classes": "warning",
+								"box-model": true,
+								"box-sizing": "warning",
+								"compatible-vendor-prefixes": "warning",
+								"display-property-grouping": true,
+								"duplicate-background-images": "warning",
+								"duplicate-properties": true,
+								"empty-rules": true,
+								"errors": true,
+								"fallback-colors": "warning",
+								"floats": "warning",
+								"font-faces": "warning",
+								"font-sizes": "warning",
+								"gradients": "warning",
+								"ids": "warning",
+								"import": "warning",
+								"important": "warning",
+								"known-properties": true,
+								"outline-none": "warning",
+								"overqualified-elements": "warning",
+								"qualified-headings": "warning",
+								"regex-selectors": "warning",
+								"rules-count": "warning",
+								"shorthand": "warning",
+								"star-property-hack": "warning",
+								"text-indent": "warning",
+								"underscore-property-hack": "warning",
+								"unique-headings": "warning",
+								"universal-selector": "warning",
+								"vendor-prefix": true,
+								"zero-units": "warning"
+							},
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8": true,
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"perl_linter": "perlcritic",
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 2.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": true,
+							"sublimelinter_gutter_marks_theme": "simple",
+							"sublimelinter_mark_style": "none",
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"C++": "c",
+								"Python Django": "python",
+								"Ruby on Rails": "ruby"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/R/R.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "R/EpivizBlockData-class.R",
+					"settings":
+					{
+						"buffer_size": 1536,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								62,
+								77
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"bh_regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close"
+							],
+							"csslint_options":
+							{
+								"adjoining-classes": "warning",
+								"box-model": true,
+								"box-sizing": "warning",
+								"compatible-vendor-prefixes": "warning",
+								"display-property-grouping": true,
+								"duplicate-background-images": "warning",
+								"duplicate-properties": true,
+								"empty-rules": true,
+								"errors": true,
+								"fallback-colors": "warning",
+								"floats": "warning",
+								"font-faces": "warning",
+								"font-sizes": "warning",
+								"gradients": "warning",
+								"ids": "warning",
+								"import": "warning",
+								"important": "warning",
+								"known-properties": true,
+								"outline-none": "warning",
+								"overqualified-elements": "warning",
+								"qualified-headings": "warning",
+								"regex-selectors": "warning",
+								"rules-count": "warning",
+								"shorthand": "warning",
+								"star-property-hack": "warning",
+								"text-indent": "warning",
+								"underscore-property-hack": "warning",
+								"unique-headings": "warning",
+								"universal-selector": "warning",
+								"vendor-prefix": true,
+								"zero-units": "warning"
+							},
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8": true,
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"perl_linter": "perlcritic",
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 2.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": true,
+							"sublimelinter_gutter_marks_theme": "simple",
+							"sublimelinter_mark_style": "none",
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"C++": "c",
+								"Python Django": "python",
+								"Ruby on Rails": "ruby"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/R/R.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "R/EpivizBpData-class.R",
+					"settings":
+					{
+						"buffer_size": 2896,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								56,
+								71
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"bh_regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close"
+							],
+							"csslint_options":
+							{
+								"adjoining-classes": "warning",
+								"box-model": true,
+								"box-sizing": "warning",
+								"compatible-vendor-prefixes": "warning",
+								"display-property-grouping": true,
+								"duplicate-background-images": "warning",
+								"duplicate-properties": true,
+								"empty-rules": true,
+								"errors": true,
+								"fallback-colors": "warning",
+								"floats": "warning",
+								"font-faces": "warning",
+								"font-sizes": "warning",
+								"gradients": "warning",
+								"ids": "warning",
+								"import": "warning",
+								"important": "warning",
+								"known-properties": true,
+								"outline-none": "warning",
+								"overqualified-elements": "warning",
+								"qualified-headings": "warning",
+								"regex-selectors": "warning",
+								"rules-count": "warning",
+								"shorthand": "warning",
+								"star-property-hack": "warning",
+								"text-indent": "warning",
+								"underscore-property-hack": "warning",
+								"unique-headings": "warning",
+								"universal-selector": "warning",
+								"vendor-prefix": true,
+								"zero-units": "warning"
+							},
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8": true,
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"perl_linter": "perlcritic",
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 2.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": true,
+							"sublimelinter_gutter_marks_theme": "simple",
+							"sublimelinter_mark_style": "none",
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"C++": "c",
+								"Python Django": "python",
+								"Ruby on Rails": "ruby"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/R/R.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "R/EpivizFeatureData-class.R",
+					"settings":
+					{
+						"buffer_size": 5094,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2913,
+								3736
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"bh_regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close"
+							],
+							"csslint_options":
+							{
+								"adjoining-classes": "warning",
+								"box-model": true,
+								"box-sizing": "warning",
+								"compatible-vendor-prefixes": "warning",
+								"display-property-grouping": true,
+								"duplicate-background-images": "warning",
+								"duplicate-properties": true,
+								"empty-rules": true,
+								"errors": true,
+								"fallback-colors": "warning",
+								"floats": "warning",
+								"font-faces": "warning",
+								"font-sizes": "warning",
+								"gradients": "warning",
+								"ids": "warning",
+								"import": "warning",
+								"important": "warning",
+								"known-properties": true,
+								"outline-none": "warning",
+								"overqualified-elements": "warning",
+								"qualified-headings": "warning",
+								"regex-selectors": "warning",
+								"rules-count": "warning",
+								"shorthand": "warning",
+								"star-property-hack": "warning",
+								"text-indent": "warning",
+								"underscore-property-hack": "warning",
+								"unique-headings": "warning",
+								"universal-selector": "warning",
+								"vendor-prefix": true,
+								"zero-units": "warning"
+							},
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8": true,
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"perl_linter": "perlcritic",
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 2.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": true,
+							"sublimelinter_gutter_marks_theme": "simple",
+							"sublimelinter_mark_style": "none",
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"C++": "c",
+								"Python Django": "python",
+								"Ruby on Rails": "ruby"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/R/R.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1375.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "inst/tests/test-register.R",
+					"settings":
+					{
+						"buffer_size": 2478,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								940,
+								940
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"bh_regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close"
+							],
+							"csslint_options":
+							{
+								"adjoining-classes": "warning",
+								"box-model": true,
+								"box-sizing": "warning",
+								"compatible-vendor-prefixes": "warning",
+								"display-property-grouping": true,
+								"duplicate-background-images": "warning",
+								"duplicate-properties": true,
+								"empty-rules": true,
+								"errors": true,
+								"fallback-colors": "warning",
+								"floats": "warning",
+								"font-faces": "warning",
+								"font-sizes": "warning",
+								"gradients": "warning",
+								"ids": "warning",
+								"import": "warning",
+								"important": "warning",
+								"known-properties": true,
+								"outline-none": "warning",
+								"overqualified-elements": "warning",
+								"qualified-headings": "warning",
+								"regex-selectors": "warning",
+								"rules-count": "warning",
+								"shorthand": "warning",
+								"star-property-hack": "warning",
+								"text-indent": "warning",
+								"underscore-property-hack": "warning",
+								"unique-headings": "warning",
+								"universal-selector": "warning",
+								"vendor-prefix": true,
+								"zero-units": "warning"
+							},
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8": true,
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"perl_linter": "perlcritic",
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 2.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": true,
+							"sublimelinter_gutter_marks_theme": "simple",
+							"sublimelinter_mark_style": "none",
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"C++": "c",
+								"Python Django": "python",
+								"Ruby on Rails": "ruby"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/R/R.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "R/register-methods.R",
+					"settings":
+					{
+						"buffer_size": 2648,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								873,
+								890
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"bh_regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close"
+							],
+							"csslint_options":
+							{
+								"adjoining-classes": "warning",
+								"box-model": true,
+								"box-sizing": "warning",
+								"compatible-vendor-prefixes": "warning",
+								"display-property-grouping": true,
+								"duplicate-background-images": "warning",
+								"duplicate-properties": true,
+								"empty-rules": true,
+								"errors": true,
+								"fallback-colors": "warning",
+								"floats": "warning",
+								"font-faces": "warning",
+								"font-sizes": "warning",
+								"gradients": "warning",
+								"ids": "warning",
+								"import": "warning",
+								"important": "warning",
+								"known-properties": true,
+								"outline-none": "warning",
+								"overqualified-elements": "warning",
+								"qualified-headings": "warning",
+								"regex-selectors": "warning",
+								"rules-count": "warning",
+								"shorthand": "warning",
+								"star-property-hack": "warning",
+								"text-indent": "warning",
+								"underscore-property-hack": "warning",
+								"unique-headings": "warning",
+								"universal-selector": "warning",
+								"vendor-prefix": true,
+								"zero-units": "warning"
+							},
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8": true,
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"perl_linter": "perlcritic",
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 2.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": true,
+							"sublimelinter_gutter_marks_theme": "simple",
+							"sublimelinter_mark_style": "none",
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"C++": "c",
+								"Python Django": "python",
+								"Ruby on Rails": "ruby"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/R/R.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "DESCRIPTION",
+					"settings":
+					{
+						"buffer_size": 1392,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								932,
+								932
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"bh_regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close"
+							],
+							"csslint_options":
+							{
+								"adjoining-classes": "warning",
+								"box-model": true,
+								"box-sizing": "warning",
+								"compatible-vendor-prefixes": "warning",
+								"display-property-grouping": true,
+								"duplicate-background-images": "warning",
+								"duplicate-properties": true,
+								"empty-rules": true,
+								"errors": true,
+								"fallback-colors": "warning",
+								"floats": "warning",
+								"font-faces": "warning",
+								"font-sizes": "warning",
+								"gradients": "warning",
+								"ids": "warning",
+								"import": "warning",
+								"important": "warning",
+								"known-properties": true,
+								"outline-none": "warning",
+								"overqualified-elements": "warning",
+								"qualified-headings": "warning",
+								"regex-selectors": "warning",
+								"rules-count": "warning",
+								"shorthand": "warning",
+								"star-property-hack": "warning",
+								"text-indent": "warning",
+								"underscore-property-hack": "warning",
+								"unique-headings": "warning",
+								"universal-selector": "warning",
+								"vendor-prefix": true,
+								"zero-units": "warning"
+							},
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8": true,
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"perl_linter": "perlcritic",
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 2.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": true,
+							"sublimelinter_gutter_marks_theme": "simple",
+							"sublimelinter_mark_style": "none",
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"C++": "c",
+								"Python Django": "python",
+								"Ruby on Rails": "ruby"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"file": "NAMESPACE",
+					"settings":
+					{
+						"buffer_size": 240,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								15,
+								15
+							]
+						],
+						"settings":
+						{
+							"BracketHighlighterBusy": false,
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"bh_regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close"
+							],
+							"csslint_options":
+							{
+								"adjoining-classes": "warning",
+								"box-model": true,
+								"box-sizing": "warning",
+								"compatible-vendor-prefixes": "warning",
+								"display-property-grouping": true,
+								"duplicate-background-images": "warning",
+								"duplicate-properties": true,
+								"empty-rules": true,
+								"errors": true,
+								"fallback-colors": "warning",
+								"floats": "warning",
+								"font-faces": "warning",
+								"font-sizes": "warning",
+								"gradients": "warning",
+								"ids": "warning",
+								"import": "warning",
+								"important": "warning",
+								"known-properties": true,
+								"outline-none": "warning",
+								"overqualified-elements": "warning",
+								"qualified-headings": "warning",
+								"regex-selectors": "warning",
+								"rules-count": "warning",
+								"shorthand": "warning",
+								"star-property-hack": "warning",
+								"text-indent": "warning",
+								"underscore-property-hack": "warning",
+								"unique-headings": "warning",
+								"universal-selector": "warning",
+								"vendor-prefix": true,
+								"zero-units": "warning"
+							},
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8": true,
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"perl_linter": "perlcritic",
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 2.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": true,
+							"sublimelinter_gutter_marks_theme": "simple",
+							"sublimelinter_mark_style": "none",
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"C++": "c",
+								"Python Django": "python",
+								"Ruby on Rails": "ruby"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 42.0
+	},
+	"input":
+	{
+		"height": 35.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 124.0
+	},
+	"output.git":
+	{
+		"height": 172.0
+	},
+	"replace":
+	{
+		"height": 78.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"nam",
+				"NAMESPACE"
+			],
+			[
+				"server",
+				"R/EpivizServer-class.R"
+			],
+			[
+				"de",
+				"DESCRIPTION"
+			],
+			[
+				"tereg",
+				"inst/tests/test-register.R"
+			],
+			[
+				"tere",
+				"inst/tests/test-register.R"
+			],
+			[
+				"re",
+				"R/register-methods.R"
+			],
+			[
+				"regi",
+				"inst/tests/test-register.R"
+			],
+			[
+				"mgr",
+				"R/EpivizDeviceMgr-class.R"
+			],
+			[
+				"featu",
+				"R/EpivizFeatureData-class.R"
+			],
+			[
+				"bp",
+				"R/EpivizBpData-class.R"
+			],
+			[
+				"block",
+				"R/EpivizBlockData-class.R"
+			],
+			[
+				"epitra",
+				"R/EpivizTrackData-class.R"
+			],
+			[
+				"epida",
+				"R/EpivizData-class.R"
+			],
+			[
+				"hel",
+				"inst/tests/helper-startmgr.R"
+			],
+			[
+				"intro",
+				"vignettes/IntroToEpivizr.Rmd"
+			],
+			[
+				"ser",
+				"R/EpivizServer-class.R"
+			],
+			[
+				"teser",
+				"inst/tests/test-server.r"
+			],
+			[
+				"serv",
+				"R/EpivizServer-class.R"
+			],
+			[
+				"ch",
+				"vignettes/CHECK:"
+			],
+			[
+				"he",
+				"inst/tests/helper-startmgr.R"
+			],
+			[
+				"hek",
+				"inst/tests/helper-makeEset.R"
+			],
+			[
+				"in",
+				"vignettes/IntroToEpivizr.Rmd"
+			],
+			[
+				"intor",
+				"vignettes/IntroToEpivizr.Rmd"
+			],
+			[
+				"serve",
+				"R/EpivizServer-class.R"
+			],
+			[
+				"bl",
+				"R/EpivizBlockData-class.R"
+			],
+			[
+				"tra",
+				"R/EpivizTrackData-class.R"
+			],
+			[
+				"data",
+				"R/EpivizData-class.R"
+			],
+			[
+				"che",
+				"vignettes/CHECK:"
+			],
+			[
+				"",
+				"vignettes/IntroToEpivizr.Rmd"
+			],
+			[
+				"intr",
+				"vignettes/IntroToEpivizr.Rmd"
+			],
+			[
+				"feat",
+				"R/EpivizFeatureData-class.R"
+			],
+			[
+				"char",
+				"R/EpivizChart-class.R"
+			],
+			[
+				"teadch",
+				"inst/tests/test-addCharts.R"
+			],
+			[
+				"reg",
+				"R/register-methods.R"
+			],
+			[
+				"teup",
+				"inst/tests/test-update.R"
+			],
+			[
+				"devi",
+				"R/EpivizDevice-class.R"
+			],
+			[
+				"dev",
+				"R/EpivizDevice-class.R"
+			],
+			[
+				"testup",
+				"inst/tests/test-update.R"
+			],
+			[
+				"tefe",
+				"inst/tests/test-fetch.r"
+			],
+			[
+				"mandev",
+				"inst/tests/test-manageDevices.R"
+			],
+			[
+				"mangch",
+				"inst/tests/test-manageCharts.R"
+			],
+			[
+				"tead",
+				"inst/tests/test-addCharts.R"
+			],
+			[
+				"cha",
+				"R/EpivizChart-class.R"
+			],
+			[
+				"blo",
+				"R/EpivizBlockData-class.R"
+			],
+			[
+				"teadd",
+				"inst/tests/test-addMeasurements.R"
+			],
+			[
+				"tesup",
+				"inst/tests/test-update.R"
+			],
+			[
+				"gr",
+				"R/register-methods.R"
+			],
+			[
+				"trac",
+				"R/EpivizTrackData-class.R"
+			],
+			[
+				"teman",
+				"inst/tests/test-manage.r"
+			],
+			[
+				"tedev",
+				"inst/tests/test-manageDevices.R"
+			],
+			[
+				"manch",
+				"inst/tests/test-manageCharts.R"
+			],
+			[
+				"tech",
+				"inst/tests/test-manageCharts.R"
+			],
+			[
+				"temme",
+				"inst/tests/test-manageMeasurements.R"
+			],
+			[
+				"tema",
+				"inst/tests/test-manageMeasurements.R"
+			],
+			[
+				"managme",
+				"inst/tests/test-manageMeasurements.R"
+			],
+			[
+				"temch",
+				"inst/tests/test-manageCharts.R"
+			],
+			[
+				"temc",
+				"inst/tests/test-manageCharts.R"
+			],
+			[
+				"tem",
+				"inst/tests/test-manageCharts.R"
+			],
+			[
+				"help",
+				"inst/tests/helper-startmgr.R"
+			],
+			[
+				"ma",
+				"inst/tests/test-manage.r"
+			],
+			[
+				"teme",
+				"inst/tests/test-manageMeasurements.R"
+			],
+			[
+				"man",
+				"inst/tests/test-manage.r"
+			],
+			[
+				"mg",
+				"R/EpivizDeviceMgr-class.R"
+			],
+			[
+				"te",
+				"inst/tests/test-fetch.r"
+			],
+			[
+				"tefet",
+				"inst/tests/test-fetch.r"
+			],
+			[
+				"bloc",
+				"R/EpivizBlockData-class.R"
+			],
+			[
+				"epidata",
+				"R/EpivizData-class.R"
+			],
+			[
+				"tege",
+				"inst/tests/test-manageMeasurements.R"
+			],
+			[
+				"temame",
+				"inst/tests/test-manageMeasurements.R"
+			],
+			[
+				"manag",
+				"inst/tests/test-manage.r"
+			],
+			[
+				"mana",
+				"inst/tests/test-manage.r"
+			],
+			[
+				"epich",
+				"R/EpivizChart-class.R"
+			],
+			[
+				"na",
+				"NAMESPACE"
+			],
+			[
+				"chart",
+				"R/EpivizChart-class.R"
+			],
+			[
+				"teadc",
+				"inst/tests/test-addCharts.R"
+			],
+			[
+				"adch",
+				"inst/tests/test-addCharts.R"
+			],
+			[
+				"add",
+				"inst/tests/test-addMeasurements.R"
+			],
+			[
+				"addme",
+				"inst/tests/test-addMeasurements.R"
+			],
+			[
+				"da",
+				"R/EpivizData-class.R"
+			],
+			[
+				"episer",
+				"R/EpivizServer-class.R"
+			],
+			[
+				"epifeat",
+				"R/EpivizFeatureData-class.R"
+			],
+			[
+				"epibp",
+				"R/EpivizBpData-class.R"
+			],
+			[
+				"epibl",
+				"R/EpivizBlockData-class.R"
+			],
+			[
+				"epitr",
+				"R/EpivizTrackData-class.R"
+			],
+			[
+				"epis",
+				"R/EpivizServer-class.R"
+			],
+			[
+				"creat",
+				"inst/tests/test-creation.r"
+			],
+			[
+				"adme",
+				"inst/tests/test-addMeasurements.R"
+			],
+			[
+				"epife",
+				"R/EpivizFeatureData-class.R"
+			],
+			[
+				"bpd",
+				"R/EpivizBpData-class.R"
+			],
+			[
+				"epidev",
+				"R/EpivizDevice-class.R"
+			],
+			[
+				"tr",
+				"R/EpivizTrackDevice-class.R"
+			],
+			[
+				"epide",
+				"R/EpivizDevice-class.R"
+			],
+			[
+				"regm",
+				"R/register-methods.R"
+			],
+			[
+				"blod",
+				"R/EpivizBlockDevice-class.R"
+			],
+			[
+				"epi",
+				"R/EpivizFeatureDevice-class.R"
+			],
+			[
+				"epifea",
+				"R/EpivizFeatureDevice-class.R"
+			],
+			[
+				"ep",
+				"man/EpivizDeviceMgr-class.Rd"
+			],
+			[
+				"epiv",
+				"R/EpivizDevice-class.R"
+			],
+			[
+				"testad",
+				"inst/tests/test-addMeasurements.R"
+			],
+			[
+				"test",
+				"inst/tests/test-addMeasurements.R"
+			],
+			[
+				"epivde",
+				"R/EpivizDevice-class.R"
+			],
+			[
+				"addmea",
+				"inst/tests/test-addMeasurements.R"
+			],
+			[
+				"fet",
+				"inst/tests/test-fetch.r"
+			],
+			[
+				"name",
+				"NAMESPACE"
+			],
+			[
+				"new",
+				"R/newDevice-methods.R"
+			],
+			[
+				"track",
+				"R/EpivizTrackDevice-class.R"
+			],
+			[
+				"tesnew",
+				"inst/tests/test-newDevice.R"
+			],
+			[
+				"epivdev",
+				"R/EpivizDevice-class.R"
+			],
+			[
+				"newdev",
+				"R/newDevice-methods.R"
+			],
+			[
+				"testfe",
+				"inst/tests/test-fetch.r"
+			],
+			[
+				"bpde",
+				"R/EpivizBpDevice-class.R"
+			],
+			[
+				"pidev",
+				"R/EpivizDevice-class.R"
+			],
+			[
+				"newme",
+				"R/newDevice-methods.R"
+			],
+			[
+				"tenew",
+				"inst/tests/test-newDevice.R"
+			],
+			[
+				"test-manag",
+				"inst/tests/test-manage.r"
+			],
+			[
+				"epivif",
+				"R/EpivizFeatureDevice-class.R"
+			],
+			[
+				"epivtra",
+				"R/EpivizTrackDevice-class.R"
+			],
+			[
+				"testcre",
+				"inst/tests/test-creation.r"
+			],
+			[
+				"device",
+				"R/newDevice-methods.R"
+			],
+			[
+				"epivimgr",
+				"R/EpivizDeviceMgr-class.R"
+			],
+			[
+				"epivife",
+				"R/EpivizFeatureDevice-class.R"
+			],
+			[
+				"epivide",
+				"R/EpivizDevice-class.R"
+			],
+			[
+				"t",
+				"inst/tests/test-fetch.r"
+			],
+			[
+				"tesfet",
+				"inst/tests/test-fetch.r"
+			],
+			[
+				"itr",
+				"vignettes/IntroToEpivizr.Rmd"
+			],
+			[
+				"epimg",
+				"R/EpivizDeviceMgr.r"
+			],
+			[
+				"instdo",
+				"inst/doc/IntroToEpivizr.html"
+			],
+			[
+				"test-mana",
+				"inst/tests/test-manage.r"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"show_minimap": false,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": false,
+	"side_bar_width": 181.0,
+	"status_bar_visible": true
+}
