@@ -1,0 +1,14 @@
+import(methods)
+import(Biobase)
+import(GenomicRanges)
+import(httpuv)
+import(rjson)
+
+exportClasses(EpivizDeviceMgr,
+			  EpivizData,
+			  EpivizTrackData,
+			  EpivizFeatureData,
+			  EpivizBlockData,
+			  EpivizBpData)
+
+export(startEpiviz)
