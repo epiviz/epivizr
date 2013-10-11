@@ -57,13 +57,8 @@ mgr=startEpiviz(workspace="C60FA3168F34DBC763F579C1EADA8AF0")
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
-mgr=startEpiviz(debug=TRUE,nonInteractive=TRUE, verbose=FALSE,openBrowser=FALSE)
+mgr=startEpiviz(localURL="http://epiviz.cbcb.umd.edu/test_socket.php",debug=TRUE, nonInteractive=TRUE, tryPorts=TRUE)
 ```
-
-```{r,eval=TRUE,echo=FALSE}
-mgr$openBrowser()
-```
-
 This opens a websocket connection between the interactive `R` session and the browser client. This will allow us to visualize data stored in the `Epiviz` server along with data in the interactive `R` session.
 
 ### Adding block region devices
