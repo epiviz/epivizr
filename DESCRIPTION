@@ -14,6 +14,7 @@ Description: This package provides Websocket communication to the epiviz web
     can be easily added to the web app as well.
 VignetteBuilder: knitr
 Depends: R (>= 3.0.1), methods, Biobase, GenomicRanges (>= 1.13.47),
+biocViews: Visualization, Infrastructure, Bioinformatics, GUI
 Imports: httpuv, rjson
 LinkingTo: GenomicRanges, httpuv
 Suggests: testthat, roxygen2, knitr, antiProfilesData, hgu133plus2.db
