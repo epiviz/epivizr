@@ -67,18 +67,28 @@ EpivizDeviceMgr$methods(list(
       epivizrMsg("Opening browser")
     }
 
-    if (missing(url) || is.null(url)) {
-       browseURL(.self$url)
-     } else {
-       browseURL(url)
-     }
+    tryCatch({
+      if (missing(url) || is.null(url)) {
+         browseURL(.self$url)
+       } else {
+         browseURL(url)
+       }
 
-     if (verbose) {
-        epivizrMsg("Servicing websocket until connected")
-     }
-     while(!server$socketConnected) {
-       service()
-     }
+       if (verbose) {
+          epivizrMsg("Servicing websocket until connected")
+       }
+
+       ptm <- proc.time()
+       while(!server$socketConnected && (proc.time()-ptm)[2] * 1000 <= 30) {
+         service()
+       }
+       if (!server$socketConnected) {
+          stop("[epivizr] Error opening connection. UI unable to connect to websocket server.")
+       }
+      }, error=function(e) {
+        server$stopServer()
+        stop(e)
+     })
    },
    service=function() {
       if (!nonInteractive) {
