@@ -63,6 +63,10 @@ EpivizDeviceMgr$methods(list(
                     error=function(e) stop(e))
     }
 
+    if (nonInteractive) {
+      return(invisible())
+    }
+    
     if (verbose) {
       epivizrMsg("Opening browser")
     }
@@ -160,7 +164,7 @@ EpivizDeviceMgr$methods(list(
                          input_class="GRanges"))
 
 EpivizDeviceMgr$methods(
-   addMeasurements=function(obj, msName, sendRequest=TRUE, ...) {
+   addMeasurements=function(obj, msName, sendRequest=!nonInteractive, ...) {
     'add measurements to epiviz session'
     epivizObject <- epivizr:::register(obj, ...)
     type <- .self$getMeasurementType(epivizObject)
@@ -194,7 +198,7 @@ EpivizDeviceMgr$methods(
         if (any(isFound)) which(isFound) else NA
       })  
    },
-   .checkMeasurements=function(msType, ms, sendRequest=TRUE, ...) {
+   .checkMeasurements=function(msType, ms, sendRequest=!nonInteractive, ...) {
     if (!is.character(ms)) return(FALSE)
     if (!(msType %in% names(msList))) return(FALSE)
 
@@ -210,7 +214,7 @@ EpivizDeviceMgr$methods(
       TRUE
     }
    },
-   .clearChartCaches=function(msObj, sendRequest=TRUE) {
+   .clearChartCaches=function(msObj, sendRequest=!nonInteractive) {
      if(!is(msObj, "EpivizData")) {
       stop("'msObj' must be an 'EpivizData' object")
      }
@@ -244,7 +248,7 @@ EpivizDeviceMgr$methods(
      }
      invisible()
    },
-   updateMeasurements=function(oldObject, newObject, sendRequest=TRUE) {
+   updateMeasurements=function(oldObject, newObject, sendRequest=!nonInteractive) {
      if (is.character(oldObject))
        oldObject <- .getMsObject(oldObject)
      if (!is(oldObject, "EpivizData"))
@@ -408,7 +412,7 @@ EpivizDeviceMgr$methods(
 
 # chart management methods
 EpivizDeviceMgr$methods(
-   addChart=function(chartObject, sendRequest=TRUE, ...) {
+   addChart=function(chartObject, sendRequest=!nonInteractive, ...) {
     chartIdCounter <<- chartIdCounter + 1L
     chartId <- sprintf("epivizChart_%d", chartIdCounter)
     chartObject$setId(chartId)
@@ -491,7 +495,7 @@ EpivizDeviceMgr$methods(
 
 # device management methods
 EpivizDeviceMgr$methods(
-   addDevice=function(obj, devName, sendRequest=TRUE, ...) {
+   addDevice=function(obj, devName, sendRequest=!nonInteractive, ...) {
      'add device to epiviz browser'
       deviceIdCounter <<- deviceIdCounter + 1L
       deviceId <- sprintf("epivizDevice_%d", deviceIdCounter)
@@ -533,7 +537,7 @@ EpivizDeviceMgr$methods(
       rmDevice(obj)
     }
    },
-  updateDevice=function(oldObject, newObject, sendRequest=TRUE) {
+  updateDevice=function(oldObject, newObject, sendRequest=!nonInteractive) {
      if (is.character(oldObject))
        oldObject <- deviceList[[oldObject]]
 
