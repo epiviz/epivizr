@@ -260,6 +260,7 @@ EpivizServer$methods(
           '  msgDiv = document.createElement("pre");',
           '  msgDiv.innerHTML = data.data.replace(/&/g, "&amp;").replace(/\\</g, "&lt;");',
           '  document.getElementById("output").appendChild(msgDiv);',
+          '  ws.send(JSON.stringify({type: "response", id: data.id, data: "that msg"}));',
           "}",
           "function sendInput() {",
           "  var input = document.getElementById('input');",
