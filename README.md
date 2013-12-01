@@ -31,6 +31,18 @@ You can get a quick tour of epiviz here: [http://youtu.be/099c4wUxozA](http://yo
 This github repository contains the latest and greatest version of `epivizr` and is tracked by the devel version in Bioconductor (see
 [http://bioconductor.org/developers/how-to/useDevel/](http://bioconductor.org/developers/how-to/useDevel/) for more info.
 
+## Non-blocking
+
+Epivizr now supports a non-blocking workflow on UNIX-like systems where data is served to the webapp without blocking
+the R/bioc interactive session. This requires an updated version of the [httpuv package](http://github.com/epiviz/httpuv). You can install that using
+
+```{r}
+require(devtools)
+install_github("httpuv", username="epiviz", ref="daemon-unix")
+```
+
+We are working with Rstudio to fold that into the main httpuv release
+
 ## More info
 
 [Check out the `epiviz` project page on github](http:://github.com/epiviz)
