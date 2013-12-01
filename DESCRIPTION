@@ -22,4 +22,5 @@ Collate: 'utils.r' 'EpivizServer-class.R' 'EpivizDeviceMgr-class.R'
         'startEpiviz.R' 'EpivizData-class.R' 'EpivizTrackData-class.R'
         'EpivizFeatureData-class.R' 'EpivizBlockData-class.R'
         'EpivizBpData-class.R' 'register-methods.R'
-        'EpivizChart-class.R' 'EpivizDevice-class.R'
+        'EpivizChart-class.R' 'EpivizDevice-class.R' 'zzz.R'
+
