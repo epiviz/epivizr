@@ -14,7 +14,9 @@ test_that("getMeasurements works", {
     msObj1 <- mgr$addMeasurements(gr1, "dev1", sendRequest=sendRequest); msId1=msObj1$getId()
     msObj2 <- mgr$addMeasurements(gr2, "dev2", sendRequest=sendRequest); msId2=msObj2$getId()
     msObj3 <- mgr$addMeasurements(gr3, "dev3", sendRequest=sendRequest, type="bp"); msId3=msObj3$getId()
-    msObj4 <- mgr$addMeasurements(eset, "dev4", sendRequest=sendRequest, columns=c("SAMP_1", "SAMP_2")); msId4=msObj4$getId()  
+    msObj4 <- mgr$addMeasurements(eset, "dev4", sendRequest=sendRequest, columns=c("SAMP_1", "SAMP_2")); msId4=msObj4$getId()
+
+    pauseForInterrupt(sendRequest)
     res <- mgr$getMeasurements()
 
     out <- list(geneMeasurements=structure(list("dev4$SAMP_1","dev4$SAMP_2"), names=paste0(msId4, c("$SAMP_1","$SAMP_2"))),
@@ -63,7 +65,8 @@ test_that("listMeasurements works", {
     dev2 <- mgr$addMeasurements(gr2, "dev2", sendRequest=sendRequest); devId2=dev2$getId()
     dev3 <- mgr$addMeasurements(gr3, "dev3", sendRequest=sendRequest, type="bp"); devId3=dev3$getId()
     dev4 <- mgr$addMeasurements(eset, "dev4", sendRequest = sendRequest, columns=c("SAMP_1", "SAMP_2")); devId4=dev4$getId()
-    
+
+    pauseForInterrupt(sendRequest)
     devs <- mgr$listMeasurements()
     expected_df <- list(gene=data.frame(id=devId4,
                              name="dev4",
@@ -85,6 +88,7 @@ test_that("listMeasurements works", {
                               stringsAsFactors=FALSE)
                         )
     expect_equal(devs, expected_df)
+    print(devs);print(expected_df)
   }, finally=mgr$stopServer())
 })
 
@@ -101,7 +105,8 @@ test_that("rmAllMeasurements works", {
     dev2 <- mgr$addMeasurements(gr2, "dev2", sendRequest=sendRequest); devId2=dev2$getId()
     dev3 <- mgr$addMeasurements(gr3, "dev3", sendRequest=sendRequest, type="bp"); devId3=dev3$getId()
     dev4 <- mgr$addMeasurements(eset, "dev4", sendRequest = sendRequest, columns=c("SAMP_1", "SAMP_2")); devId4=dev4$getId()
-    
+
+    pauseForInterrupt(sendRequest)
     devs <- mgr$listMeasurements()
     expected_df <- list(gene=data.frame(id=devId4,
                              name="dev4",
