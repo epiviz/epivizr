@@ -6,8 +6,9 @@ test_that("addMeasurements works for blocks", {
   sendRequest=sendRequest
   gr <- GRanges(seqnames="chr1", ranges=IRanges(start=1:10, width=1))
   mgr <- .startMGR(openBrowser=sendRequest)
-  
+
   tryCatch({
+    expect_true(ensureConnection(mgr))
     msObj <- mgr$addMeasurements(gr, "ms1", sendRequest=sendRequest)
     msId <- msObj$getId()
     
@@ -17,7 +18,8 @@ test_that("addMeasurements works for blocks", {
     expect_equal(mgr$msList$block[[msId]]$measurements, msId)
 
     expect_equal(as(mgr$msList$block[[msId]]$obj$object, "GRanges"), unname(gr))
-    
+
+    pauseForInterrupt(sendRequest)
     connected <- mgr$msList$block[[msId]]$connected
     expect_equal(connected, sendRequest)
 
@@ -40,7 +42,8 @@ test_that("addMeasurements works for bp", {
     expect_equal(mgr$msList$bp[[msId]]$measurements, paste0(msId,"$","score",1:2))
     expect_equal(as(mgr$msList$bp[[msId]]$obj$object, "GRanges"), unname(gr))
     expect_equal(mgr$msList$bp[[msId]]$obj$columns, paste0("score",1:2))
-    
+
+    pauseForInterrupt(sendRequest)
     connected <- mgr$msList$bp[[msId]]$connected
     expect_equal(connected, sendRequest)
   }, finally=mgr$stopServer())
@@ -61,6 +64,7 @@ test_that("addMeasurements works for SummarizedExperiment", {
     expect_equal(mgr$msList$gene[[msId]]$measurements, paste0(msId, "$", c("A","B")))
     expect_equal(mgr$msList$gene[[msId]]$obj$columns, c("A","B"))
 
+    pauseForInterrupt(sendRequest)
     connected <- mgr$msList$gene[[msId]]$connected
     expect_equal(connected, sendRequest)    
   }, finally=mgr$stopServer())
@@ -81,6 +85,7 @@ test_that("addMeasurements works for ExpressionSet", {
     expect_equal(mgr$msList$gene[[msId]]$measurements, paste0(msId,"$","SAMP_",1:2))
     expect_equal(mgr$msList$gene[[msId]]$obj$columns, paste0("SAMP_",1:2))
 
+    pauseForInterrupt(sendRequest)
     connected <- mgr$msList$gene[[msId]]$connected
     expect_equal(connected, sendRequest)
   }, finally=mgr$stopServer())
