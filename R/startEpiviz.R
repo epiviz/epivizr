@@ -3,6 +3,9 @@ startEpiviz <- function(port=7312L, localURL=NULL, useDevel=FALSE,
                         debug=FALSE, proxy=TRUE, workspace=NULL, 
                         openBrowser=TRUE, daemonized=TRUE,
                         verbose=FALSE, nonInteractive=FALSE, tryPorts=FALSE, testing=FALSE) {
+
+  options(epivizrTesting=testing)
+  
   if (verbose) {
     epivizrMsg("Starting Epivizr!")
   }

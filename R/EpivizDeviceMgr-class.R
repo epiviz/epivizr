@@ -30,13 +30,27 @@ EpivizDeviceMgr <- setRefClass("EpivizDeviceMgr",
      callSuper(...)
    },
    show=function() {
-      cat("Epiviz device manager object.\n")
-      cat("Charts:\n")
-      print(listCharts()); cat("\n")
-      cat("Measurements:\n")
-      print(listMeasurements()); cat("\n")
-      cat("Devices:\n")
-      print(listDevices()); cat("\n")
+      cat("Epiviz device manager object:\n")
+      cat("Server: ")
+      server$show(); cat("\n")
+      
+      st <- .self$listCharts()
+      if (!is.null(st)) {
+        cat("Charts:\n")
+        print(st); cat("\n")
+      }
+      
+      st <- .self$listMeasurements()
+      if (length(st)>0) {
+        cat("Measurements:\n")
+        print(st); cat("\n")
+      }
+      
+      st <- .self$listDevices()
+      if (!is.null(st)) {
+        cat("Devices:\n")
+        print(.self$listDevices()); cat("\n")
+      }
 #      listTypes()
    }
   )
@@ -100,7 +114,7 @@ EpivizDeviceMgr$methods(list(
      })
    },
    service=function(verbose=TRUE) {
-      if (!nonInteractive && verbose) {
+      if (verbose && !(nonInteractive || daemonized())) {
        epivizrMsg("Serving Epiviz, escape to continue interactive session...")
      }
 
@@ -116,9 +130,12 @@ EpivizDeviceMgr$methods(list(
    stopServer=function() {
      'stop epiviz connection'
      .self$rmAllCharts(which="all")
-     waitToClearRequests()
+     .self$waitToClearRequests()
      .self$rmAllMeasurements(which="all")
+     .self$waitToClearRequests()
+     .self$clearDeviceList()
      server$stopServer()
+     invisible()
    },
    daemonized=function() server$daemonized,
    waitToClearRequests=function(timeout=3L) {
@@ -130,6 +147,7 @@ EpivizDeviceMgr$methods(list(
      if (server$requestWaiting) {
        stop("requests not cleared")
      }
+     return(invisible())
    }
   )
 )
@@ -348,8 +366,11 @@ EpivizDeviceMgr$methods(
    out <- list()
    for (i in seq_along(msList)) {
      curType=names(msList)[i]
-     if (length(msList[[curType]])>0)
+     if (length(msList[[curType]])>0) {
        out[[curType]] <- .doOneList(msList[[curType]])
+     } else {
+       out[[curType]] <- NULL
+     }
    }
    return(out)
    },
@@ -488,6 +509,10 @@ EpivizDeviceMgr$methods(
     invisible()
    }, 
    listCharts=function() {
+    if (length(chartList) == 0) {
+      return(NULL)
+    }
+    
     ids <- names(chartList)
     type <- sapply(chartList, function(x) x$type)
     ms <- sapply(chartList, function(x) paste0(names(x$measurements), collapse=","))
@@ -559,6 +584,10 @@ EpivizDeviceMgr$methods(
       rmDevice(obj)
     }
    },
+  clearDeviceList=function() {
+    deviceList <<- list()
+    invisible()
+  },
   updateDevice=function(oldObject, newObject, sendRequest=!nonInteractive) {
      if (is.character(oldObject))
        oldObject <- deviceList[[oldObject]]
@@ -571,6 +600,9 @@ EpivizDeviceMgr$methods(
    },
    listDevices=function() {
      'list devices in browser'
+     if (length(deviceList) == 0) {
+       return(NULL)
+     }
     ids <- names(deviceList)
     type <- sapply(deviceList, function(x) x$getChartObject()$type)
     ms <- sapply(deviceList, function(x) paste0(names(x$getChartObject()$measurements), collapse=","))
