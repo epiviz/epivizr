@@ -13,7 +13,7 @@ EpivizServer <- setRefClass("EpivizServer",
     stopServerFn="function"
   ),
   methods=list(
-    initialize=function(port=7312L, tryPorts=FALSE, daemonized=FALSE, ...) {
+    initialize=function(port=7312L, tryPorts=FALSE, daemonized=TRUE, ...) {
       port <<- port
       interrupted <<- FALSE
       socketConnected <<- FALSE

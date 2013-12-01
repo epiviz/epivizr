@@ -19,5 +19,27 @@ proxy=TRUE
   }
 }
 
-sendRequest = FALSE
+sendRequest = TRUE
 
+ensureConnection <- function(mgr, timeout=30) {
+       ptm <- proc.time()
+       while(!mgr$server$socketConnected && (proc.time()-ptm)[2] * 1000 <= 30) {
+         if (!mgr$server$daemonized) {
+           service(verbose=FALSE)
+         } else {
+           Sys.sleep(0.01)
+         }
+       }
+       mgr$server$socketConnected
+}
+
+pauseForInterrupt <- function(doIt=TRUE) {
+  if (!doIt)
+    return(invisible(NULL))
+  
+  tryCatch({
+    while(TRUE) {
+      Sys.sleep(0.001)
+    }
+  }, interrupt=function(int) invisible())
+}
