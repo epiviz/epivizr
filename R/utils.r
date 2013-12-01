@@ -54,10 +54,21 @@ Queue <- setRefClass("Queue",
                          items[[1]] <<- NULL
                          return(out)
                        },
+                       peek=function() {
+                         n=length(items)
+                         return(n>0)
+                       },
                        empty=function() {
                          items <<- vector("list")
                          invisible()
                        })
 )
 
-epivizrMsg <- function(...) message("[epivizr] ", ...)
+epivizrMsg <- function(...) {
+    if (.testing) {
+      cat(..., "\n")
+    } else {
+      message("[epivizr] ", ...)
+    }
+    invisible()
+   }

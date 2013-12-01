@@ -52,7 +52,8 @@ EpivizServer <- setRefClass("EpivizServer",
             socketConnected <<- FALSE
             invisible()
           })
-          sendRequestsInQueue()
+          epivizrMsg("socket connected\n")
+          popRequest()
           invisible()
         }
       )
@@ -118,8 +119,7 @@ EpivizServer <- setRefClass("EpivizServer",
         }
         
         if (mgr$verbose) {
-          epivizrMsg("server: data received")
-          print(msg)
+          epivizrMsg("RCVD: ", msg, "\n")
         }
         msg = rjson::fromJSON(msg)
         if (msg$type == "request") {
@@ -137,36 +137,32 @@ EpivizServer <- setRefClass("EpivizServer",
           if (!is.null(callback)) {
             callback(msg$data)
           }
-          nextRequest <- requestQueue$pop()
-          if (!is.null(nextRequest)) {
-            sendRequest(nextRequest)
-          } else {
-            requestWaiting <<- FALSE
-            stopService()
-          }
+          popRequest()
         }
       }
       invisible()
     },
     sendRequest=function(request) {
-      request=rjson::toJSON(request)
-      if (!socketConnected) {
-        requestQueue$push(request)
-      } else {
-        if (!requestWaiting) {
-          websocket$send(request)
-          requestWaiting <<- TRUE
-          service()
-        } else {
-          requestQueue$push(request)
-        }
-      }
+      requestQueue$push(request)
+      if (!requestWaiting)
+        popRequest()
       invisible()
     },
-    sendRequestsInQueue=function() {
-      while (!is.null(request <- requestQueue$pop())) {
-        websocket$send(request)
+    popRequest=function() {
+      if (!socketConnected) {
+        return(invisible())
       }
+      request <- requestQueue$pop()
+      if (is.null(request)) {
+        requestWaiting <<- FALSE
+        stopService()
+        return(invisible())
+      }
+      request <- rjson::toJSON(request)
+      epivizrMsg("SEND: ", request)
+      websocket$send(request)
+      requestWaiting <<- TRUE
+      service()
     },
     emptyRequestQueue=function() {
       requestQueue$empty()
