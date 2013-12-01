@@ -1,18 +1,20 @@
 context("daemonized server")
 
+constrFunction <- function(...) epivizr:::EpivizServer$new(daemonized=TRUE, ...)
+
 mgr<-list(getData=function(measurements, chr, start, end) {
   return(chr)
 },verbose=TRUE)
 
 test_that("constructor creates a proper object", {
-  server <- epivizr:::EpivizServer$new(port=7123L, daemonized=TRUE)
+  server <- constrFunction(port=7123L)
   expect_is(server, "EpivizServer")
   expect_true(server$isClosed())
   expect_equal(.Platform$OS.type == "unix", server$daemonized)
 })
 
 test_that("startServer and stopServer work appropriately", {
-  server <- epivizr:::EpivizServer$new(port=7123L, daemonized=TRUE)
+  server <- constrFunction(port=7123L)
   expect_true(server$isClosed())
   
   server$startServer()
@@ -23,7 +25,7 @@ test_that("startServer and stopServer work appropriately", {
 })
 
 test_that("socket messaging works", {
-  server <- epivizr:::EpivizServer$new(port=7123L, daemonized=TRUE)
+  server <- constrFunction(port=7123L)
   server$bindManager(mgr)
   server$startServer()
   
@@ -38,7 +40,7 @@ test_that("socket messaging works", {
   
 
 test_that("runServer works", {
-  server <- epivizr:::EpivizServer$new(port=7123L, daemonized=TRUE)
+  server <- constrFunction(port=7123L)
   server$bindManager(mgr)
   
   browseURL("http://localhost:7123/")
@@ -48,13 +50,13 @@ test_that("runServer works", {
 })
 
 test_that("new error message is displayed", {
-  server <- epivizr:::EpivizServer$new(port=7123L, daemonized=TRUE)
+  server <- constrFunction(port=7123L)
   server$bindManager(mgr)
   server$startServer()
 #  tryCatch(server$service(), interrupt=function(int) invisible())
   expect_false(server$isClosed())
 
-  server2 <- epivizr:::EpivizServer$new(port=7123L)
+  server2 <- constrFunction(port=7123L)
   expect_error(tryCatch(server2$startServer(),error=function(e){print(e); stop(e)}))
 
   server$stopServer()
@@ -62,13 +64,13 @@ test_that("new error message is displayed", {
 })
 
 test_that("tryPorts works", {
-  server <- epivizr:::EpivizServer$new(port=7123L, daemonized=TRUE)
+  server <- constrFunction(port=7123L)
   server$bindManager(mgr)
   server$startServer()
 #  tryCatch(server$service(), interrupt=function(int) invisible())
   expect_false(server$isClosed())
 
-  server2 <- epivizr:::EpivizServer$new(port=7123L, tryPorts=TRUE, daemonized=TRUE)
+  server2 <- constrFunction(port=7123L, tryPorts=TRUE)
   server2$bindManager(mgr)
   server2$startServer()
 #  tryCatch(server2$service(), interrupt=function(int) invisible())
