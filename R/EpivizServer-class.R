@@ -7,15 +7,21 @@ EpivizServer <- setRefClass("EpivizServer",
     socketConnected="logical",
     msgCallback="function",
     requestQueue="Queue",
-    tryPorts="logical"
+    tryPorts="logical",
+    daemonized="logical",
+    startServerFn="function",
+    stopServerFn="function"
   ),
   methods=list(
-    initialize=function(port=7312L, tryPorts=FALSE, ...) {
+    initialize=function(port=7312L, tryPorts=FALSE, daemonized=FALSE, ...) {
       port <<- port
       interrupted <<- FALSE
       socketConnected <<- FALSE
       server <<- NULL
       tryPorts <<- tryPorts
+      daemonized <<- .Platform$OS.type == "unix" && daemonized
+      startServerFn <<- if (.self$daemonized) httpuv::startDaemonizedServer else httpuv::startServer
+      stopServerFn <<- if (.self$daemonized) httpuv::stopDaemonizedServer else httpuv::stopServer
       callSuper(...)
     },
     tryMorePorts=function(callbacks,minPort=7000L, maxPort=7999L) {
@@ -24,7 +30,7 @@ EpivizServer <- setRefClass("EpivizServer",
       while(!success && port <= maxPort) {
         tryCatch({
           cat(".")
-          server <<- httpuv::startServer("0.0.0.0", port, callbacks)
+          server <<- startServerFn("0.0.0.0", port, callbacks)
           success <- TRUE
         }, error=function(e) {
           port <<- port + 1L
@@ -50,7 +56,7 @@ EpivizServer <- setRefClass("EpivizServer",
       )
       
       tryCatch({
-        server <<- httpuv::startServer("0.0.0.0", port, callbacks)  
+        server <<- startServerFn("0.0.0.0", port, callbacks)  
       }, error=function(e) {
         if (!tryPorts)
           stop(sprintf("Error starting epivizServer, likely because port %d is in use.\nTry a different port number or setting tryPorts=TRUE (see ?startEpiviz).",port))
@@ -62,7 +68,7 @@ EpivizServer <- setRefClass("EpivizServer",
       interrupted <<- TRUE
       
       if (!isClosed()) {
-        httpuv::stopServer(server)
+        stopServerFn(server)
       }
       server <<- NULL
       socketConnected <<- FALSE
@@ -73,6 +79,9 @@ EpivizServer <- setRefClass("EpivizServer",
       if (isClosed()) {
         stop("Can't listen, socket is closed")
       }
+
+      if (daemonized)
+        return(invisible(TRUE))
       
       if (nonInteractive) {
         # run service loop once
