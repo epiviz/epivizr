@@ -1,6 +1,6 @@
 context("addCharts")
 
-sendRequest=sendRequest
+sendRequest=.epivizrTestOpts$sendRequest
 
 test_that("blockChart works", {
 	sendRequest=sendRequest

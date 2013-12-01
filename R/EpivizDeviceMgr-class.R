@@ -55,7 +55,9 @@ EpivizDeviceMgr$methods(list(
      server$isClosed()
    },
    openBrowser=function(url=NULL) {
+    closeOnError <- FALSE
     if (server$isClosed()) {
+      closeOnError <- TRUE
       if (verbose) {
         epivizrMsg("Starting epiviz websocket connection")
       }
@@ -78,20 +80,23 @@ EpivizDeviceMgr$methods(list(
          browseURL(url)
        }
 
-#       if (verbose) {
-#          epivizrMsg("Servicing websocket until connected")
-#       }
-#
-#       ptm <- proc.time()
-#       while(!server$socketConnected && (proc.time()-ptm)[2] * 1000 <= 30) {
-#         service(verbose=FALSE)
-#       }
-#       if (!server$socketConnected) {
-#          stop("[epivizr] Error opening connection. UI unable to connect to websocket server.")
-#       }
+      if (daemonized())
+        return(invisible())
+               
+       if (verbose) {
+          epivizrMsg("Servicing websocket until connected")
+       }
+
+       ptm <- proc.time()
+       while(!server$socketConnected && (proc.time()-ptm)[2] * 1000 <= 30) {
+         service(verbose=FALSE)
+       }
+       if (!server$socketConnected) {
+          stop("[epivizr] Error opening connection. UI unable to connect to websocket server.")
+       }
       }, error=function(e) {
-        server$stopServer()
-        stop(e)
+          if (closeOnError) server$stopServer()
+          stop(e)
      })
    },
    service=function(verbose=TRUE) {
@@ -111,13 +116,16 @@ EpivizDeviceMgr$methods(list(
    stopServer=function() {
      'stop epiviz connection'
      .self$rmAllCharts(which="all")
+     waitToClearRequests()
      .self$rmAllMeasurements(which="all")
      server$stopServer()
    },
+   daemonized=function() server$daemonized,
    waitToClearRequests=function(timeout=3L) {
      ptm <- proc.time()
      while (server$requestWaiting && (proc.time() - ptm < timeout)["elapsed"]) {
        Sys.sleep(0.001)
+       service()
      }
      if (server$requestWaiting) {
        stop("requests not cleared")

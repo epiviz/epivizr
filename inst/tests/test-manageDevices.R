@@ -1,6 +1,6 @@
 context("manage devices")
 
-sendRequest = sendRequest
+sendRequest = .epivizrTestOpts$sendRequest
 
 test_that("rmDevice works", {
   sendRequest=sendRequest
