@@ -1,6 +1,6 @@
 context("server")
 
-constrFunction <- function(...) epivizr:::EpivizServer$new(daemonized=FALSE, ...)
+constrFunction <- function(...) epivizr:::EpivizServer$new(daemonized=getOption("epivizrTestDaemonized"), ...)
 
 mgr<-list(getData=function(measurements, chr, start, end) {
   return(chr)
@@ -10,6 +10,7 @@ test_that("constructor creates a proper object", {
   server <- constrFunction(port=7123L)
   expect_is(server, "EpivizServer")
   expect_true(server$isClosed())
+  expect_equal(server$daemonized, getOption("epivizrTestDaemonized"))
 })
 
 test_that("startServer and stopServer work appropriately", {
@@ -18,7 +19,7 @@ test_that("startServer and stopServer work appropriately", {
   
   server$startServer()
   expect_false(server$isClosed())
-  
+  expect_equal(server$daemonized, getOption("epivizrTestDaemonized"))
   server$stopServer()
   expect_true(server$isClosed())
 })
