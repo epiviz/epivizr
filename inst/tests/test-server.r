@@ -2,34 +2,22 @@ context("server")
 
 constrFunction <- function(...) epivizr:::EpivizServer$new(daemonized=getOption("epivizrTestDaemonized"), ...)
 
-TestMgr <- setRefClass("TestMgr",
-                       fields=list(
-                         lastMessage="character",
-                         callbackArray="IndexedArray",
-                         verbose="logical"
-                        ),
-                       methods=list(
-                         initialize=function(...) {
-                           verbose <<- TRUE
-                           callSuper(...)
-                         },
-                         getData=function(measurements, chr, start, end) {
-                           return(chr)
-                         },
-                         makeRequest=function(msg) {
+mgr <- new.env()
+mgr$lastMessage <- ""
+mgr$callbackArray <- IndexedArray$new()
+mgr$verbose <- TRUE
+mgr$getData <- function(measurements, chr, start, end) return(chr)
+mgr$makeRequest <- function(msg) {
                            callback=function(newmsg) {
-                             lastMessage <<- newmsg
+                             mgr$lastMessage <<- newmsg
                              epivizrMsg("Response received")
                            }
-                           requestId <- callbackArray$append(callback)
+                           requestId <- mgr$callbackArray$append(callback)
                            list(type="request",
                                 id=requestId,
                                 action="writeMsg",
                                 data=msg)
                          }
-                        )
-                       )
-mgr = TestMgr$new()
 
 test_that("constructor creates a proper object", {
   server <- constrFunction(port=7123L)
