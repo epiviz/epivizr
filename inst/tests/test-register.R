@@ -1,6 +1,6 @@
 context("register measurement")
 
-openBrowser=sendRequest
+openBrowser=.epivizrTestOpts$sendRequest
 
 test_that("register measurement works for block", {
   gr <- GRanges(seqnames="chr1", ranges=IRanges(start=1:10, width=100))

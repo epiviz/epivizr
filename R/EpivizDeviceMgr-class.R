@@ -113,6 +113,15 @@ EpivizDeviceMgr$methods(list(
      .self$rmAllCharts(which="all")
      .self$rmAllMeasurements(which="all")
      server$stopServer()
+   },
+   waitToClearRequests=function(timeout=3L) {
+     ptm <- proc.time()
+     while (server$requestWaiting && (proc.time() - ptm < timeout)["elapsed"]) {
+       Sys.sleep(0.001)
+     }
+     if (server$requestWaiting) {
+       stop("requests not cleared")
+     }
    }
   )
 )
@@ -503,13 +512,18 @@ EpivizDeviceMgr$methods(
       msObject <- .self$addMeasurements(obj, devName, sendRequest=sendRequest, ...)
       msObject$setInDevice(TRUE)
 
-      chartObject <- msObject$plot(sendRequest=sendRequest, inDevice=TRUE, ...)
-      chartObject$setInDevice(TRUE)
+      tryCatch(waitToClearRequests(), error=function(e) {
+        rmMeasurements(msObject)
+        stop(e)
+      })
+     
+     chartObject <- msObject$plot(sendRequest=sendRequest, inDevice=TRUE, ...)
+     chartObject$setInDevice(TRUE)
 
-      deviceObj <- EpivizDevice$new(msObject=msObject, chartObject=chartObject)
-      deviceObj$setId(deviceId)
-      deviceList[[deviceId]] <<- deviceObj
-      deviceObj
+     deviceObj <- EpivizDevice$new(msObject=msObject, chartObject=chartObject)
+     deviceObj$setId(deviceId)
+     deviceList[[deviceId]] <<- deviceObj
+     deviceObj
    },
    # TODO: turn this into a rmMeasurement method
    rmDevice=function(deviceObj) {
