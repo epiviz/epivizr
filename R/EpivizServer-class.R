@@ -5,6 +5,7 @@ EpivizServer <- setRefClass("EpivizServer",
     server="ANY",
     interrupted="logical",
     socketConnected="logical",
+    verbose="logical",
     msgCallback="function",
     requestQueue="Queue",
     requestWaiting="logical",
@@ -14,7 +15,7 @@ EpivizServer <- setRefClass("EpivizServer",
     stopServerFn="function"
   ),
   methods=list(
-    initialize=function(port=7312L, tryPorts=FALSE, daemonized=TRUE, ...) {
+    initialize=function(port=7312L, tryPorts=FALSE, daemonized=TRUE, verbose=FALSE, ...) {
       port <<- port
       interrupted <<- FALSE
       socketConnected <<- FALSE
@@ -24,6 +25,7 @@ EpivizServer <- setRefClass("EpivizServer",
       daemonized <<- .Platform$OS.type == "unix" && daemonized
       startServerFn <<- if (.self$daemonized) httpuv::startDaemonizedServer else httpuv::startServer
       stopServerFn <<- if (.self$daemonized) httpuv::stopDaemonizedServer else httpuv::stopServer
+      verbose <<- verbose
       callSuper(...)
     },
     tryMorePorts=function(callbacks,minPort=7000L, maxPort=7999L) {
@@ -121,7 +123,7 @@ EpivizServer <- setRefClass("EpivizServer",
           msg <- rawToChar(msg)
         }
         
-        if (mgr$verbose) {
+        if (verbose) {
           epivizrMsg("RCVD: ", msg)
         }
         msg = rjson::fromJSON(msg)
@@ -162,7 +164,7 @@ EpivizServer <- setRefClass("EpivizServer",
         return(invisible())
       }
       request <- rjson::toJSON(request)
-      if (mgr$verbose) epivizrMsg("SEND: ", request)
+      if (verbose) epivizrMsg("SEND: ", request)
       websocket$send(request)
       requestWaiting <<- TRUE
       service()

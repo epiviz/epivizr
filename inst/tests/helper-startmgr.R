@@ -1,18 +1,22 @@
-.startMGR=function(openBrowser=FALSE, testing=TRUE, verbose=TRUE, ...) {
+options(epivizrTesting=TRUE)
+
+.startMGR=function(openBrowser=FALSE, verbose=TRUE, ...) {
   if (openBrowser) {
-    tryCatch(startEpiviz(localURL=.epivizrTestOpts$url, 
-    					debug=.epivizrTestOpts$debug, 
-    					proxy=.epivizrTestOpts$proxy,
-                                        daemonized=.epivizrTestOpts$daemonized,
+    tryCatch(startEpiviz(localURL=getOption("epivizrTestURL"), 
+    					debug=getOption("epivizrTestDebug"), 
+    					proxy=getOption("epivizrTestProxy"),
+                                        daemonized=getOption("epivizrTestDaemonized"),
+                                        port=getOption("epivizrTestPort"),
     					openBrowser=TRUE, 
-    					verbose=verbose, testing=testing, ...), interrupt=function(e) invisible())
+    					verbose=verbose, ...), interrupt=function(e) invisible())
   } else {
-    startEpiviz(localURL=.epivizrTestOpts$url,
-    			debug=.epivizrTestOpts$debug,
-    			proxy=.epivizrTestOpts$proxy,
-                        daemonized=.epivizrTestOpts$daemonized,
+    startEpiviz(localURL=getOption("epivizrTestURL"),
+    			debug=getOption("epivizrTestDebug"),
+    			proxy=getOption("epivizrTestProxy"),
+                        daemonized=getOption("epivizrTestDaemonized"),
+                        port=getOption("epivizrTestPort"),
     			openBrowser=FALSE, 
-    			verbose=verbose, testing=testing, ...)
+    			verbose=verbose, ...)
   }
 }
 
