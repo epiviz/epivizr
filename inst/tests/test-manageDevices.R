@@ -1,6 +1,6 @@
 context("manage devices")
 
-sendRequest = .epivizrTestOpts$sendRequest
+sendRequest = getOption("epivizrTestSendRequest")
 
 test_that("rmDevice works", {
   sendRequest=sendRequest
@@ -10,11 +10,14 @@ test_that("rmDevice works", {
   mgr <- .startMGR(openBrowser=sendRequest)
   
   tryCatch({
+    if (sendRequest) wait_until(substitute(mgr$server$socketConnected))
     devObj <- mgr$addDevice(gr, "dev1", sendRequest=sendRequest, type="bp")
     devId <- devObj$getId()
 
+    if (sendRequest) wait_until(substitute(!mgr$server$requestWaiting))
     mgr$rmDevice(devObj)
-    
+
+    if (sendRequest) wait_until(substitute(!mgr$server$requestWaiting))
     expect_true(all(sapply(mgr$msList, length)==0))
     expect_true(is.null(mgr$msList$bp[[devObj$getMsId()]]))
 
@@ -27,8 +30,10 @@ test_that("rmDevice works", {
     devObj <- mgr$addDevice(gr, "dev1", sendRequest=sendRequest, type="bp")
     devId <- devObj$getId()
 
+    if (sendRequest) wait_until(substitute(!mgr$server$requestWaiting))
     mgr$rmDevice(devId)
 
+    if (sendRequest) wait_until(substitute(!mgr$server$requestWaiting))
     expect_true(all(sapply(mgr$msList, length)==0))
     expect_true(is.null(mgr$msList$bp[[devObj$getMsId()]]))
 
@@ -49,8 +54,11 @@ test_that("listCharts works", {
 
   mgr <- .startMGR(openBrowser=sendRequest)
   tryCatch({
+    if (sendRequest) wait_until(substitute(mgr$server$socketConnected))
     msObj1 <- mgr$addMeasurements(gr1, "dev1", sendRequest=sendRequest); msId1 <- msObj1$getId()
     msObj2 <- mgr$addMeasurements(gr2, "dev2", sendRequest=sendRequest); msId2 <- msObj2$getId()
+
+    if (sendRequest) wait_until(substitute(!mgr$server$requestWaiting))
     chart1 <- msObj1$plot(sendRequest=sendRequest); chartId1=chart1$getId()
     chart2 <- msObj2$plot(sendRequest=sendRequest); chartId2=chart2$getId()
 
@@ -58,6 +66,7 @@ test_that("listCharts works", {
     dev3 <- mgr$addDevice(gr3, "dev3", sendRequest=sendRequest, type="bp"); devId3 <- dev3$getId()
     dev4 <- mgr$addDevice(eset, "dev4", sendRequest = sendRequest, columns=c("SAMP_1", "SAMP_2")); devId4 <- dev4$getId()
 
+    if (sendRequest) wait_until(substitute(!mgr$server$requestWaiting))
     devDF <- mgr$listDevices()
     
     ids <- c(devId3,devId4)
@@ -88,15 +97,19 @@ test_that("rmAllDevices works", {
 
   mgr <- .startMGR(openBrowser=sendRequest)
   tryCatch({
+    if (sendRequest) wait_until(substitute(mgr$server$socketConnected))
     msObj1 <- mgr$addMeasurements(gr1, "dev1", sendRequest=sendRequest); msId1 <- msObj1$getId()
     msObj2 <- mgr$addMeasurements(gr2, "dev2", sendRequest=sendRequest); msId2 <- msObj2$getId()
+
+    if (sendRequest) wait_until(substitute(!mgr$server$requestWaiting))
     chart1 <- msObj1$plot(sendRequest=sendRequest); chartId1=chart1$getId()
     chart2 <- msObj2$plot(sendRequest=sendRequest); chartId2=chart2$getId()
 
 
     dev3 <- mgr$addDevice(gr3, "dev3", sendRequest=sendRequest, type="bp"); devId3 <- dev3$getId()
     dev4 <- mgr$addDevice(eset, "dev4", sendRequest = sendRequest, columns=c("SAMP_1", "SAMP_2")); devId4 <- dev4$getId()
-    
+
+    if (sendRequest) wait_until(substitute(!mgr$server$requestWaiting))
     msDF <- mgr$listMeasurements()
     chartDF <- mgr$listCharts()    
     # devsDF <- mgr$listDevices()
@@ -137,6 +150,7 @@ test_that("rmAllDevices works", {
     expect_equal(chartDF, expected_chartDF)
     mgr$rmAllDevices()
 
+    if (sendRequest) wait_until(substitute(!mgr$server$requestWaiting))
     expect_true(length(mgr$deviceList) == 0)
     expect_true(length(mgr$msList$block)==2)
     expect_true(length(mgr$msList$bp)==0)

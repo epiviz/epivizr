@@ -1,6 +1,6 @@
 context("addMeasurements")
 
-sendRequest=.epivizrTestOpts$sendRequest
+sendRequest=getOption("epivizrTestSendRequest")
 
 test_that("addMeasurements works for blocks", {
   sendRequest=sendRequest

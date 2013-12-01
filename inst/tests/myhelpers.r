@@ -4,7 +4,8 @@ setEpivizrTestOpts <- function(sendRequest=TRUE,
                                 devel=FALSE,
                                test=TRUE,
                                 debug=TRUE,
-                                proxy=TRUE) {
+                                proxy=TRUE,
+                               port=7312L) {
   url <- if (devel) "epiviz-dev" else "epiviz"
 
   if (!local) {
@@ -19,8 +20,23 @@ setEpivizrTestOpts <- function(sendRequest=TRUE,
     url <- paste(url, "index.php", sep="/")
   }
 
-  .epivizrTestOpts <<- list(sendRequest=sendRequest, daemonized=daemonized, url=url, debug=debug, proxy=proxy)
+  options(epivizrTestSendRequest=sendRequest,
+          epivizrTestDaemonized=daemonized,
+          epivizrTestURL=url,
+          epivizrTestDebug=debug,
+          epivizrTestProxy=proxy,
+          epivizrTestPort=port)
   invisible()
+}
+
+getEpivizrTestOpts=function() {
+  out <- list(sendRequest=getOption("epivizrTestSendRequest"),
+              daemonized=getOption("epivizrTestDaemonized"),
+              url=getOption("epivizrTestURL"),
+              debug=getOption("epivizrTestDebug"),
+              proxy=getOption("epivizrTestProxy"),
+              port=getOption("epivizrTestPort"))
+  print(out)
 }
 
 setEpivizrTestOpts()
