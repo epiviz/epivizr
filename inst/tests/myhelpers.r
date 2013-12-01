@@ -41,7 +41,7 @@ getEpivizrTestOpts=function() {
 
 setEpivizrTestOpts()
 
-test_srv=function() test(filter=".*server.*")
+test_srv=function(dem=TRUE) {setEpivizrTestOpts(daemonized=dem); test(filter=".*server.*")}
 test_reg=function() test(filter=".*register.*")
 test_mes=function(req=TRUE,dem=TRUE) {setEpivizrTestOpts(sendRequest=req, daemonized=dem); test(filter=".*Measure.*")}
 test_cha=function(req=TRUE,dem=TRUE) {setEpivizrTestOpts(sendRequest=req, daemonized=dem); test(filter=".*Charts.*")}
