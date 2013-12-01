@@ -15,14 +15,20 @@ EpivizServer <- setRefClass("EpivizServer",
     stopServerFn="function"
   ),
   methods=list(
-    initialize=function(port=7312L, tryPorts=FALSE, daemonized=TRUE, verbose=FALSE, ...) {
+    initialize=function(port=7312L, tryPorts=FALSE, daemonized=(!is.null(getOption("epivizrCanDaemonize")) && getOption("epivizrCanDaemonize")), verbose=FALSE, ...) {
       port <<- port
       interrupted <<- FALSE
       socketConnected <<- FALSE
       server <<- NULL
       tryPorts <<- tryPorts
       requestWaiting <<- FALSE
-      daemonized <<- .Platform$OS.type == "unix" && daemonized
+      canDaemonize <- !is.null(getOption("epivizrCanDaemonized")) && getOption("epivizrCanDaemonize")
+      if (daemonized && !canDaemonize) {
+        warning("You've request to run non-blocking epivizr, but your version of httpuv does not support it.\n",
+                "You can download an appropriate version of httpuv from github:\n",
+                "require(devtools); install_github('httpuv', username='epiviz', ref='daemon-unix')")
+      }
+      daemonized <<-  canDaemonize && daemonized
       startServerFn <<- if (.self$daemonized) httpuv::startDaemonizedServer else httpuv::startServer
       stopServerFn <<- if (.self$daemonized) httpuv::stopDaemonizedServer else httpuv::stopServer
       verbose <<- verbose
