@@ -65,12 +65,12 @@ Queue <- setRefClass("Queue",
 )
 
 epivizrMsg <- function(...) {
-    if (epivizr:::.testing) {
+    if (getOption("epivizrTesting")) {
       cat("HERE\n")
       cat(..., "\n")
     } else {
       message("[epivizr] ", ...)
-      cat(">")
+      cat("> ")
     }
     invisible()
    }

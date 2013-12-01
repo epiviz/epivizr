@@ -40,6 +40,10 @@ EpivizServer <- setRefClass("EpivizServer",
       }
       invisible(NULL)
     },
+    show=function() {
+      cat(sprintf("<EpivizServer> port: %d, %s", port, ifelse(socketConnected,"connected","not connected")),"\n")
+      invisible(NULL)
+    },
     startServer=function(...) {
       'start the websocket server'
       callbacks <- list(
@@ -158,7 +162,7 @@ EpivizServer <- setRefClass("EpivizServer",
         return(invisible())
       }
       request <- rjson::toJSON(request)
-      epivizrMsg("SEND: ", request)
+      if (mgr$verbose) epivizrMsg("SEND: ", request)
       websocket$send(request)
       requestWaiting <<- TRUE
       service()
