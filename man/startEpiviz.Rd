@@ -12,7 +12,8 @@
   startEpiviz(port = 7312L, localURL = NULL, useDevel = FALSE,
     chr = "chr11", start = 99800000, end = 103383180, debug = FALSE,
     proxy = TRUE, workspace = NULL, openBrowser = TRUE,
-    verbose = FALSE, nonInteractive = FALSE, tryPorts = FALSE)
+    daemonized = TRUE, verbose = FALSE, 
+    nonInteractive = FALSE, tryPorts = FALSE)
 }
 
 \arguments{
@@ -46,6 +47,8 @@
   
   \item{openBrowser}{(logical) browse to the epiviz URL before exiting function}
   
+  \item{daemonized}{(logical) use non-blocking version if available}
+
   \item{verbose}{(logical) display log messages on websocket requests}
 
   \item{nonInteractive}{(logical) run in non-interactive mode, for development purposes only}
