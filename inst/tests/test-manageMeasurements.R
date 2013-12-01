@@ -1,6 +1,6 @@
 context("manage measurements")
 
-sendRequest = sendRequest
+sendRequest = .epivizrTestOpts$sendRequest
 
 test_that("getMeasurements works", {
   sendRequest=sendRequest

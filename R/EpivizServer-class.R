@@ -52,7 +52,6 @@ EpivizServer <- setRefClass("EpivizServer",
             socketConnected <<- FALSE
             invisible()
           })
-          epivizrMsg("socket connected\n")
           popRequest()
           invisible()
         }
@@ -119,7 +118,7 @@ EpivizServer <- setRefClass("EpivizServer",
         }
         
         if (mgr$verbose) {
-          epivizrMsg("RCVD: ", msg, "\n")
+          epivizrMsg("RCVD: ", msg)
         }
         msg = rjson::fromJSON(msg)
         if (msg$type == "request") {

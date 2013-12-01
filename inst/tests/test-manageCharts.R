@@ -1,6 +1,6 @@
 context("manage charts")
 
-sendRequest = sendRequest
+sendRequest = .epivizrTestOpts$sendRequest
 
 test_that("rmChart works", {
   sendRequest=sendRequest
