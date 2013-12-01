@@ -64,14 +64,14 @@ Queue <- setRefClass("Queue",
                        })
 )
 
-epivizrMsg <- function(...) {
+epivizrMsg <- function(..., tagPrompt=FALSE) {
   isTesting <- getOption("epivizrTesting")
     if (!is.null(isTesting) && isTesting) {
       cat("HERE\n")
       cat(..., "\n")
     } else {
       message("[epivizr] ", ...)
-      cat("> ")
+      if (tagPrompt) cat("> ")
     }
     invisible()
    }
