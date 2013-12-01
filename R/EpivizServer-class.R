@@ -7,6 +7,7 @@ EpivizServer <- setRefClass("EpivizServer",
     socketConnected="logical",
     msgCallback="function",
     requestQueue="Queue",
+    requestWaiting="logical",
     tryPorts="logical",
     daemonized="logical",
     startServerFn="function",
@@ -19,6 +20,7 @@ EpivizServer <- setRefClass("EpivizServer",
       socketConnected <<- FALSE
       server <<- NULL
       tryPorts <<- tryPorts
+      requestWaiting <<- FALSE
       daemonized <<- .Platform$OS.type == "unix" && daemonized
       startServerFn <<- if (.self$daemonized) httpuv::startDaemonizedServer else httpuv::startServer
       stopServerFn <<- if (.self$daemonized) httpuv::stopDaemonizedServer else httpuv::stopServer
@@ -135,19 +137,29 @@ EpivizServer <- setRefClass("EpivizServer",
           if (!is.null(callback)) {
             callback(msg$data)
           }
-          stopService()
+          nextRequest <- requestQueue$pop()
+          if (!is.null(nextRequest)) {
+            sendRequest(nextRequest)
+          } else {
+            requestWaiting <<- FALSE
+            stopService()
+          }
         }
       }
       invisible()
     },
     sendRequest=function(request) {
       request=rjson::toJSON(request)
-      
       if (!socketConnected) {
         requestQueue$push(request)
       } else {
-        websocket$send(request)
-        service()
+        if (!requestWaiting) {
+          websocket$send(request)
+          requestWaiting <<- TRUE
+          service()
+        } else {
+          requestQueue$push(request)
+        }
       }
       invisible()
     },
