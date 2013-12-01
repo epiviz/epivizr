@@ -65,7 +65,8 @@ Queue <- setRefClass("Queue",
 )
 
 epivizrMsg <- function(...) {
-    if (getOption("epivizrTesting")) {
+  isTesting <- getOption("epivizrTesting")
+    if (!is.null(isTesting) && isTesting) {
       cat("HERE\n")
       cat(..., "\n")
     } else {
