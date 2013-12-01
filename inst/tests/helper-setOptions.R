@@ -12,3 +12,5 @@ if (is.null(getOption("epivizrTestDebug")))
 
 if (is.null(getOption("epivizrTestProxy")))
   options(epivizrTestProxy=TRUE)
+
+options(epivizrTesting=TRUE)

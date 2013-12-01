@@ -1,5 +1,3 @@
-options(epivizrTesting=TRUE)
-
 .startMGR=function(openBrowser=FALSE, verbose=TRUE, ...) {
   if (openBrowser) {
     tryCatch(startEpiviz(localURL=getOption("epivizrTestURL"), 
