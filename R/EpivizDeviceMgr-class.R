@@ -218,7 +218,7 @@ EpivizDeviceMgr$methods(
     if (sendRequest) {
       callback <- function(data) {
         msList[[type]][[msId]][["connected"]] <<- TRUE
-        epivizrMsg("Measurement ", msName, " added to browser and connected")
+        epivizrMsg("Measurement ", msName, " added to browser and connected", tagPrompt=TRUE)
       }
       requestId <- callbackArray$append(callback)
       server$addMeasurements(requestId, type, measurements) 
@@ -275,7 +275,7 @@ EpivizDeviceMgr$methods(
 
        if (sendRequest && length(chartIds)>0) {
         callback=function(data) {
-          epivizrMsg("Chart caches cleared")
+          epivizrMsg("Chart caches cleared", tagPrompt=TRUE)
         }
         requestId <- callbackArray$append(callback)
         server$clearChartCaches(requestId, chartIds)
@@ -324,7 +324,7 @@ EpivizDeviceMgr$methods(
     msList[[msType]][[msObj$getId()]] <<- NULL
     if(objRecord$connected) {
       callback=function(data) {
-        epivizrMsg("measurement object ", msName, " removed and disconnected")  
+        epivizrMsg("measurement object ", msName, " removed and disconnected", tagPrompt=TRUE)  
       }
       requestId=callbackArray$append(callback)
       server$rmMeasurements(requestId, ms, msType)
@@ -461,7 +461,7 @@ EpivizDeviceMgr$methods(
         appChartId = data$id
         chartIdMap[[chartId]] <<- appChartId
         activeId <<- chartId
-        epivizrMsg("Chart ", chartId, " added to browser and connected")  
+        epivizrMsg("Chart ", chartId, " added to browser and connected", tagPrompt=TRUE)  
       }
       requestId=callbackArray$append(callback)
       server$addChart(requestId, chartObject$type, chartObject$measurements)
@@ -492,7 +492,7 @@ EpivizDeviceMgr$methods(
 
     if(!is.null(chartIdMap[[chartId]])) {
       callback=function(data) {
-        epivizrMsg("chart ", chartId, " removed and disconnected")  
+        epivizrMsg("chart ", chartId, " removed and disconnected", tagPrompt=TRUE)  
       }
       requestId=callbackArray$append(callback)
       server$rmChart(requestId, chartIdMap[[chartId]])
