@@ -24,9 +24,9 @@ EpivizServer <- setRefClass("EpivizServer",
       requestWaiting <<- FALSE
       canDaemonize <- !is.null(getOption("epivizrCanDaemonized")) && getOption("epivizrCanDaemonize")
       if (daemonized && !canDaemonize) {
-        warning("You've request to run non-blocking epivizr, but your version of httpuv does not support it.\n",
+        warning("You've requested to run non-blocking epivizr, but your version of httpuv does not support it.\n",
                 "You can download an appropriate version of httpuv from github:\n",
-                "require(devtools); install_github('httpuv', username='epiviz', ref='daemon-unix')")
+                "require(devtools); install_github('httpuv', username='epiviz')",call.=FALSE)
       }
       daemonized <<-  canDaemonize && daemonized
       startServerFn <<- if (.self$daemonized) httpuv::startDaemonizedServer else httpuv::startServer

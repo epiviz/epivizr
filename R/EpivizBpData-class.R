@@ -44,12 +44,12 @@ IRanges::setValidity2("EpivizBpData", .valid.EpivizBpData)
 EpivizBpData$methods(
   getMeasurements=function() {
     out <- paste(name, columns, sep="$")
-    nms <- paste(id, columns, sep="$")
+    nms <- paste(id, columns, sep="__")
     names(out) <- nms
     out
   },
   parseMeasurement=function(msId) {
-    column <- strsplit(msId, split="\\$")[[1]][2]
+    column <- strsplit(msId, split="__")[[1]][2]
     if(!.checkColumns(column)) {
       stop("invalid parsed measurement")
     }

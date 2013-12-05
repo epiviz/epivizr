@@ -40,7 +40,7 @@ test_that("addMeasurements works for bp", {
     expect_equal(length(mgr$msList$bp), 1)
     expect_false(is.null(mgr$msList$bp[[msId]]))
     expect_equal(mgr$msList$bp[[msId]]$name, "ms1")
-    expect_equal(mgr$msList$bp[[msId]]$measurements, paste0(msId,"$","score",1:2))
+    expect_equal(mgr$msList$bp[[msId]]$measurements, paste0(msId,"__","score",1:2))
     expect_equal(as(mgr$msList$bp[[msId]]$obj$object, "GRanges"), unname(gr))
     expect_equal(mgr$msList$bp[[msId]]$obj$columns, paste0("score",1:2))
 
@@ -63,7 +63,7 @@ test_that("addMeasurements works for SummarizedExperiment", {
     expect_equal(length(mgr$msList$gene), 1)
     expect_false(is.null(mgr$msList$gene[[msId]]))
     expect_equal(mgr$msList$gene[[msId]]$name, "ms1")
-    expect_equal(mgr$msList$gene[[msId]]$measurements, paste0(msId, "$", c("A","B")))
+    expect_equal(mgr$msList$gene[[msId]]$measurements, paste0(msId, "__", c("A","B")))
     expect_equal(mgr$msList$gene[[msId]]$obj$columns, c("A","B"))
 
     if (sendRequest) wait_until(substitute(!mgr$server$requestWaiting))
@@ -85,7 +85,7 @@ test_that("addMeasurements works for ExpressionSet", {
     expect_equal(length(mgr$msList$gene), 1)
     expect_false(is.null(mgr$msList$gene[[msId]]))
     expect_equal(mgr$msList$gene[[msId]]$name, "ms1")
-    expect_equal(mgr$msList$gene[[msId]]$measurements, paste0(msId,"$","SAMP_",1:2))
+    expect_equal(mgr$msList$gene[[msId]]$measurements, paste0(msId,"__","SAMP_",1:2))
     expect_equal(mgr$msList$gene[[msId]]$obj$columns, paste0("SAMP_",1:2))
 
     if (sendRequest) wait_until(substitute(!mgr$server$requestWaiting))
