@@ -45,7 +45,7 @@ test_that("rmDevice works", {
   },finally=mgr$stopServer())
 })
 
-test_that("listCharts works", {
+test_that("listDevices works", {
   sendRequest=sendRequest
   gr1 <- GRanges(seqnames="chr1", ranges=IRanges(start=1:10, width=100))
   gr2 <- GRanges(seqnames="chr2", ranges=IRanges(start=2:20, width=100))
@@ -75,8 +75,8 @@ test_that("listCharts works", {
     }
 
     type <- c("lineTrack", "geneScatterPlot")
-    ms <- c(paste0(dev3$getMsId(), "$score"),
-            paste0(dev4$getMsId(), "$SAMP_", 1:2, collapse=","))
+    ms <- c(paste0(dev3$getMsId(), "__score"),
+            paste0(dev4$getMsId(), "__SAMP_", 1:2, collapse=","))
     connected <- if (sendRequest) rep("*", 2) else rep("", 2)
     expected_df <- data.frame(id=ids,
                               type=type,
@@ -138,8 +138,8 @@ test_that("rmAllDevices works", {
     ids <- c(chart1$getId(), chart2$getId(), dev3$getChartId(), dev4$getChartId())
     type <- c("blocksTrack", "blocksTrack", "lineTrack", "geneScatterPlot")
     ms <- c(msId1, msId2, 
-            paste0(dev3$getMsId(), "$score"),
-            paste0(dev4$getMsId(), "$SAMP_", 1:2, collapse=","))
+            paste0(dev3$getMsId(), "__score"),
+            paste0(dev4$getMsId(), "__SAMP_", 1:2, collapse=","))
     connected <- if (sendRequest) rep("*", 4) else rep("", 4)
     expected_chartDF <- data.frame(id=ids,
                               type=type,

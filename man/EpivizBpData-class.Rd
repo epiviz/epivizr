@@ -26,11 +26,11 @@
     
     \item{}{
       \code{getMeasurements()}: Returns named character vector. Entries are of format '<name>$<column>'. Vector names are of format
-      '<id>$<column>'.
+      '<id>__<column>'.
     }
     
     \item{}{
-      \code{parseMeasurement(msId)}: Parses measurement of format '<id>$<column>'. 
+      \code{parseMeasurement(msId)}: Parses measurement of format '<id>__<column>'. 
     }
     
     \item{}{

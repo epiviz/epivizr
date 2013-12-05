@@ -20,8 +20,8 @@ test_that("getMeasurements works", {
     if (sendRequest) wait_until(substitute(!mgr$server$requestWaiting))
     res <- mgr$getMeasurements()
 
-    out <- list(geneMeasurements=structure(list("dev4$SAMP_1","dev4$SAMP_2"), names=paste0(msId4, c("$SAMP_1","$SAMP_2"))),
-                bpMeasurements=structure(list("dev3$score"), names=paste0(msId3,"$score")), 
+    out <- list(geneMeasurements=structure(list("dev4$SAMP_1","dev4$SAMP_2"), names=paste0(msId4, c("__SAMP_1","__SAMP_2"))),
+                bpMeasurements=structure(list("dev3$score"), names=paste0(msId3,"__score")), 
                 blockMeasurements=structure(list("dev1","dev2"), names=c(msId1,msId2)))
 
     expect_equal(res,out)

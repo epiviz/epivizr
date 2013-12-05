@@ -69,8 +69,8 @@ test_that("listCharts works", {
 
     type <- c("blocksTrack", "blocksTrack", "lineTrack", "geneScatterPlot")
     ms <- c(dev1$getId(), dev2$getId(), 
-            paste0(dev3$getId(), "$score"),
-            paste0(dev4$getId(), "$SAMP_", 1:2, collapse=","))
+            paste0(dev3$getId(), "__score"),
+            paste0(dev4$getId(), "__SAMP_", 1:2, collapse=","))
     connected <- if (sendRequest) rep("*", 4) else rep("", 4)
     expected_df <- data.frame(id=ids,
                               type=type,
@@ -118,8 +118,8 @@ test_that("rmAllCharts works", {
 
     type <- c("blocksTrack", "blocksTrack", "lineTrack", "geneScatterPlot")
     ms <- c(dev1$getId(), dev2$getId(), 
-            paste0(dev3$getId(), "$score"),
-            paste0(dev4$getId(), "$SAMP_", 1:2, collapse=","))
+            paste0(dev3$getId(), "__score"),
+            paste0(dev4$getId(), "__SAMP_", 1:2, collapse=","))
     connected <- if (sendRequest) rep("*", 4) else rep("", 4)
     expected_df <- data.frame(id=ids,
                               type=type,

@@ -1,15 +1,13 @@
 startEpiviz <- function(port=7312L, localURL=NULL, useDevel=FALSE, 
                         chr="chr11", start=99800000, end=103383180, 
-                        debug=FALSE, proxy=TRUE, workspace=NULL, 
+                        debug=FALSE, proxy=TRUE, workspace=NULL, scripts=NULL,
                         openBrowser=TRUE, daemonized=TRUE,
                         verbose=FALSE, nonInteractive=FALSE, tryPorts=FALSE) {
 
   if (verbose) {
     epivizrMsg("Starting Epivizr!")
   }
-  server <- EpivizServer$new(port=port, tryPorts=tryPorts,
-                             daemonized=daemonized,verbose=verbose)
-  
+
   if (missing(localURL) || is.null(localURL)) {
     url <- ifelse(useDevel,"epiviz-dev", "epiviz")
     url <- sprintf("http://%s.cbcb.umd.edu/index.php", url)
@@ -36,6 +34,14 @@ startEpiviz <- function(port=7312L, localURL=NULL, useDevel=FALSE,
                        as.integer(end)))
   }
 
+  if (!is.null(scripts)) {
+    scriptString = paste(sprintf("script[]=%s&", scripts),collapse="")
+    url <- paste0(url,scriptString)
+  }
+
+  server <- EpivizServer$new(port=port, tryPorts=tryPorts,
+                           daemonized=daemonized,verbose=verbose)
+  
   if (verbose) {
     epivizrMsg("Initializing session manager...")
   }

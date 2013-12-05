@@ -66,7 +66,7 @@ test_that("lineChart works", {
     msId <- msObj$getId()
 
     if (sendRequest) wait_until(substitute(!mgr$server$requestWaiting))
-    ms <- structure(paste0(msObj$getName(), "$score2"), names=paste0(msId,"$score2"))
+    ms <- structure(paste0(msObj$getName(), "__score2"), names=paste0(msId,"__score2"))
     chartObj <- mgr$lineChart(ms, sendRequest=sendRequest)
     chartId <- chartObj$getId()
 
@@ -95,7 +95,7 @@ test_that("plot bp works", {
     chartObj <- msObj$plot(sendRequest=sendRequest)
     chartId <- chartObj$getId()
 
-    ms <- structure(paste0(msObj$getName(), "$score", 1:2), names=paste0(msId,"$score",1:2))
+    ms <- structure(paste0(msObj$getName(), "$score", 1:2), names=paste0(msId,"__score",1:2))
     expect_equal(chartObj$measurements, ms)
     expect_equal(chartObj$type, "lineTrack")
     expect_false(is.null(mgr$chartList[[chartId]]))
@@ -117,8 +117,8 @@ test_that("scatterChart works", {
     msId <- msObj$getId()
 
     if (sendRequest) wait_until(substitute(!mgr$server$requestWaiting))
-    x <- structure(paste0(msObj$getName(), "$A"), names=paste0(msId, "$A"))
-    y <- structure(paste0(msObj$getName(), "$B"), names=paste0(msId, "$B"))
+    x <- structure(paste0(msObj$getName(), "$A"), names=paste0(msId, "__A"))
+    y <- structure(paste0(msObj$getName(), "$B"), names=paste0(msId, "__B"))
     chartObj <- mgr$scatterChart(x=x, y=y,sendRequest=sendRequest)
     chartId <- chartObj$getId()
 
@@ -146,7 +146,7 @@ test_that("plot feature works", {
     chartObj <- msObj$plot(sendRequest=sendRequest)
     chartId <- chartObj$getId()
 
-    ms <- structure(paste0(msObj$getName(), "$", c("A","B")), names=paste0(msId, "$", c("A","B")))
+    ms <- structure(paste0(msObj$getName(), "$", c("A","B")), names=paste0(msId, "__", c("A","B")))
     expect_equal(chartObj$measurements, ms)
     expect_equal(chartObj$type, "geneScatterPlot")
     expect_false(is.null(mgr$chartList[[chartId]]))
