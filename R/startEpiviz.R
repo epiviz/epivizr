@@ -1,7 +1,7 @@
 startEpiviz <- function(port=7312L, localURL=NULL, useDevel=FALSE, 
                         chr="chr11", start=99800000, end=103383180, 
                         debug=FALSE, proxy=TRUE, workspace=NULL, scripts=NULL,
-                        openBrowser=TRUE, daemonized=TRUE,
+                        openBrowser=TRUE, daemonized=.epivizrCanDaemonize(),
                         verbose=FALSE, nonInteractive=FALSE, tryPorts=FALSE) {
 
   if (verbose) {
@@ -37,6 +37,13 @@ startEpiviz <- function(port=7312L, localURL=NULL, useDevel=FALSE,
   if (!is.null(scripts)) {
     scriptString = paste(sprintf("script[]=%s&", scripts),collapse="")
     url <- paste0(url,scriptString)
+  }
+
+  if (daemonized && !.epivizrCanDaemonize()) {
+        warning("You've requested to run non-blocking epivizr, but your version of httpuv does not support it.\n",
+                "You can download an appropriate version of httpuv from github:\n",
+                "require(devtools); install_github('httpuv', username='epiviz')",call.=FALSE)
+        daemonized <- FALSE
   }
 
   server <- EpivizServer$new(port=port, tryPorts=tryPorts,

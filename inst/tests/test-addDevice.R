@@ -8,7 +8,7 @@ test_that("addDevice block works", {
   mgr <- .startMGR(openBrowser=sendRequest)
 
   tryCatch({
-    if (sendRequest) wait_until(substitute(mgr$server$socketConnected))
+    if (sendRequest) wait_until(mgr$server$socketConnected)
   	devObj <- mgr$addDevice(gr, "ms1", sendRequest=sendRequest)
   	expect_is(devObj, "EpivizDevice")
 
@@ -21,7 +21,7 @@ test_that("addDevice block works", {
     expect_equal(chartObj$type, "blocksTrack")
     expect_false(is.null(mgr$chartList[[chartId]]))
 
-    if (sendRequest) wait_until(substitute(!mgr$server$requestWaiting))
+    if (sendRequest) wait_until(!mgr$server$requestWaiting)
     connected <- !is.null(mgr$chartIdMap[[chartId]])
     expect_equal(connected, sendRequest)
   }, finally=mgr$stopServer())
@@ -34,7 +34,7 @@ test_that("addDevice bp works", {
   mgr <- .startMGR(openBrowser=sendRequest)
 
   tryCatch({
-    if (sendRequest) wait_until(substitute(mgr$server$socketConnected))
+    if (sendRequest) wait_until(mgr$server$socketConnected)
   	devObj <- mgr$addDevice(gr, "ms1", sendRequest=sendRequest, type="bp")
   	expect_is(devObj, "EpivizDevice")
 
@@ -47,7 +47,7 @@ test_that("addDevice bp works", {
     expect_equal(chartObj$type, "lineTrack")
     expect_false(is.null(mgr$chartList[[chartId]]))
 
-    if (sendRequest) wait_until(substitute(!mgr$server$requestWaiting))
+    if (sendRequest) wait_until(!mgr$server$requestWaiting)
     connected <- !is.null(mgr$chartIdMap[[chartId]])
     expect_equal(connected, sendRequest)
   }, finally=mgr$stopServer())
@@ -59,7 +59,7 @@ test_that("addDevice feature works", {
   mgr <- .startMGR(openBrowser=sendRequest)
 
   tryCatch({
-    if (sendRequest) wait_until(substitute(mgr$server$socketConnected))
+    if (sendRequest) wait_until(mgr$server$socketConnected)
   	devObj <- mgr$addDevice(sset, "ms1", sendRequest=sendRequest, columns=c("A","B"), assay="counts2")
 	expect_is(devObj, "EpivizDevice")
 
@@ -72,7 +72,7 @@ test_that("addDevice feature works", {
     expect_equal(chartObj$type, "geneScatterPlot")
     expect_false(is.null(mgr$chartList[[chartId]]))
 
-    if (sendRequest) wait_until(substitute(!mgr$server$requestWaiting))
+    if (sendRequest) wait_until(!mgr$server$requestWaiting)
     connected <- !is.null(mgr$chartIdMap[[chartId]])
     expect_equal(connected, sendRequest)
   }, finally=mgr$stopServer())

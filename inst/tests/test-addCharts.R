@@ -8,16 +8,16 @@ test_that("blockChart works", {
   mgr <- .startMGR(openBrowser=sendRequest)
 
   tryCatch({
-    if (sendRequest) wait_until(substitute(mgr$server$socketConnected))
+    if (sendRequest) wait_until(mgr$server$socketConnected)
     msObj <- mgr$addMeasurements(gr, "ms1", sendRequest=sendRequest)
     msId <- msObj$getId()
 
-    if (sendRequest) wait_until(substitute(!mgr$server$requestWaiting))
+    if (sendRequest) wait_until(!mgr$server$requestWaiting)
     ms <- structure(msObj$getName(), names=msId)
     chartObj <- mgr$blockChart(ms, sendRequest=sendRequest)
     chartId <- chartObj$getId()
 
-    if (sendRequest) wait_until(substitute(!mgr$server$requestWaiting))
+    if (sendRequest) wait_until(!mgr$server$requestWaiting)
     expect_is(chartObj, "EpivizChart")
     expect_equal(chartObj$measurements, ms)
     expect_equal(chartObj$type, "blocksTrack")
@@ -34,11 +34,11 @@ test_that("plot block works", {
   mgr <- .startMGR(openBrowser=sendRequest)
 
   tryCatch({
-    if (sendRequest) wait_until(substitute(mgr$server$socketConnected))
+    if (sendRequest) wait_until(mgr$server$socketConnected)
     msObj <- mgr$addMeasurements(gr, "ms1", sendRequest=sendRequest)
     msId <- msObj$getId()
 
-    if (sendRequest) wait_until(substitute(!mgr$server$requestWaiting))
+    if (sendRequest) wait_until(!mgr$server$requestWaiting)
 	chartObj <- msObj$plot(sendRequest=sendRequest)
     chartId <- chartObj$getId()
 
@@ -48,7 +48,7 @@ test_that("plot block works", {
     expect_equal(chartObj$type, "blocksTrack")
     expect_false(is.null(mgr$chartList[[chartId]]))
 
-    if (sendRequest) wait_until(substitute(!mgr$server$requestWaiting))
+    if (sendRequest) wait_until(!mgr$server$requestWaiting)
     connected <- !is.null(mgr$chartIdMap[[chartId]])
     expect_equal(connected, sendRequest)
   }, finally=mgr$stopServer())
@@ -61,11 +61,11 @@ test_that("lineChart works", {
   mgr <- .startMGR(openBrowser=sendRequest)
 
   tryCatch({
-    if (sendRequest) wait_until(substitute(mgr$server$socketConnected))
+    if (sendRequest) wait_until(mgr$server$socketConnected)
     msObj <- mgr$addMeasurements(gr, "ms1", sendRequest=sendRequest, type="bp")
     msId <- msObj$getId()
 
-    if (sendRequest) wait_until(substitute(!mgr$server$requestWaiting))
+    if (sendRequest) wait_until(!mgr$server$requestWaiting)
     ms <- structure(paste0(msObj$getName(), "__score2"), names=paste0(msId,"__score2"))
     chartObj <- mgr$lineChart(ms, sendRequest=sendRequest)
     chartId <- chartObj$getId()
@@ -74,7 +74,7 @@ test_that("lineChart works", {
     expect_equal(chartObj$type, "lineTrack")
     expect_false(is.null(mgr$chartList[[chartId]]))
 
-    if (sendRequest) wait_until(substitute(!mgr$server$requestWaiting))
+    if (sendRequest) wait_until(!mgr$server$requestWaiting)
     connected <- !is.null(mgr$chartIdMap[[chartId]])
     expect_equal(connected, sendRequest)
   }, finally=mgr$stopServer())
@@ -87,11 +87,11 @@ test_that("plot bp works", {
   mgr <- .startMGR(openBrowser=sendRequest)
 
   tryCatch({
-    if (sendRequest) wait_until(substitute(mgr$server$socketConnected))
+    if (sendRequest) wait_until(mgr$server$socketConnected)
     msObj <- mgr$addMeasurements(gr, "ms1", sendRequest=sendRequest, type="bp")
     msId <- msObj$getId()
 
-    if (sendRequest) wait_until(substitute(!mgr$server$requestWaiting))
+    if (sendRequest) wait_until(!mgr$server$requestWaiting)
     chartObj <- msObj$plot(sendRequest=sendRequest)
     chartId <- chartObj$getId()
 
@@ -100,7 +100,7 @@ test_that("plot bp works", {
     expect_equal(chartObj$type, "lineTrack")
     expect_false(is.null(mgr$chartList[[chartId]]))
 
-    if (sendRequest) wait_until(substitute(!mgr$server$requestWaiting))
+    if (sendRequest) wait_until(!mgr$server$requestWaiting)
     connected <- !is.null(mgr$chartIdMap[[chartId]])
     expect_equal(connected, sendRequest)
   }, finally=mgr$stopServer())
@@ -112,11 +112,11 @@ test_that("scatterChart works", {
   mgr <- .startMGR(openBrowser=sendRequest)
 
   tryCatch({
-    if (sendRequest) wait_until(substitute(mgr$server$socketConnected))
+    if (sendRequest) wait_until(mgr$server$socketConnected)
     msObj <- mgr$addMeasurements(sset, "ms1", sendRequest=sendRequest, columns=c("A","B"), assay="counts2")
     msId <- msObj$getId()
 
-    if (sendRequest) wait_until(substitute(!mgr$server$requestWaiting))
+    if (sendRequest) wait_until(!mgr$server$requestWaiting)
     x <- structure(paste0(msObj$getName(), "$A"), names=paste0(msId, "__A"))
     y <- structure(paste0(msObj$getName(), "$B"), names=paste0(msId, "__B"))
     chartObj <- mgr$scatterChart(x=x, y=y,sendRequest=sendRequest)
@@ -126,7 +126,7 @@ test_that("scatterChart works", {
     expect_equal(chartObj$type, "geneScatterPlot")
     expect_false(is.null(mgr$chartList[[chartId]]))
 
-    if (sendRequest) wait_until(substitute(!mgr$server$requestWaiting))
+    if (sendRequest) wait_until(!mgr$server$requestWaiting)
     connected <- !is.null(mgr$chartIdMap[[chartId]])
     expect_equal(connected, sendRequest)
   }, finally=mgr$stopServer())
@@ -138,11 +138,11 @@ test_that("plot feature works", {
   mgr <- .startMGR(openBrowser=sendRequest)
 
   tryCatch({
-    if (sendRequest) wait_until(substitute(mgr$server$socketConnected))
+    if (sendRequest) wait_until(mgr$server$socketConnected)
     msObj <- mgr$addMeasurements(sset, "ms1", sendRequest=sendRequest, columns=c("A","B"), assay="counts2")
     msId <- msObj$getId()
 
-    if (sendRequest) wait_until(substitute(!mgr$server$requestWaiting))
+    if (sendRequest) wait_until(!mgr$server$requestWaiting)
     chartObj <- msObj$plot(sendRequest=sendRequest)
     chartId <- chartObj$getId()
 
@@ -151,7 +151,7 @@ test_that("plot feature works", {
     expect_equal(chartObj$type, "geneScatterPlot")
     expect_false(is.null(mgr$chartList[[chartId]]))
 
-    if (sendRequest) wait_until(substitute(!mgr$server$requestWaiting))
+    if (sendRequest) wait_until(!mgr$server$requestWaiting)
     connected <- !is.null(mgr$chartIdMap[[chartId]])
     expect_equal(connected, sendRequest)
   }, finally=mgr$stopServer())
