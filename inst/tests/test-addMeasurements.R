@@ -8,7 +8,7 @@ test_that("addMeasurements works for blocks", {
   mgr <- .startMGR(openBrowser=sendRequest)
 
   tryCatch({
-    if (sendRequest) wait_until(substitute(mgr$server$socketConnected))
+    if (sendRequest) wait_until(mgr$server$socketConnected)
     msObj <- mgr$addMeasurements(gr, "ms1", sendRequest=sendRequest)
     msId <- msObj$getId()
     
@@ -19,7 +19,7 @@ test_that("addMeasurements works for blocks", {
 
     expect_equal(as(mgr$msList$block[[msId]]$obj$object, "GRanges"), unname(gr))
 
-    if (sendRequest) wait_until(substitute(!mgr$server$requestWaiting))
+    if (sendRequest) wait_until(!mgr$server$requestWaiting)
     connected <- mgr$msList$block[[msId]]$connected
     expect_equal(connected, sendRequest)
 
@@ -33,7 +33,7 @@ test_that("addMeasurements works for bp", {
   mgr <- .startMGR(openBrowser=sendRequest)
   
   tryCatch({
-    if (sendRequest) wait_until(substitute(mgr$server$socketConnected))
+    if (sendRequest) wait_until(mgr$server$socketConnected)
     msObj <- mgr$addMeasurements(gr, "ms1", sendRequest=sendRequest, type="bp")
     msId <- msObj$getId()
     
@@ -44,7 +44,7 @@ test_that("addMeasurements works for bp", {
     expect_equal(as(mgr$msList$bp[[msId]]$obj$object, "GRanges"), unname(gr))
     expect_equal(mgr$msList$bp[[msId]]$obj$columns, paste0("score",1:2))
 
-    if (sendRequest) wait_until(substitute(!mgr$server$requestWaiting))
+    if (sendRequest) wait_until(!mgr$server$requestWaiting)
     connected <- mgr$msList$bp[[msId]]$connected
     expect_equal(connected, sendRequest)
   }, finally=mgr$stopServer())
@@ -56,7 +56,7 @@ test_that("addMeasurements works for SummarizedExperiment", {
   mgr <- .startMGR(openBrowser=sendRequest)
 
   tryCatch({
-    if (sendRequest) wait_until(substitute(mgr$server$socketConnected))
+    if (sendRequest) wait_until(mgr$server$socketConnected)
     msObj <- mgr$addMeasurements(sset, "ms1", sendRequest=sendRequest, columns=c("A","B"), assay="counts2")
     msId <- msObj$getId()
 
@@ -66,7 +66,7 @@ test_that("addMeasurements works for SummarizedExperiment", {
     expect_equal(mgr$msList$gene[[msId]]$measurements, paste0(msId, "__", c("A","B")))
     expect_equal(mgr$msList$gene[[msId]]$obj$columns, c("A","B"))
 
-    if (sendRequest) wait_until(substitute(!mgr$server$requestWaiting))
+    if (sendRequest) wait_until(!mgr$server$requestWaiting)
     connected <- mgr$msList$gene[[msId]]$connected
     expect_equal(connected, sendRequest)    
   }, finally=mgr$stopServer())
@@ -78,7 +78,7 @@ test_that("addMeasurements works for ExpressionSet", {
   mgr <- .startMGR(openBrowser=sendRequest)
   
   tryCatch({
-    if (sendRequest) wait_until(substitute(mgr$server$socketConnected))
+    if (sendRequest) wait_until(mgr$server$socketConnected)
     msObj <- mgr$addMeasurements(eset, "ms1", sendRequest=sendRequest, columns=c("SAMP_1","SAMP_2"))
     msId <- msObj$getId()
     
@@ -88,7 +88,7 @@ test_that("addMeasurements works for ExpressionSet", {
     expect_equal(mgr$msList$gene[[msId]]$measurements, paste0(msId,"__","SAMP_",1:2))
     expect_equal(mgr$msList$gene[[msId]]$obj$columns, paste0("SAMP_",1:2))
 
-    if (sendRequest) wait_until(substitute(!mgr$server$requestWaiting))
+    if (sendRequest) wait_until(!mgr$server$requestWaiting)
     connected <- mgr$msList$gene[[msId]]$connected
     expect_equal(connected, sendRequest)
   }, finally=mgr$stopServer())

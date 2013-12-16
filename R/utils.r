@@ -74,3 +74,7 @@ epivizrMsg <- function(..., tagPrompt=FALSE) {
     }
     invisible()
    }
+
+.epivizrCanDaemonize <- function () {
+  isTRUE(getOption("epivizrCanDaemonize"))
+}

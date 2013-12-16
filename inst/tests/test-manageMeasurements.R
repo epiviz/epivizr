@@ -11,13 +11,13 @@ test_that("getMeasurements works", {
 
   mgr <- .startMGR(openBrowser=sendRequest)
   tryCatch({
-    if (sendRequest) wait_until(substitute(mgr$server$socketConnected))
+    if (sendRequest) wait_until(mgr$server$socketConnected)
     msObj1 <- mgr$addMeasurements(gr1, "dev1", sendRequest=sendRequest); msId1=msObj1$getId()
     msObj2 <- mgr$addMeasurements(gr2, "dev2", sendRequest=sendRequest); msId2=msObj2$getId()
     msObj3 <- mgr$addMeasurements(gr3, "dev3", sendRequest=sendRequest, type="bp"); msId3=msObj3$getId()
     msObj4 <- mgr$addMeasurements(eset, "dev4", sendRequest=sendRequest, columns=c("SAMP_1", "SAMP_2")); msId4=msObj4$getId()
 
-    if (sendRequest) wait_until(substitute(!mgr$server$requestWaiting))
+    if (sendRequest) wait_until(!mgr$server$requestWaiting)
     res <- mgr$getMeasurements()
 
     out <- list(geneMeasurements=structure(list("dev4$SAMP_1","dev4$SAMP_2"), names=paste0(msId4, c("__SAMP_1","__SAMP_2"))),
@@ -36,10 +36,10 @@ test_that("rmMeasurements works", {
   mgr <- .startMGR(openBrowser=sendRequest)
   
   tryCatch({
-    if (sendRequest) wait_until(substitute(mgr$server$socketConnected))
+    if (sendRequest) wait_until(mgr$server$socketConnected)
     dev <- mgr$addMeasurements(gr, "dev1", sendRequest=sendRequest, type="bp")
     devId <- dev$getId()
-    wait_until(substitute(!mgr$server$requestWaiting))
+    wait_until(!mgr$server$requestWaiting)
     mgr$rmMeasurements(dev)
     
     expect_equal(length(mgr$msList$bp), 0)
@@ -47,7 +47,7 @@ test_that("rmMeasurements works", {
 
     dev <- mgr$addMeasurements(gr, "dev1", sendRequest=sendRequest, type="bp")
     devId <- dev$getId()
-    if (sendRequest) wait_until(substitute(!mgr$server$requestWaiting))
+    if (sendRequest) wait_until(!mgr$server$requestWaiting)
     mgr$rmMeasurements(devId)
     
     expect_equal(length(mgr$msList$bp), 0)
@@ -65,13 +65,13 @@ test_that("listMeasurements works", {
 
   mgr <- .startMGR(openBrowser=sendRequest)
   tryCatch({
-    if (sendRequest) wait_until(substitute(mgr$server$socketConnected))
+    if (sendRequest) wait_until(mgr$server$socketConnected)
     dev1 <- mgr$addMeasurements(gr1, "dev1", sendRequest=sendRequest); devId1=dev1$getId()
     dev2 <- mgr$addMeasurements(gr2, "dev2", sendRequest=sendRequest); devId2=dev2$getId()
     dev3 <- mgr$addMeasurements(gr3, "dev3", sendRequest=sendRequest, type="bp"); devId3=dev3$getId()
     dev4 <- mgr$addMeasurements(eset, "dev4", sendRequest = sendRequest, columns=c("SAMP_1", "SAMP_2")); devId4=dev4$getId()
 
-    if (sendRequest) wait_until(substitute(!mgr$server$requestWaiting))
+    if (sendRequest) wait_until(!mgr$server$requestWaiting)
     devs <- mgr$listMeasurements()
     expected_df <- list(gene=data.frame(id=devId4,
                              name="dev4",
@@ -105,13 +105,13 @@ test_that("rmAllMeasurements works", {
 
   mgr <- .startMGR(openBrowser=sendRequest)
   tryCatch({
-    if (sendRequest) wait_until(substitute(mgr$server$socketConnected))
+    if (sendRequest) wait_until(mgr$server$socketConnected)
     dev1 <- mgr$addMeasurements(gr1, "dev1", sendRequest=sendRequest); devId1=dev1$getId()
     dev2 <- mgr$addMeasurements(gr2, "dev2", sendRequest=sendRequest); devId2=dev2$getId()
     dev3 <- mgr$addMeasurements(gr3, "dev3", sendRequest=sendRequest, type="bp"); devId3=dev3$getId()
     dev4 <- mgr$addMeasurements(eset, "dev4", sendRequest = sendRequest, columns=c("SAMP_1", "SAMP_2")); devId4=dev4$getId()
 
-    if (sendRequest) wait_until(substitute(!mgr$server$requestWaiting))
+    if (sendRequest) wait_until(!mgr$server$requestWaiting)
     devs <- mgr$listMeasurements()
     expected_df <- list(gene=data.frame(id=devId4,
                              name="dev4",
@@ -134,7 +134,7 @@ test_that("rmAllMeasurements works", {
                         )
     expect_equal(devs, expected_df)
     mgr$rmAllMeasurements()
-    if (sendRequest) wait_until(substitute(!mgr$server$requestWaiting))
+    if (sendRequest) wait_until(!mgr$server$requestWaiting)
     expect_true(all(sapply(mgr$msList, function(x) length(x))==0))
   }, finally=mgr$stopServer())
 })
