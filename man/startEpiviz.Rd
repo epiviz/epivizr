@@ -12,7 +12,7 @@
   startEpiviz(port = 7312L, localURL = NULL, useDevel = FALSE,
     chr = "chr11", start = 99800000, end = 103383180, debug = FALSE,
     proxy = TRUE, workspace = NULL, scripts=NULL, openBrowser = TRUE,
-    daemonized = TRUE, verbose = FALSE, 
+    daemonized = .epivizrCanDaemonize(), verbose = FALSE, 
     nonInteractive = FALSE, tryPorts = FALSE)
 }
 
