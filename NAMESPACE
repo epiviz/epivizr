@@ -1,5 +1,6 @@
 import(methods)
 import(Biobase)
+import(S4Vectors)
 import(GenomicRanges)
 import(httpuv)
 import(rjson)

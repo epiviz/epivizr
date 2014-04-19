@@ -39,7 +39,7 @@ EpivizBpData <- setRefClass("EpivizBpData",
   c(.valid.EpivizBpData.ylim(x))
 }
 
-IRanges::setValidity2("EpivizBpData", .valid.EpivizBpData)
+setValidity2("EpivizBpData", .valid.EpivizBpData)
 
 EpivizBpData$methods(
   getMeasurements=function() {

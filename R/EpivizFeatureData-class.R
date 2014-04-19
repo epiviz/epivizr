@@ -80,7 +80,7 @@ EpivizFeatureData <- setRefClass("EpivizFeatureData",
     .valid.EpivizFeatureData.assay(x))
 }
 
-IRanges::setValidity2("EpivizFeatureData", .valid.EpivizFeatureData)
+setValidity2("EpivizFeatureData", .valid.EpivizFeatureData)
 
 EpivizFeatureData$methods(
     getMeasurements=function() {
