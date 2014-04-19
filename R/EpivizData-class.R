@@ -129,7 +129,7 @@ EpivizData <- setRefClass("EpivizData",
   c(.valid.EpivizData.columns(x))
 }
 
-IRanges::setValidity2("EpivizData", .valid.EpivizData)
+setValidity2("EpivizData", .valid.EpivizData)
 
 #######
 # get data
@@ -148,7 +148,7 @@ EpivizData$methods(
       curQuery <<- query
       olaps <- GenomicRanges::findOverlaps(query, object, select="all")
       curHits <<- subjectHits(olaps)
-      if (IRanges:::isNotSorted(start(object)[curHits])) {
+      if (isNotSorted(start(object)[curHits])) {
         ord <- order(start(object)[curHits])
         curHits <<- curHits[ord]
       }

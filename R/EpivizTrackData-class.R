@@ -24,5 +24,5 @@ EpivizTrackData <- setRefClass("EpivizTrackData",
 	c(.valid.EpivizTrackData.object(x))
 }
 
-IRanges::setValidity2("EpivizTrackData", .valid.EpivizTrackData)
+setValidity2("EpivizTrackData", .valid.EpivizTrackData)
 

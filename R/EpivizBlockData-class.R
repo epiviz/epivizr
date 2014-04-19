@@ -21,7 +21,7 @@ EpivizBlockData <- setRefClass("EpivizBlockData",
 	c(.valid.EpivizBlockData.ylim(x))
 }
 
-IRanges::setValidity2("EpivizBlockData", .valid.EpivizBlockData)
+setValidity2("EpivizBlockData", .valid.EpivizBlockData)
 
 EpivizBlockData$methods(
   getMeasurements=function() {
