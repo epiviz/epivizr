@@ -1,7 +1,0 @@
-CHECK:
-
-rmDevice
-stopServer
-remove subsetting from getData, subset elements independently
-navigate
-slideshow
