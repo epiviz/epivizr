@@ -1,12 +1,11 @@
 epivizR
 ========
 
-The `epivizr` Bioconductor package implements two-way communication between the [R/Bioconductor](http://bioconductor.org) environment and the [epiviz](http://epiviz.cbcb.umd.edu) web app for interactive data visualization. Objects in the R environment can be displayed as tracks or scatterplots on Epiviz. Epivizr uses Websockets for communication between the browser Javascript client and the R environment using the same technology underlying the popular [Shiny](http://www.rstudio.com/shiny) system for authoring interactive web-based reports in R.
+The `epivizr` Bioconductor package implements two-way communication between the [R/Bioconductor](http://bioconductor.org) environment and the [epiviz](http://epiviz.cbcb.umd.edu) web app for interactive data visualization. Objects in the R environment can be displayed as tracks or plots on Epiviz. Epivizr uses Websockets for communication between the browser Javascript client and the R environment using the same technology underlying the popular [Shiny](http://www.rstudio.com/shiny) system for authoring interactive web-based reports in R.
 
  
 ## Installation and requirements
-Epivizr is available as part of the [Bioconductor](http://bioconductor.org) project as of version 2.13 which requires R version 3.0.2. Make sure you [install](http://cran.r-project.org)
-the proper version before continuing. To install `epivizr`:
+Epivizr is available as part of the [Bioconductor](http://bioconductor.org) project as of version 2.13. To install `epivizr`:
 
 ```{r}
 source("http://bioconductor.org/biocLite.R")
@@ -33,18 +32,13 @@ This github repository contains the latest and greatest version of `epivizr` and
 
 ## Non-blocking
 
-Epivizr now supports a non-blocking workflow on UNIX-like systems where data is served to the webapp without blocking
-the R/bioc interactive session. This requires an updated version of the [httpuv package](http://github.com/epiviz/httpuv). You can install that using
-
-```{r}
-require(devtools)
-install_github("httpuv", username="epiviz", ref="daemon-unix")
-```
-
-We are working with Rstudio to fold that into the main httpuv release
+Epivizr now supports a non-blocking workflow on both UNIX-like and Windows systems where data is served to the webapp without blocking
+the R/bioc interactive session. Make sure you are using the latest version of the [httpuv package](http://cran.r-project.org/web/packages/httpuv/index.html) to use this. (Thanks to the
+[Rstudio](http://rstudio.org) folks for folding our daemonizing code into the main httpuv release).
 
 ## More info
 
-[Check out the `epiviz` project page on github](http:://github.com/epiviz)
+Check out the `epiviz` [project page on github](http:://github.com/epiviz), and the
+[documentation page](http://epiviz.github.io).
 
 
