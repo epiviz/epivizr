@@ -57,25 +57,10 @@ EpivizDeviceMgr <- setRefClass("EpivizDeviceMgr",
   )
 )
 
-# request handling
-# defined here: http://epiviz.github.io/dataprovider-plugins.html
 EpivizDeviceMgr$methods(list(
-    processRequest=function(msgData) {
-      action <- msgData$action
-      switch(action,
-             getMeasurements=getMeasurements(),
-             getRows=getRows(msgData$seqName,
-               msgData$start,
-               msgData$end,
-               msgData$metadata,
-               msgData$datasource),
-             getValues=getValues(msgData$seqName,
-               msgData$start,
-               msgData$end,
-               msgData$measurement),
-             getSeqInfos=getSeqInfos())
-    }
-  )
+  getSeqInfos=function() {
+    return(list())
+  })
 )
 
 # session management methods

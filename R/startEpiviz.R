@@ -10,7 +10,7 @@ startEpiviz <- function(port=7312L, localURL=NULL, useDevel=FALSE,
 
   if (missing(localURL) || is.null(localURL)) {
     url <- ifelse(useDevel,"epiviz-dev", "epiviz")
-    url <- sprintf("http://%s.cbcb.umd.edu/index.php", url)
+    url <- sprintf("http://%s.cbcb.umd.edu/v2/ui/index.php", url)
   } else {
     url <- localURL
   }

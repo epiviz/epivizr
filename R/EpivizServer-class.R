@@ -130,8 +130,25 @@ EpivizServer <- setRefClass("EpivizServer",
         msg = rjson::fromJSON(msg)
         if (msg$type == "request") {
           out=list(type="response",
-            requestId=msg$requestId,
-            data=mgr$processRequest(msg$data))
+            requestId=msg$requestId)
+          msgData=msg$data
+          action=msgData$action
+          # request handling
+# defined here: http://epiviz.github.io/dataprovider-plugins.html
+
+          out$data=switch(action,
+             getMeasurements=mgr$getMeasurements(),
+             getRows=mgr$getRows(msgData$seqName,
+               msgData$start,
+               msgData$end,
+               msgData$metadata,
+               msgData$datasource),
+             getValues=mgr$getValues(msgData$seqName,
+               msgData$start,
+               msgData$end,
+               msgData$measurement),
+             getSeqInfos=mgr$getSeqInfos(),
+             getAllData=msgData$chr)
           response=rjson::toJSON(out)
           websocket$send(response)
         } else if (msg$type == "response") {
