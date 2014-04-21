@@ -44,14 +44,14 @@ test_that("socket messaging works", {
   
   browseURL("http://localhost:7123/")
   tryCatch(server$service(), interrupt=function(int) invisible())
-  wait_until(substitute(server$socketConnected))
+  wait_until(server$socketConnected)
   
   expect_false(server$isClosed())
 
   request <- mgr$makeRequest("this msg")
   server$sendRequest(request)
 
-  wait_until(substitute(!server$requestWaiting))
+  wait_until(!server$requestWaiting)
   server$stopServer()
   expect_true(server$isClosed())
 })
@@ -92,7 +92,7 @@ test_that("tryPorts works", {
 
   browseURL(sprintf("http://localhost:%d/", server2$port))
   tryCatch(server2$service(), interrupt=function(int) invisible())
-  wait_until(substitute(server2$socketConnected))
+  wait_until(server2$socketConnected)
   
   server$stopServer()
 
