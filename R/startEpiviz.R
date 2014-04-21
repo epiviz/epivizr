@@ -18,7 +18,7 @@ startEpiviz <- function(port=7312L, localURL=NULL, useDevel=FALSE,
   wsURL <- "ws://localhost"
   controllerHost <- sprintf("%s:%d", wsURL, port)
   
-  url <- sprintf("%s?controllerHost=%s&debug=%s&proxy=%s&", 
+  url <- sprintf("%s?websocket-host[]=%s&debug=%s&proxy=%s&", 
               url,
               controllerHost,
               ifelse(debug,"true","false"),

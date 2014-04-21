@@ -11,11 +11,23 @@ test_that("addMeasurements works for blocks", {
     if (sendRequest) wait_until(mgr$server$socketConnected)
     msObj <- mgr$addMeasurements(gr, "ms1", sendRequest=sendRequest)
     msId <- msObj$getId()
+    expMs <- list(list(id=msId,
+                       name=msObj$name,
+                       type="range",
+                       datasourceId=msId,
+                       datasourceGroup=msId,
+                       dataprovider=msId,
+                       formula=NULL,
+                       defaultChartType="block",
+                       annotation=list(NULL),
+                       minValue=NA,
+                       maxValue=NA,
+                       metadata=list(NULL)))
     
     expect_equal(length(mgr$msList$block), 1)
     expect_false(is.null(mgr$msList$block[[msId]]))
     expect_equal(mgr$msList$block[[msId]]$name, "ms1")
-    expect_equal(mgr$msList$block[[msId]]$measurements, msId)
+    expect_equal(mgr$msList$block[[msId]]$measurements, expMS)
 
     expect_equal(as(mgr$msList$block[[msId]]$obj$object, "GRanges"), unname(gr))
 
@@ -36,7 +48,7 @@ test_that("addMeasurements works for bp", {
     if (sendRequest) wait_until(mgr$server$socketConnected)
     msObj <- mgr$addMeasurements(gr, "ms1", sendRequest=sendRequest, type="bp")
     msId <- msObj$getId()
-    
+
     expect_equal(length(mgr$msList$bp), 1)
     expect_false(is.null(mgr$msList$bp[[msId]]))
     expect_equal(mgr$msList$bp[[msId]]$name, "ms1")

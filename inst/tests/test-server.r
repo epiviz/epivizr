@@ -4,9 +4,15 @@ constrFunction <- function(...) epivizr:::EpivizServer$new(daemonized=getOption(
 
 mgr <- new.env()
 mgr$lastMessage <- ""
-mgr$callbackArray <- IndexedArray$new()
+mgr$callbackArray <- epivizr:::IndexedArray$new()
 mgr$verbose <- TRUE
-mgr$getData <- function(measurements, chr, start, end) return(chr)
+mgr$processRequest <- function(data) {
+  action <- data$action
+  print(action)
+  switch(action,
+         getAllData=data$chr)
+}
+
 mgr$makeRequest <- function(msg) {
                            callback=function(newmsg) {
                              mgr$lastMessage <<- newmsg

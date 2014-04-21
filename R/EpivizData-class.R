@@ -63,8 +63,10 @@ EpivizData <- setRefClass("EpivizData",
 
         ylim <<- .getLimits()
       }
-      if (sendRequest && !is.null(mgr))
-        mgr$.clearChartCaches(.self, sendRequest=sendRequest)
+      if (sendRequest && !is.null(mgr)) {
+        mgr$.clearDatasourceGroupCache(.self, sendRequest=sendRequest)
+#        mgr$.clearChartCaches(.self, sendRequest=sendRequest)
+      }
 
       invisible()
     },

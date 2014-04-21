@@ -22,6 +22,7 @@ EpivizDeviceMgr <- setRefClass("EpivizDeviceMgr",
      activeId <<- ""
      chartIdMap <<- list()
      typeMap <<- .typeMap
+#     msList <<- list()
      msList <<- structure(lapply(seq_along(.typeMap), function(x) list()),names=names(.typeMap))
      chartList <<- list()
      deviceList <<- list()
@@ -53,6 +54,27 @@ EpivizDeviceMgr <- setRefClass("EpivizDeviceMgr",
       }
 #      listTypes()
    }
+  )
+)
+
+# request handling
+# defined here: http://epiviz.github.io/dataprovider-plugins.html
+EpivizDeviceMgr$methods(list(
+    processRequest=function(msgData) {
+      action <- msgData$action
+      switch(action,
+             getMeasurements=getMeasurements(),
+             getRows=getRows(msgData$seqName,
+               msgData$start,
+               msgData$end,
+               msgData$metadata,
+               msgData$datasource),
+             getValues=getValues(msgData$seqName,
+               msgData$start,
+               msgData$end,
+               msgData$measurement),
+             getSeqInfos=getSeqInfos())
+    }
   )
 )
 
@@ -210,6 +232,7 @@ EpivizDeviceMgr$methods(
     epivizObject$setName(msName)
     epivizObject$setMgr(.self)
 
+    # TODO: change for v2
     measurements <- epivizObject$getMeasurements()
     msRecord <- list(measurements=names(measurements), 
       name=msName, obj=epivizObject, connected=FALSE)
@@ -221,7 +244,11 @@ EpivizDeviceMgr$methods(
         epivizrMsg("Measurement ", msName, " added to browser and connected", tagPrompt=TRUE)
       }
       requestId <- callbackArray$append(callback)
-      server$addMeasurements(requestId, type, measurements) 
+      request <- list(requestId=requestId,
+                      type="request")
+      request$data <- list(action="addMeasurements",
+                           measurements=rjson::toJSON(measurements))
+      server$sendRequest(request)
     }
     return(epivizObject)
    },
@@ -249,6 +276,27 @@ EpivizDeviceMgr$methods(
       TRUE
     }
    },
+  .clearDatasourceGroupCache=function(msObj, sendRequest=!nonInteractive) {
+     if(!is(msObj, "EpivizData")) {
+      stop("'msObj' must be an 'EpivizData' object")
+     }
+     msType <- getMeasurementType(msObj)
+     msIndex <- match(msObj$getId(), names(msList[[msType]]))
+     if (is.na(msIndex)) 
+       stop("did not find object")
+
+     if (sendRequest) {
+       callback <- function(data) {
+         epivizrMsg("DatasourceGroup caches cleared", tagPrompt=TRUE)
+       }
+       requestId <- callbackArray$append(callback)
+       request <- list(requestId=requestId,
+                       type="request",
+                       data=list(datasourceGroup=msIndex))
+       server$sendRequest(request)
+     }
+     invisible()
+  },
    .clearChartCaches=function(msObj, sendRequest=!nonInteractive) {
      if(!is(msObj, "EpivizData")) {
       stop("'msObj' must be an 'EpivizData' object")
@@ -327,7 +375,11 @@ EpivizDeviceMgr$methods(
         epivizrMsg("measurement object ", msName, " removed and disconnected", tagPrompt=TRUE)  
       }
       requestId=callbackArray$append(callback)
-      server$rmMeasurements(requestId, ms, msType)
+      request <- list(requestId=requestId,
+                      type="request")
+      request$data <- list(action="removeMeasurements",
+                           measurements=rjson::toJSON(ms))
+      server$sendRequest(request)
     }
     invisible(NULL)
    },
@@ -375,18 +427,30 @@ EpivizDeviceMgr$methods(
    return(out)
    },
    getMeasurements=function() {
-     out <- list()
+     out <- list(id=character(),
+                 name=character(),
+                 type=character(),
+                 datasourceId=character(),
+                 datasourceGroup=character(),
+                 defaultChartType=character(),
+                 annotation=list(),
+                 minValue=numeric(),
+                 maxValue=numeric(),
+                 metadata=list()
+                 )
      for (i in seq_along(.typeMap)) {
-      curType <- names(.typeMap)[i]
-      nm <- paste0(curType,"Measurements")
-      measurements <- list()
+       curType <- names(.typeMap)[i]
+       nm <- paste0(curType,"Measurements")
+       measurements <- list()
        
-      if (length(msList[[curType]])>0) {
-        measurements <- lapply(msList[[curType]], function(x) as.list(x$obj$getMeasurements()))
-        names(measurements) <- NULL
-        measurements <- unlist(measurements, recursive=FALSE)
-      }
-      out[[nm]] <- measurements 
+       if (length(msList[[curType]])>0) {
+         for (msRecord in msList[[curType]]) {
+           ms <- msRecord$obj$getMeasurements()
+           for (recName in names(out)) {
+             out[[recName]] <- c(out[[recName]], ms[[recName]])
+           }
+         }
+       }
      }
      return(out)
    },
