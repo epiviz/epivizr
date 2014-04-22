@@ -210,9 +210,12 @@ EpivizData$methods(
       out <- list(values=list())
     } else {
       out <- list(globalStartIndex=curHits[1],
-                  useOffset=FALSE,
                   values=.self$.getValues(curHits, measurement))
+      if (length(out$values) ==1) {
+        out$values <- list(out$values)
+      }
     }
+    return(out)
   },
   getData=function(query, msId=NULL) {
     if (!is(query, "GRanges"))
