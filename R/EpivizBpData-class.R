@@ -9,6 +9,8 @@ EpivizBpData <- setRefClass("EpivizBpData",
     },
     .getNAs=function() {
       naMat <- is.na(mcols(object)[,columns])
+      if (!is.matrix(naMat))
+        naMat <- cbind(naMat)
       which(rowSums(naMat)>0)
     },
     .checkLimits=function(ylim) {

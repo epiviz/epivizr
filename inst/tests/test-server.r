@@ -14,15 +14,15 @@ mgr$processRequest <- function(data) {
 }
 
 mgr$makeRequest <- function(msg) {
-                           callback=function(newmsg) {
-                             mgr$lastMessage <<- newmsg
+                           callback=function(data) {
+                             mgr$lastMessage <<- data$msg
                              epivizrMsg("Response received")
                            }
                            requestId <- mgr$callbackArray$append(callback)
                            list(type="request",
-                                id=requestId,
-                                action="writeMsg",
-                                data=msg)
+                                requestId=requestId,
+                                data=list(action="writeMsg",
+                                  msg=msg))
                          }
 
 test_that("constructor creates a proper object", {

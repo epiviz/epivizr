@@ -31,7 +31,11 @@ EpivizFeatureData <- setRefClass("EpivizFeatureData",
     },
     .getNAs=function() {
       mat <- GenomicRanges::assay(object, i=.self$assay)
-      which(rowSums(is.na(mat))>0)
+      colIndex <- match(columns, rownames(colData(object)))
+      namat <- is.na(mat[,colIndex])
+      if (!is.matrix(namat))
+        namat <- cbind(namat)
+      which(rowSums(namat)>0)
     },
     .getLimits=function() {
       mat <- GenomicRanges::assay(object, i=.self$assay)
