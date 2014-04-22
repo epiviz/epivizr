@@ -22,6 +22,11 @@ EpivizData <- setRefClass("EpivizData",
       if (is.null(.self$columns))
         columns <<- .self$.getColumns()
 
+      naIndex <- .self$.getNAs()
+      if (length(naIndex)>0) {
+        object <<- object[-naIndex,]
+      }
+      
       if (!is.null(ylim)) {
         if (!.self$.checkLimits(ylim))
           stop("invalid 'ylim' argument")
@@ -34,6 +39,9 @@ EpivizData <- setRefClass("EpivizData",
       curHits <<- NULL
       inDevice <<- FALSE
       callSuper(...)
+    },
+    .getNAs=function() {
+      integer()
     },
     .checkColumns=function(columns) {
       is.null(columns)
@@ -137,7 +145,7 @@ EpivizData$methods(
   packageData=function(msId) {
     stop("'packageData' called on object of virtual class")
   },
-  getRows=function(query, metadata) {
+  getHits=function(query) {
     if (!is(query, "GRanges"))
       stop("'query' must be a GRanges object")
     if (length(query) != 1) {
@@ -153,6 +161,10 @@ EpivizData$methods(
         curHits <<- curHits[ord]
       }
     }
+    invisible()
+  },
+  getRows=function(query, metadata) {
+    getHits(query)
     if (length(curHits) == 0) {
       out <- list(useOffset=FALSE, values=list())
     } else {
@@ -166,6 +178,19 @@ EpivizData$methods(
                    ))
     }
     return(out)
+  },
+  .getValues=function(curHits, measurement) {
+    numeric()
+  },
+  getValues=function(query, measurement) {
+    getHits(query)
+    if (length(curHits) == 0) {
+      out <- list(values=list())
+    } else {
+      out <- list(globalStartIndex=curHits[1],
+                  useOffset=FALSE,
+                  values=.self$.getValues(curHits, measurement))
+    }
   },
   getData=function(query, msId=NULL) {
     if (!is(query, "GRanges"))

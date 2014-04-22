@@ -45,6 +45,9 @@ EpivizBlockData$methods(
   .getMetadata=function(curHits, metadata) {
     return(NULL)
   },
+  .getValues=function(curHits, measurement) {
+    return(NULL)
+  },
   packageData=function(msId=NULL) {
     if (!length(curHits)) {
       out <- list(start=integer(), end=integer())

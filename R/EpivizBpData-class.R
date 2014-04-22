@@ -7,6 +7,10 @@ EpivizBpData <- setRefClass("EpivizBpData",
     .getColumns=function() {
       names(mcols(object))
     },
+    .getNAs=function() {
+      naMat <- is.na(mcols(object)[,columns])
+      which(rowSums(naMat)>0)
+    },
     .checkLimits=function(ylim) {
       if (!is.matrix(ylim))
         return(FALSE)
@@ -63,6 +67,12 @@ EpivizBpData$methods(
   },
   .getMetadata=function(curHits, metadata) {
     return(NULL)
+  },
+  .getValues=function(curHits, measurement) {
+    if(!measurement %in% columns) {
+      stop("could not find measurement", measurement)
+    }
+    mcols(object)[curHits,measurement]
   },
   parseMeasurement=function(msId) {
     column <- strsplit(msId, split="__")[[1]][2]

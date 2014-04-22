@@ -29,6 +29,10 @@ EpivizFeatureData <- setRefClass("EpivizFeatureData",
         return(FALSE)
       TRUE
     },
+    .getNAs=function() {
+      mat <- GenomicRanges::assay(object, i=.self$assay)
+      which(rowSums(is.na(mat))>0)
+    },
     .getLimits=function() {
       mat <- GenomicRanges::assay(object, i=.self$assay)
       colIndex <- match(columns, rownames(colData(object)))
@@ -119,7 +123,15 @@ EpivizFeatureData$methods(
       if ("symbol" %in% metadata) {
         out$symbol <- rowData(object)$SYMBOL[curHits]
       }
+      out
     },
+  .getValues=function(curHits, measurement) {
+    if (!measurement %in% columns) {
+      stop("could not find measurement", measurement)
+    }
+    m <- match(measurement, columns)
+    assay(object, .self$assay)[curHits, m]
+  },
     packageData=function(msId) {
       column <- parseMeasurement(msId)
       m <- match(column, columns)

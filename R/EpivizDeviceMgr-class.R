@@ -490,6 +490,14 @@ EpivizDeviceMgr$methods(
      }
      obj$getRows(query, metadata)
   },
+  getValues=function(chr, start, end, datasource, measurement) {
+    query <- GRanges(chr,ranges=IRanges(start,end))
+    obj <- .findDatasource(datasource)
+    if (is.null(obj)) {
+      stop("cannot find datasource", datasource)
+    }
+    obj$getValues(query, measurement)
+  },
   getData=function(measurements, chr, start, end) {
      out <- list(chr=chr,start=start,end=end) 
      query <- GRanges(chr, ranges=IRanges(start, end))

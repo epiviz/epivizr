@@ -146,6 +146,7 @@ EpivizServer <- setRefClass("EpivizServer",
              getValues=mgr$getValues(msgData$seqName,
                msgData$start,
                msgData$end,
+               msgData$datasource,
                msgData$measurement),
              getSeqInfos=mgr$getSeqInfos(),
              getAllData=msgData$chr)
