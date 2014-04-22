@@ -276,7 +276,8 @@ EpivizDeviceMgr$methods(
        requestId <- callbackArray$append(callback)
        request <- list(requestId=requestId,
                        type="request",
-                       data=list(datasourceGroup=msIndex))
+                       data=list(action="clearDatasourceGroupCache",
+                         datasourceGroup=msObj$getId()))
        server$sendRequest(request)
      }
      invisible()

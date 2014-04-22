@@ -61,6 +61,8 @@ EpivizData <- setRefClass("EpivizData",
       }
 
       oldObject <- object
+      # TODO: sort if needed
+      # TODO: check NAs
       object <<- newObject
 
       if (!is.null(columns)) {
@@ -72,7 +74,7 @@ EpivizData <- setRefClass("EpivizData",
         ylim <<- .getLimits()
       }
       if (sendRequest && !is.null(mgr))
-        mgr$.clearChartCaches(.self, sendRequest=sendRequest)
+        mgr$.clearDatasourceGroupCache(.self, sendRequest=sendRequest)
 
       invisible()
     },
@@ -160,6 +162,7 @@ EpivizData$methods(
         ord <- order(start(object)[curHits])
         curHits <<- curHits[ord]
       }
+      curHits <<- seq(min(curHits), max(curHits))
     }
     invisible()
   },
