@@ -40,7 +40,7 @@ EpivizFeatureData <- setRefClass("EpivizFeatureData",
     .getLimits=function() {
       mat <- GenomicRanges::assay(object, i=.self$assay)
       colIndex <- match(columns, rownames(colData(object)))
-      unname(sapply(seq(along=columns), function(i) range(pretty(range(mat[,i], na.rm=TRUE)))))
+      unname(sapply(colIndex, function(i) range(pretty(range(mat[,i], na.rm=TRUE)))))
     },
     plot=function(x, y, ...) {
       ms <- getMeasurements()

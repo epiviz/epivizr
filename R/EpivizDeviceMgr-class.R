@@ -437,8 +437,13 @@ EpivizDeviceMgr$methods(
            ms <- msRecord$obj$getMeasurements()
            for (curMs in ms) {
            for (recName in names(out)) {
+             if (is.list(out[[recName]])) {
+               curVal <- list(curMs[[recName]])
+             } else {
+               curVal <- curMs[[recName]]
+             }
              if (!is.null(curMs[[recName]])) {
-               out[[recName]] <- c(out[[recName]], curMs[[recName]])
+               out[[recName]] <- c(out[[recName]], curVal)
              } else {
                out[[recName]] <- c(out[[recName]], list(NULL))
              }

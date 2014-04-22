@@ -23,7 +23,8 @@ EpivizBpData <- setRefClass("EpivizBpData",
       TRUE
     },
     .getLimits=function() {
-      unname(sapply(mcols(object)[,columns], function(x) range(pretty(range(x, na.rm=TRUE)))))
+      colIndex <- match(columns, colnames(mcols(object)))
+      unname(sapply(colIndex, function(i) range(pretty(range(mcols(object)[,i], na.rm=TRUE)))))
     },
     plot=function(...) {
       mgr$lineChart(ms=getMeasurements(), ...)
