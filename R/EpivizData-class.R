@@ -168,10 +168,14 @@ EpivizData$methods(
       curQuery <<- query
       olaps <- GenomicRanges::findOverlaps(query, object, select="all")
       curHits <<- subjectHits(olaps)
-      if (S4Vectors:::isNotSorted(start(object)[curHits])) {
-        ord <- order(start(object)[curHits])
-        curHits <<- curHits[ord]
+
+      if (length(curHits) == 0) {
+        return(invisible())
       }
+      
+      if (S4Vectors:::isNotSorted(start(object)[curHits])) {
+        stop("these should be ordered by now...")
+     }
       curHits <<- seq(min(curHits), max(curHits))
     }
     invisible()
@@ -189,6 +193,11 @@ EpivizData$methods(
                     end=end(object)[curHits],
                     metadata=.self$.getMetadata(curHits, metadata)
                    ))
+    }
+    if (length(out$values)>0 && length(out$values$id) == 1) {
+      for (slotName in names(out$values)) {
+        out$values[[slotName]] <- list(out$values[[slotName]])
+      }
     }
     return(out)
   },

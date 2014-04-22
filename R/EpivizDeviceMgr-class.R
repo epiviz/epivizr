@@ -171,7 +171,11 @@ EpivizDeviceMgr$methods(list(
       invisible(NULL)
      }
      requestId <- callbackArray$append(callback)
-     server$navigate(requestId=requestId,chr=chr,start=start,end=end)
+     request=list(type="request",
+             requestId=requestId,
+             data=list(action="navigate",
+               range=rjson::toJSON(list(seqName=chr,start=start,end=end))))
+     server$sendRequest(request)
    },
    slideshow=function(granges, n=10) {
     'navidate to successive positions'
