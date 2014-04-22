@@ -42,6 +42,9 @@ EpivizBlockData$methods(
       stop("invalid parsed measurement")
     NULL
   },
+  .getMetadata=function(curHits, metadata) {
+    return(NULL)
+  },
   packageData=function(msId=NULL) {
     if (!length(curHits)) {
       out <- list(start=integer(), end=integer())

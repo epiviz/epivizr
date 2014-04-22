@@ -442,6 +442,12 @@ EpivizDeviceMgr$methods(
          }
        }
      }
+
+     if (length(out$id)==1) {
+       for (recName in names(out)) {
+         out[[recName]] <- list(out[[recName]])
+       }
+     }
      return(out)
    },
   getMeasurementType=function(x) {
@@ -466,6 +472,23 @@ EpivizDeviceMgr$methods(
         stop("cannot find 'msType'")
       }
       get(typeMap[[msType]]$class)$new()$.initPack(length=length)
+  },
+  .findDatasource=function(datasource) {
+    for (msType in names(typeMap)) {
+      curMs <- msList[[msType]]
+      if (datasource %in% names(curMs)) {
+        return(curMs[[datasource]]$obj)
+      }
+    }
+    return(NULL)
+  },
+  getRows=function(chr, start, end, metadata, datasource) {
+     query <- GRanges(chr, ranges=IRanges(start, end))
+     obj <- .findDatasource(datasource)
+     if (is.null(obj)) {
+       stop("cannot find datasource", datasource)
+     }
+     obj$getRows(query, metadata)
   },
   getData=function(measurements, chr, start, end) {
      out <- list(chr=chr,start=start,end=end) 

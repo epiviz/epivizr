@@ -63,10 +63,8 @@ EpivizData <- setRefClass("EpivizData",
 
         ylim <<- .getLimits()
       }
-      if (sendRequest && !is.null(mgr)) {
-        mgr$.clearDatasourceGroupCache(.self, sendRequest=sendRequest)
-#        mgr$.clearChartCaches(.self, sendRequest=sendRequest)
-      }
+      if (sendRequest && !is.null(mgr))
+        mgr$.clearChartCaches(.self, sendRequest=sendRequest)
 
       invisible()
     },
@@ -138,6 +136,36 @@ setValidity2("EpivizData", .valid.EpivizData)
 EpivizData$methods(
   packageData=function(msId) {
     stop("'packageData' called on object of virtual class")
+  },
+  getRows=function(query, metadata) {
+    if (!is(query, "GRanges"))
+      stop("'query' must be a GRanges object")
+    if (length(query) != 1) {
+      stop("'query' must be of length 1")
+    }
+
+    if (is.null(curQuery) || !identical(unname(query), unname(curQuery))) {
+      curQuery <<- query
+      olaps <- GenomicRanges::findOverlaps(query, object, select="all")
+      curHits <<- subjectHits(olaps)
+      if (S4Vectors:::isNotSorted(start(object)[curHits])) {
+        ord <- order(start(object)[curHits])
+        curHits <<- curHits[ord]
+      }
+    }
+    if (length(curHits) == 0) {
+      out <- list(useOffset=FALSE, values=list())
+    } else {
+      out <- list(globalStartIndex=curHits[1],
+                  useOffset=FALSE,
+                  values=list(
+                    id=curHits,
+                    start=start(object)[curHits],
+                    end=end(object)[curHits],
+                    metadata=.self$.getMetadata(curHits, metadata)
+                   ))
+    }
+    return(out)
   },
   getData=function(query, msId=NULL) {
     if (!is(query, "GRanges"))

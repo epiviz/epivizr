@@ -94,7 +94,7 @@ EpivizFeatureData$methods(
            annotation=NULL,
            minValue=ylim[1],
            maxValue=ylim[2],
-           metadata=NULL)
+           metadata=c("probe","symbol"))
     })
 #     out <- paste(name, columns, sep="$")
   #    nms <- paste(id, columns, sep="__")
@@ -107,6 +107,18 @@ EpivizFeatureData$methods(
         stop("invalid parsed measurement")
       }
       column
+    },
+    .getMetadata=function(curHits, metadata) {
+      if(!all(sapply(metadata, function(x) x %in% c("probe","symbol"))))
+        stop("error getting metadata")
+
+      out <- list()
+      if ("probe" %in% metadata) {
+        out$probe <- rowData(object)$PROBEID[curHits]
+      }
+      if ("symbol" %in% metadata) {
+        out$symbol <- rowData(object)$SYMBOL[curHits]
+      }
     },
     packageData=function(msId) {
       column <- parseMeasurement(msId)

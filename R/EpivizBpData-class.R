@@ -61,6 +61,9 @@ EpivizBpData$methods(
     #names(out) <- nms
     out
   },
+  .getMetadata=function(curHits, metadata) {
+    return(NULL)
+  },
   parseMeasurement=function(msId) {
     column <- strsplit(msId, split="__")[[1]][2]
     if(!.checkColumns(column)) {

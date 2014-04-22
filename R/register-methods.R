@@ -4,6 +4,10 @@ setGeneric("register", signature=c("object"),
 setMethod("register", "GenomicRanges",
 	function(object, columns, type=c("block","bp"), ...) {
 		type <- match.arg(type)
+                if (S4Vectors:::isNotSorted(object)) {
+                  object <- sort(object)
+                }
+
 		if (!is(object, "GIntervalTree")) {
 			object <- as(object, "GIntervalTree")
 		}
@@ -15,11 +19,14 @@ setMethod("register", "GenomicRanges",
 
 setMethod("register", "SummarizedExperiment",
 	function(object, columns=NULL, assay=1) {
+                if (S4Vectors:::isNotSorted(rowData(object))) {
+                  object <- sort(object)
+                }
+		
 		if (!is(rowData(object), "GIntervalTree")) {
 			rowData(object) <- as(rowData(object), "GIntervalTree")
 		}
-
-		mcolNames <- names(mcols(rowData(object)))
+                mcolNames <- names(mcols(rowData(object)))
 
 		if (!("PROBEID" %in% mcolNames)) {
 			rowData(object)$PROBEID <- ""
