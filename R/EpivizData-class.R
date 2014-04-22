@@ -61,10 +61,9 @@ EpivizData <- setRefClass("EpivizData",
       }
 
       oldObject <- object
-      # TODO: sort if needed
-      # TODO: check NAs
       object <<- newObject
 
+      
       if (!is.null(columns)) {
         if (!.checkColumns(columns)) {
           object <<- oldObject
@@ -73,6 +72,17 @@ EpivizData <- setRefClass("EpivizData",
 
         ylim <<- .getLimits()
       }
+
+      object <<- reorderIfNeeded(object)
+      if(is(object,"SummarizedExperiment") && !is(rowData(object),"GIntervalTree")) {
+        rowData(object) <<- as(rowData(object), "GIntervalTree")
+      }
+
+      naIndex <- .self$.getNAs()
+      if (length(naIndex) > 0) {
+        object <<- object[-naIndex,]
+      }
+      
       if (sendRequest && !is.null(mgr))
         mgr$.clearDatasourceGroupCache(.self, sendRequest=sendRequest)
 

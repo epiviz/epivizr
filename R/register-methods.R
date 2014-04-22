@@ -1,13 +1,31 @@
 setGeneric("register", signature=c("object"), 
 	function(object, columns=NULL, ...) standardGeneric("register"))
 
+setGeneric("reorderIfNeeded", signature=c("object"),
+           function(object) standardGeneric("reorderIfNeeded"))
+
+setMethod("reorderIfNeeded", "GenomicRanges",
+          function(object) {
+            if (S4Vectors:::isNotSorted(start(object))) {
+              order <- order(start(object))
+              object <- object[order,]
+            }
+            return(object)
+})
+
+setMethod("reorderIfNeeded", "SummarizedExperiment",
+          function(object) {
+            if (S4Vectors:::isNotSorted(start(rowData(object)))) {
+              order <- order(start(rowData(object)))
+              object <- object[order,]
+            }
+            return(object)
+})
+
 setMethod("register", "GenomicRanges",
 	function(object, columns, type=c("block","bp"), ...) {
 		type <- match.arg(type)
-                if (S4Vectors:::isNotSorted(start(object))) {
-                  order <- order(start(object))
-                  object <- object[order,]
-                }
+                object <- reorderIfNeeded(object)
 
 		if (!is(object, "GIntervalTree")) {
 			object <- as(object, "GIntervalTree")
@@ -20,10 +38,7 @@ setMethod("register", "GenomicRanges",
 
 setMethod("register", "SummarizedExperiment",
 	function(object, columns=NULL, assay=1) {
-                if (S4Vectors:::isNotSorted(start(rowData(object)))) {
-                  order <- order(start(rowData(object)))
-                  object <- object[order,]
-                }
+          object <- reorderIfNeeded(object)
 		
 		if (!is(rowData(object), "GIntervalTree")) {
 			rowData(object) <- as(rowData(object), "GIntervalTree")
