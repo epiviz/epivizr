@@ -40,7 +40,7 @@ EpivizFeatureData <- setRefClass("EpivizFeatureData",
     .getLimits=function() {
       mat <- GenomicRanges::assay(object, i=.self$assay)
       colIndex <- match(columns, rownames(colData(object)))
-      sapply(seq(along=columns), function(i) range(pretty(range(mat[,i], na.rm=TRUE))))
+      unname(sapply(seq(along=columns), function(i) range(pretty(range(mat[,i], na.rm=TRUE)))))
     },
     plot=function(x, y, ...) {
       ms <- getMeasurements()
@@ -93,6 +93,8 @@ setValidity2("EpivizFeatureData", .valid.EpivizFeatureData)
 EpivizFeatureData$methods(
     getMeasurements=function() {
       out <- lapply(columns, function(curCol) {
+        m <- match(curCol, columns)
+        
         list(id=curCol,
            name=curCol,
            type="feature",
@@ -100,8 +102,8 @@ EpivizFeatureData$methods(
            datasourceGroup=id,
            defaultChartType="Scatter Plot",
            annotation=NULL,
-           minValue=ylim[1],
-           maxValue=ylim[2],
+           minValue=ylim[1,m],
+           maxValue=ylim[2,m],
            metadata=c("probe","symbol"))
     })
 #     out <- paste(name, columns, sep="$")

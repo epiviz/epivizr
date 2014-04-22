@@ -23,7 +23,7 @@ EpivizBpData <- setRefClass("EpivizBpData",
       TRUE
     },
     .getLimits=function() {
-      sapply(mcols(object)[columns], function(x) range(pretty(range(x, na.rm=TRUE))))
+      unname(sapply(mcols(object)[,columns], function(x) range(pretty(range(x, na.rm=TRUE)))))
     },
     plot=function(...) {
       mgr$lineChart(ms=getMeasurements(), ...)
@@ -50,6 +50,7 @@ setValidity2("EpivizBpData", .valid.EpivizBpData)
 EpivizBpData$methods(
   getMeasurements=function() {
     out <- lapply(columns, function(curCol) {
+      m <- match(curCol, columns)
       list(id=curCol,
            name=curCol,
            type="feature",
@@ -57,8 +58,8 @@ EpivizBpData$methods(
            datasourceGroup=id,
            defaultChartType="Line Track",
            annotation=NULL,
-           minValue=ylim[1],
-           maxValue=ylim[2],
+           minValue=ylim[1,m],
+           maxValue=ylim[2,m],
            metadata=NULL)
     })
     

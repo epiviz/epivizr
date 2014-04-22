@@ -16,17 +16,16 @@ test_that("addMeasurements works for blocks", {
                        type="range",
                        datasourceId=msId,
                        datasourceGroup=msId,
-                       formula=NULL,
-                       defaultChartType="block",
-                       annotation=list(NULL),
+                       defaultChartType="Blocks Track",
+                       annotation=NULL,
                        minValue=NA,
                        maxValue=NA,
-                       metadata=list(NULL)))
+                       metadata=NULL))
     
     expect_equal(length(mgr$msList$block), 1)
     expect_false(is.null(mgr$msList$block[[msId]]))
     expect_equal(mgr$msList$block[[msId]]$name, "ms1")
-    expect_equal(mgr$msList$block[[msId]]$measurements, expMS)
+    expect_equal(mgr$msList$block[[msId]]$measurements, expMs)
 
     expect_equal(as(mgr$msList$block[[msId]]$obj$object, "GRanges"), unname(gr))
 
@@ -48,10 +47,27 @@ test_that("addMeasurements works for bp", {
     msObj <- mgr$addMeasurements(gr, "ms1", sendRequest=sendRequest, type="bp")
     msId <- msObj$getId()
 
+    rngs <- sapply(1:2, function(i) range(pretty(range(mcols(gr)[,paste0("score",i)], na.rm=TRUE))))
+    
+    expMs <- lapply(1:2, function(i) {
+      list(id=paste0("score",i),
+           name=paste0("score",i),
+           type="feature",
+           datasourceId=msId,
+           datasourceGroup=msId,
+           defaultChartType="Line Track",
+           annotation=NULL,
+           minValue=rngs[1,i],
+           maxValue=rngs[2,i],
+           metadata=NULL)
+    })
+
+    obsMs <- mgr$msList$bp[[msId]]$measurements
+    
     expect_equal(length(mgr$msList$bp), 1)
     expect_false(is.null(mgr$msList$bp[[msId]]))
     expect_equal(mgr$msList$bp[[msId]]$name, "ms1")
-    expect_equal(mgr$msList$bp[[msId]]$measurements, paste0(msId,"__","score",1:2))
+    expect_equal(mgr$msList$bp[[msId]]$measurements, expMs)
     expect_equal(as(mgr$msList$bp[[msId]]$obj$object, "GRanges"), unname(gr))
     expect_equal(mgr$msList$bp[[msId]]$obj$columns, paste0("score",1:2))
 
@@ -71,10 +87,26 @@ test_that("addMeasurements works for SummarizedExperiment", {
     msObj <- mgr$addMeasurements(sset, "ms1", sendRequest=sendRequest, columns=c("A","B"), assay="counts2")
     msId <- msObj$getId()
 
+    rngs <- unname(sapply(c("A","B"), function(col) range(pretty(range(assay(sset,"counts2")[,col], na.rm=TRUE)))))
+    
+    expMs <- lapply(c("A","B"), function(col) {
+      i <- match(col,c("A","B"))
+      list(id=col,
+           name=col,
+           type="feature",
+           datasourceId=msId,
+           datasourceGroup=msId,
+           defaultChartType="Scatter Plot",
+           annotation=NULL,
+           minValue=rngs[1,i],
+           maxValue=rngs[2,i],
+           metadata=c("probe","symbol"))
+    })
+
     expect_equal(length(mgr$msList$gene), 1)
     expect_false(is.null(mgr$msList$gene[[msId]]))
     expect_equal(mgr$msList$gene[[msId]]$name, "ms1")
-    expect_equal(mgr$msList$gene[[msId]]$measurements, paste0(msId, "__", c("A","B")))
+    expect_equal(mgr$msList$gene[[msId]]$measurements, expMs)
     expect_equal(mgr$msList$gene[[msId]]$obj$columns, c("A","B"))
 
     if (sendRequest) wait_until(!mgr$server$requestWaiting)
@@ -92,11 +124,28 @@ test_that("addMeasurements works for ExpressionSet", {
     if (sendRequest) wait_until(mgr$server$socketConnected)
     msObj <- mgr$addMeasurements(eset, "ms1", sendRequest=sendRequest, columns=c("SAMP_1","SAMP_2"))
     msId <- msObj$getId()
+
+    rngs <- sapply(1:2, function(i) range(pretty(range(exprs(eset)[,paste0("SAMP_",i)]))))
+    
+    expMS <- lapply(1:2, function(i) {
+      list(id=paste0("SAMP_",i),
+           name=paste0("SAMP_",i),
+           type="feature",
+           datasourceId=msId,
+           datasourceGroup=msId,
+           defaultChartType="Scatter Plot",
+           annotation=NULL,
+           minValue=rngs[1,i],
+           maxValue=rngs[2,i],
+           metadata=c("probe","symbol"))
+    })
+
+    obsMs <- mgr$msList$gene[[msId]]$measurements
     
     expect_equal(length(mgr$msList$gene), 1)
     expect_false(is.null(mgr$msList$gene[[msId]]))
     expect_equal(mgr$msList$gene[[msId]]$name, "ms1")
-    expect_equal(mgr$msList$gene[[msId]]$measurements, paste0(msId,"__","SAMP_",1:2))
+    expect_equal(mgr$msList$gene[[msId]]$measurements, expMS)
     expect_equal(mgr$msList$gene[[msId]]$obj$columns, paste0("SAMP_",1:2))
 
     if (sendRequest) wait_until(!mgr$server$requestWaiting)
