@@ -91,10 +91,10 @@ EpivizFeatureData$methods(
            datasourceId=id,
            datasourceGroup=id,
            defaultChartType="Scatter Plot",
-           annotation=list(NULL),
+           annotation=NULL,
            minValue=ylim[1],
            maxValue=ylim[2],
-           metadata=list(NULL))
+           metadata=NULL)
     })
 #     out <- paste(name, columns, sep="$")
   #    nms <- paste(id, columns, sep="__")
