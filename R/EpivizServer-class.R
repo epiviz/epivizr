@@ -150,8 +150,12 @@ EpivizServer <- setRefClass("EpivizServer",
              getSeqInfos=mgr$getSeqInfos(),
              getAllData=msgData$chr)
           response=rjson::toJSON(out)
+          if (verbose) {
+            epivizrMsg("SEND: ", response)
+          }
           websocket$send(response)
         } else if (msg$type == "response") {
+          # TODO: check response success
           callback = mgr$callbackArray$get(msg$requestId)
           if (!is.null(callback)) {
             callback(msg$data)

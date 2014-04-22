@@ -217,9 +217,8 @@ EpivizDeviceMgr$methods(
     epivizObject$setName(msName)
     epivizObject$setMgr(.self)
 
-    # TODO: change for v2
     measurements <- epivizObject$getMeasurements()
-    msRecord <- list(measurements=names(measurements), 
+    msRecord <- list(measurements=measurements, 
       name=msName, obj=epivizObject, connected=FALSE)
     msList[[type]][[msId]] <<- msRecord
 
@@ -352,7 +351,7 @@ EpivizDeviceMgr$methods(
      
     objRecord <- typeList[[slot]]
     msName <- objRecord$name
-    ms <- objRecord$measurements
+    ms <- objRecord$obj$getMeasurements()
 
     msList[[msType]][[msObj$getId()]] <<- NULL
     if(objRecord$connected) {
@@ -431,9 +430,11 @@ EpivizDeviceMgr$methods(
        if (length(msList[[curType]])>0) {
          for (msRecord in msList[[curType]]) {
            ms <- msRecord$obj$getMeasurements()
+           for (curMs in ms) {
            for (recName in names(out)) {
-             out[[recName]] <- c(out[[recName]], ms[[recName]])
+             out[[recName]] <- c(out[[recName]], curMs[[recName]])
            }
+         }
          }
        }
      }

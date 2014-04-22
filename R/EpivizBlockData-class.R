@@ -25,18 +25,18 @@ setValidity2("EpivizBlockData", .valid.EpivizBlockData)
 
 EpivizBlockData$methods(
   getMeasurements=function() {
-    out <- list(id=id,
+    out <- list(list(id=id,
                 name=name,
                 type="range",
                 datasourceId=id,
                 datasourceGroup=id,
                 dataprovider=id,
                 formula=NULL,
-                defaultChartType="block",
-                annotation=list(NULL),
+                defaultChartType="Blocks Track",
+                annotation=NULL,
                 minValue=NA,
                 maxValue=NA,
-                metadata=list(NULL))
+                metadata=NULL))
       out
   },
   parseMeasurement=function(msId) {
