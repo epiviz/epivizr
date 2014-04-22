@@ -46,16 +46,14 @@ EpivizBpData$methods(
     out <- lapply(columns, function(curCol) {
       list(id=curCol,
            name=curCol,
-           type="range",
+           type="feature",
            datasourceId=id,
            datasourceGroup=id,
-           dataprovider=id,
-           formula=NULL,
-           defaultChartType="line",
-           annotation=list(NULL),
+           defaultChartType="Line Track",
+           annotation=NULL,
            minValue=ylim[1],
            maxValue=ylim[2],
-           metadata=list(NULL))
+           metadata=NULL)
     })
     
     #out <- paste(name, columns, sep="$")

@@ -30,8 +30,6 @@ EpivizBlockData$methods(
                 type="range",
                 datasourceId=id,
                 datasourceGroup=id,
-                dataprovider=id,
-                formula=NULL,
                 defaultChartType="Blocks Track",
                 annotation=NULL,
                 minValue=NA,

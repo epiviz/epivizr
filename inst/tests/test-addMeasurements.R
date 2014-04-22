@@ -16,7 +16,6 @@ test_that("addMeasurements works for blocks", {
                        type="range",
                        datasourceId=msId,
                        datasourceGroup=msId,
-                       dataprovider=msId,
                        formula=NULL,
                        defaultChartType="block",
                        annotation=list(NULL),
