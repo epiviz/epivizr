@@ -672,7 +672,6 @@ EpivizDeviceMgr$methods(
      deviceList[[deviceId]] <<- deviceObj
      deviceObj
    },
-   # TODO: turn this into a rmMeasurement method
    rmDevice=function(deviceObj) {
      'delete device from epiviz browser'
      if (is.character(deviceObj)) {
