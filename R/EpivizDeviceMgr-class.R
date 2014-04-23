@@ -605,7 +605,11 @@ EpivizDeviceMgr$methods(
         epivizrMsg("chart ", chartId, " removed and disconnected", tagPrompt=TRUE)  
       }
       requestId=callbackArray$append(callback)
-      server$rmChart(requestId, chartIdMap[[chartId]])
+      request <- list(type="request",
+                      requestId=requestId,
+                      data=list(action="removeChart",
+                        chartId=chartIdMap[[chartId]]))
+      server$sendRequest(request)
     }
     invisible(NULL)
    },
