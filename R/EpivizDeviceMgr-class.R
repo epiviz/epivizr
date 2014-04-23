@@ -277,11 +277,21 @@ EpivizDeviceMgr$methods(
        callback <- function(data) {
          epivizrMsg("DatasourceGroup caches cleared", tagPrompt=TRUE)
        }
+       callback2 <- function(data) {
+         epivizrMsg("Redrawn", tagPrompt=TRUE)
+       }
+       
        requestId <- callbackArray$append(callback)
        request <- list(requestId=requestId,
                        type="request",
                        data=list(action="clearDatasourceGroupCache",
                          datasourceGroup=msObj$getId()))
+       server$sendRequest(request)
+
+       requestId <- callbackArray$append(callback2)
+       request <- list(requestId=requestId,
+                       type="request",
+                       data=list(action="redraw"))
        server$sendRequest(request)
      }
      invisible()
@@ -553,13 +563,18 @@ EpivizDeviceMgr$methods(
 
     if (sendRequest) {
       callback=function(data) {
-        appChartId = data$id
+        appChartId = data$value$id
         chartIdMap[[chartId]] <<- appChartId
         activeId <<- chartId
         epivizrMsg("Chart ", chartId, " added to browser and connected", tagPrompt=TRUE)  
       }
       requestId=callbackArray$append(callback)
-      server$addChart(requestId, chartObject$type, chartObject$measurements)
+      request <- list(type="request",
+                      requestId=requestId,
+                      data=list(action="addChart",
+                        type=chartObject$type,
+                        measurements=rjson::toJSON(chartObject$measurements)))
+      server$sendRequest(request)
     }
     invisible(NULL)
    }, 
@@ -716,25 +731,25 @@ EpivizDeviceMgr$methods(
 # chart methods
 EpivizDeviceMgr$methods(
   blockChart=function(ms, ...) {
-    if (!.self$.checkMeasurements(msType="block", ms=ms, ...))
-      stop("invalid measurements")
+#    if (!.self$.checkMeasurements(msType="block", ms=ms, ...))
+ #     stop("invalid measurements")
     
     chartObj <- EpivizChart$new(
       measurements=ms,
       mgr=.self,
-      type="blocksTrack")
+      type="epiviz.plugins.charts.BlocksTrack")
     addChart(chartObj, ...)
     chartObj
   },
   
   lineChart=function(ms, ...) {
-    if (!.self$.checkMeasurements(msType="bp", ms=ms, ...))
-      stop("invalid measurements")
+#    if (!.self$.checkMeasurements(msType="bp", ms=ms, ...))
+ #     stop("invalid measurements")
     
     chartObj <- EpivizChart$new(
       measurements=ms,
       mgr=.self,
-      type="lineTrack")
+      type="epiviz.plugins.charts.LineTrack")
     addChart(chartObj, ...)
     chartObj
   },
@@ -742,13 +757,13 @@ EpivizDeviceMgr$methods(
   scatterChart=function(x, y, ...) {
     ms <- c(x,y)
     
-    if(!.self$.checkMeasurements(msType="gene", ms=ms, ...))
-      stop("invalid measurements")
+#    if(!.self$.checkMeasurements(msType="gene", ms=ms, ...))
+ #     stop("invalid measurements")
     
     chartObj <- EpivizChart$new(
       measurements=ms,
       mgr=.self,
-      type="geneScatterPlot")
+      type="epiviz.plugins.charts.ScatterPlot")
     addChart(chartObj, ...)
     chartObj
   }

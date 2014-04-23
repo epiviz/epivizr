@@ -6,7 +6,7 @@ EpivizBlockData <- setRefClass("EpivizBlockData",
   		columns <<- NULL
   	},
     plot=function(...) {
-      mgr$blockChart(ms=getMeasurements()[1], ...)
+      mgr$blockChart(ms=getMeasurements(), ...)
     }
   )
 )

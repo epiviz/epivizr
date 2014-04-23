@@ -1,6 +1,6 @@
 EpivizChart <- setRefClass("EpivizChart",
 	fields=list(
-		measurements="character",
+		measurements="list",
 		id="character",
 		mgr="EpivizDeviceMgr",
 		inDevice="logical",
@@ -16,7 +16,8 @@ EpivizChart <- setRefClass("EpivizChart",
 		show=function() {
 			cat("EpivizChart object: ", getId(), "\n")
 			cat("type: ", type, "\n")
-			cat("measurements: ", paste0(measurements, collapse=","), "\n")
+                        nms <- sapply(measurements, function(x) paste0(x$id,"__",x$datasourceId))
+			cat("measurements: ", paste0(nms, collapse=","), "\n")
 		}
 	)
 )
