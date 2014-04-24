@@ -25,7 +25,7 @@ startEpiviz <- function(port=7312L, localURL=NULL, useDevel=FALSE,
               ifelse(proxy,"true","false"))
   
   if (!is.null(workspace)) {
-    url <- paste0(url,"workspace=",workspace,"&")
+    url <- paste0(url,"ws=",workspace,"&")
   } else {
     url <- paste0(url,
                sprintf("chr=%s&start=%d&end=%d&",

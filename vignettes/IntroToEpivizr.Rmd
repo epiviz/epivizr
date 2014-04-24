@@ -69,7 +69,6 @@ We use the `addDevice` method to do so. We then use the `service` function to le
 
 ```{r,eval=TRUE}
 blocks_dev <- mgr$addDevice(colon_blocks, "450k colon_blocks")
-mgr$service()
 ```
 
 You should now see that a new track is added to the `Epiviz` web app. You can think of this track as an interactive display device in `R`. As you navigate on the browser, data is requested from the `R` session through the websocket connection. Remember to escape to continue with your interactive `R` session. The `blocks_dev` object inherits from class `EpivizDevice`, which contains information about the data being displayed and the chart used to display it.  Note that the "brushing" effect we implement in `Epiviz` works for `epivizr` tracks as well.
@@ -91,7 +90,6 @@ We have a number of available data types in `epivizr`. In the previous section, 
 ```{r, eval=TRUE}
 # add low-filter smoothed methylation estimates
 means_dev <- mgr$addDevice(colon_curves, "450kMeth",type="bp",columns=c("cancerMean","normalMean"))
-mgr$service()
 ```
 
 Notice that we added two lines in this plot, one for mean methylation in cancer and another for mean methylation in normal. The `columns` argument specifies which columns in `mcols(colon_curves)` will be displayed. 
@@ -100,7 +98,6 @@ We can also add a track containing the smooth methylation difference estimate us
 
 ```{r, eval=TRUE}
 diff_dev <- mgr$addDevice(colon_curves,"450kMethDiff",type="bp",columns=c("smooth"),ylim=matrix(c(-.5,.5),nc=1))
-mgr$service()
 ```
 
 We pass limits for the y axis in this case. To see other arguments supported, you can use the help framework in R `?"EpivizDeviceMgr-class"`.
@@ -136,7 +133,6 @@ show(apColonData)
 
 ```{r, eval=TRUE}
 eset_dev <- mgr$addDevice(apColonData, "MAPlot", columns=c("colonA","colonM"), assay="MA")
-mgr$service()
 ```
 
 In this case, we specify which data is displayed in each axis of the scatter plot using the `columns` argument.
@@ -176,7 +172,6 @@ Now, create a new `SummarizedExperiment` object with the two column matrix, and 
 ```{r, eval=TRUE}
 sumexp <- SummarizedExperiment(mat, rowData=rowData(colonSE))
 se_dev <- mgr$addDevice(sumexp, "Mean by Sample Type", columns=c("normal", "cancer"))
-mgr$service()
 ```
 Again, the `columns` argument specifies what data will be displayed along which axis.
 
