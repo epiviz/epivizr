@@ -76,7 +76,7 @@ EpivizBpData$methods(
     if(!measurement %in% columns) {
       stop("could not find measurement", measurement)
     }
-    mcols(object)[curHits,measurement]
+    unname(mcols(object)[curHits,measurement])
   },
   parseMeasurement=function(msId) {
     column <- strsplit(msId, split="__")[[1]][2]

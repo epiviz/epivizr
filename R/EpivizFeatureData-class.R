@@ -124,10 +124,18 @@ EpivizFeatureData$methods(
 
       out <- list()
       if ("probe" %in% metadata) {
-        out$probe <- rowData(object)$PROBEID[curHits]
+        if (length(curHits) > 0) {
+          out$probe <- rowData(object)$PROBEID[curHits]
+        } else {
+          out$probe <- list()
+        }
       }
       if ("symbol" %in% metadata) {
-        out$symbol <- rowData(object)$SYMBOL[curHits]
+        if (length(curHits) > 0) {
+          out$symbol <- rowData(object)$SYMBOL[curHits]
+        } else {
+          out$symbol <- list()
+        }
       }
       out
     },
@@ -136,7 +144,7 @@ EpivizFeatureData$methods(
       stop("could not find measurement", measurement)
     }
     m <- match(measurement, columns)
-    assay(object, .self$assay)[curHits, m]
+    unname(assay(object, .self$assay)[curHits, m])
   },
     packageData=function(msId) {
       column <- parseMeasurement(msId)

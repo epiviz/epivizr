@@ -183,7 +183,11 @@ EpivizData$methods(
   getRows=function(query, metadata) {
     getHits(query)
     if (length(curHits) == 0) {
-      out <- list(useOffset=FALSE, values=list())
+      out <- list(globalStartIndex=NULL, useOffset=FALSE,
+                  values=list(id=list(),
+                    start=list(),
+                    end=list(),
+                    metadata=.self$.getMetadata(curHits, metadata)))
     } else {
       out <- list(globalStartIndex=curHits[1],
                   useOffset=FALSE,
@@ -209,7 +213,7 @@ EpivizData$methods(
   getValues=function(query, measurement) {
     getHits(query)
     if (length(curHits) == 0) {
-      out <- list(values=list())
+      out <- list(globalStartIndex=NULL, values=list())
     } else {
       out <- list(globalStartIndex=curHits[1],
                   values=.self$.getValues(curHits, measurement))
