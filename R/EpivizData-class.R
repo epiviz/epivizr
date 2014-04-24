@@ -196,7 +196,9 @@ EpivizData$methods(
     }
     if (length(out$values)>0 && length(out$values$id) == 1) {
       for (slotName in names(out$values)) {
-        out$values[[slotName]] <- list(out$values[[slotName]])
+        # TODO: switch to simplejson
+        if (slotName != "metadata")
+          out$values[[slotName]] <- list(out$values[[slotName]])
       }
     }
     return(out)

@@ -1,6 +1,6 @@
 startEpiviz <- function(port=7312L, localURL=NULL, useDevel=FALSE, 
                         chr="chr11", start=99800000, end=103383180, 
-                        debug=FALSE, proxy=TRUE, workspace=NULL, scripts=NULL,
+                        debug=FALSE, proxy=TRUE, workspace=NULL, scripts=NULL, gists=NULL,
                         openBrowser=TRUE, daemonized=.epivizrCanDaemonize(),
                         verbose=FALSE, nonInteractive=FALSE, tryPorts=FALSE) {
 
@@ -37,6 +37,11 @@ startEpiviz <- function(port=7312L, localURL=NULL, useDevel=FALSE,
   if (!is.null(scripts)) {
     scriptString = paste(sprintf("script[]=%s&", scripts),collapse="")
     url <- paste0(url,scriptString)
+  }
+
+  if (!is.null(gist)) {
+    gistString <- paste(sprintf("gist[]=%s&", gists), collapse="")
+    url <- paste0(url,gistString)
   }
 
   if (daemonized && !.epivizrCanDaemonize()) {
