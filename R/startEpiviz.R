@@ -23,7 +23,7 @@ startEpiviz <- function(port=7312L, localURL=NULL, useDevel=FALSE,
               url,
               controllerHost,
               ifelse(debug,"true","false"),
-              ifelse(proxy,"true","false"))
+              ifelse(proxy,"false","false")) # TODO: fix proxy on v1 this needs to change
   
   if (!is.null(workspace)) {
     url <- paste0(url,"workspace=",workspace,"&")
