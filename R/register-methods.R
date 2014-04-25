@@ -4,19 +4,35 @@ setGeneric("register", signature=c("object"),
 setGeneric("reorderIfNeeded", signature=c("object"),
            function(object) standardGeneric("reorderIfNeeded"))
 
+# TODO: add a sort check
 setMethod("reorderIfNeeded", "GenomicRanges",
           function(object) {
-            if (S4Vectors:::isNotSorted(start(object))) {
-              order <- order(start(object))
-              object <- object[order,]
+            stranded <- any(strand(object) != "*")
+            if (stranded) {
+              oobj <- object
+              strand(object) <- "*"
+            }
+            if (S4Vectors:::isNotSorted(object)) {
+              order <- order(object)
+              if (stranded) {
+                object <- oobj[order,]
+              } else {
+                object <- object[order,]
+              }
             }
             return(object)
 })
 
 setMethod("reorderIfNeeded", "SummarizedExperiment",
           function(object) {
-            if (S4Vectors:::isNotSorted(start(rowData(object)))) {
-              order <- order(start(rowData(object)))
+            gr <- rowData(object)
+            stranded <- any(strand(gr) != "*")
+            if (stranded) {
+              ogr <- gr
+              strand(gr) <- "*"
+            }
+            if (S4Vectors:::isNotSorted(gr)) {
+              order <- order(gr)
               object <- object[order,]
             }
             return(object)
