@@ -11,7 +11,7 @@ startEpiviz <- function(port=7312L, localURL=NULL, useDevel=FALSE,
   if (missing(localURL) || is.null(localURL)) {
     urlPrefix <- ifelse(useDevel,"epiviz-dev", "epiviz")
     urlSuffix <- ifelse(useDevel, "", "/v1")
-    url <- sprintf("http://%s.cbcb.umd.edu%s/index.php", url)
+    url <- sprintf("http://%s.cbcb.umd.edu%s/index.php", urlPrefix, urlSuffix)
   } else {
     url <- localURL
   }
@@ -23,7 +23,7 @@ startEpiviz <- function(port=7312L, localURL=NULL, useDevel=FALSE,
               url,
               controllerHost,
               ifelse(debug,"true","false"),
-              ifelse(proxy,"true","false"))
+              ifelse(proxy,"false","false")) # TODO: fix proxy on v1 this needs to change
   
   if (!is.null(workspace)) {
     url <- paste0(url,"workspace=",workspace,"&")
