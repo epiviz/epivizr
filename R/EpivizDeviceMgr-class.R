@@ -722,7 +722,11 @@ EpivizDeviceMgr$methods(
      }
     ids <- names(deviceList)
     type <- sapply(deviceList, function(x) x$getChartObject()$type)
-    ms <- sapply(deviceList, function(x) paste0(names(x$getChartObject()$measurements), collapse=","))
+     ms <- sapply(deviceList, function(x) {
+       tmp <- sapply(x$getChartObject()$measurements, function(y) paste0(y$datasourceId,":",y$name))
+       paste0(tmp,collapse=",")
+     })
+   
     connected <- ifelse(sapply(deviceList, function(x) x$getChartId() %in% names(chartIdMap)), "*", "")
     out <- data.frame(id=ids, 
                       type=type, 

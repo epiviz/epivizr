@@ -16,9 +16,10 @@ test_that("addDevice block works", {
     chartId <- devObj$getChartId()
 
     chartObj <- devObj$getChartObject()
-    ms <- structure(devObj$getMsObject()$getName(), names=msId)
+#    ms <- structure(devObj$getMsObject()$getName(), names=msId)
+    ms <- devObj$msObject$getMeasurements()
     expect_equal(chartObj$measurements, ms)
-    expect_equal(chartObj$type, "blocksTrack")
+    expect_equal(chartObj$type, "epiviz.plugins.charts.BlocksTrack")
     expect_false(is.null(mgr$chartList[[chartId]]))
 
     if (sendRequest) wait_until(!mgr$server$requestWaiting)
@@ -41,10 +42,11 @@ test_that("addDevice bp works", {
     msId <- devObj$getMsId()
     chartId <- devObj$getChartId()
 
-    ms <- structure(paste0(devObj$getMsObject()$getName(), "$score", 1:2), names=paste0(msId,"__score",1:2))
+#    ms <- structure(paste0(devObj$getMsObject()$getName(), "$score", 1:2), names=paste0(msId,"__score",1:2))
+    ms <- devObj$msObject$getMeasurements()
     chartObj <- devObj$getChartObject()
     expect_equal(chartObj$measurements, ms)
-    expect_equal(chartObj$type, "lineTrack")
+    expect_equal(chartObj$type, "epiviz.plugins.charts.LineTrack")
     expect_false(is.null(mgr$chartList[[chartId]]))
 
     if (sendRequest) wait_until(!mgr$server$requestWaiting)
@@ -67,9 +69,10 @@ test_that("addDevice feature works", {
     chartId <- devObj$getChartId()
 
     chartObj <- devObj$getChartObject()
-    ms <- structure(paste0(devObj$getMsObject()$getName(), "$", c("A","B")), names=paste0(msId, "__", c("A","B")))
+   # ms <- structure(paste0(devObj$getMsObject()$getName(), "$", c("A","B")), names=paste0(msId, "__", c("A","B")))
+    ms <- devObj$msObject$getMeasurements()
     expect_equal(chartObj$measurements, ms)
-    expect_equal(chartObj$type, "geneScatterPlot")
+    expect_equal(chartObj$type, "epiviz.plugins.charts.ScatterPlot")
     expect_false(is.null(mgr$chartList[[chartId]]))
 
     if (sendRequest) wait_until(!mgr$server$requestWaiting)
