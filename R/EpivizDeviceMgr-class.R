@@ -629,7 +629,11 @@ EpivizDeviceMgr$methods(
     
     ids <- names(chartList)
     type <- sapply(chartList, function(x) x$type)
-    ms <- sapply(chartList, function(x) paste0(names(x$measurements), collapse=","))
+    ms <- sapply(chartList,
+                 function(x) {
+                   tmp <- sapply(x$measurements, function(y) paste0(y$datasourceId,":",y$name))
+                   paste0(tmp, collapse=",")
+               })
     connected <- ifelse(sapply(names(chartList), function(x) x %in% names(chartIdMap)), "*", "")
     out <- data.frame(id=ids, 
                       type=type, 
@@ -758,7 +762,7 @@ EpivizDeviceMgr$methods(
   },
   
   scatterChart=function(x, y, ...) {
-    ms <- c(x,y)
+    ms <- list(x,y)
     
 #    if(!.self$.checkMeasurements(msType="gene", ms=ms, ...))
  #     stop("invalid measurements")

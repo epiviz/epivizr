@@ -48,7 +48,7 @@ EpivizFeatureData <- setRefClass("EpivizFeatureData",
       if (length(ms)<2)
         stop("need at least two columns to plot")
 
-      mgr$scatterChart(x=ms[1], y=ms[2], ...)
+      mgr$scatterChart(x=ms[[1]], y=ms[[2]], ...)
     }
   )
 )

@@ -1,7 +1,7 @@
 setEpivizrTestOpts <- function(sendRequest=TRUE,
                                 daemonized=TRUE,
                                local=FALSE,
-                                devel=TRUE,
+                                devel=FALSE,
                                test=FALSE,
                                 debug=TRUE,
                                 proxy=TRUE,
@@ -9,7 +9,7 @@ setEpivizrTestOpts <- function(sendRequest=TRUE,
   url <- if (devel) "epiviz-dev" else "epiviz"
 
   if (!local) {
-    url <- sprintf("http://%s.cbcb.umd.edu/v2/ui", url)
+    url <- sprintf("http://%s.cbcb.umd.edu", url)
   } else {
     url <- sprintf("http://localhost/~hcorrada/%s", url)
   }
