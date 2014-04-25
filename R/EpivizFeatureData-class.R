@@ -1,10 +1,11 @@
 EpivizFeatureData <- setRefClass("EpivizFeatureData",
   contains="EpivizData",
-  fields=list(assay="ANY"),
+  fields=list(assay="ANY",metadata="ANY"),
   methods=list(
     initialize=function(object=SummarizedExperiment(matrix(nr=0,nc=0),rowData=GRanges()),
                         assay=1, ...) {
       assay <<- assay
+      
       callSuper(object=object, ...)
     },
     update=function(newObject, ...) {
@@ -104,7 +105,7 @@ EpivizFeatureData$methods(
            annotation=NULL,
            minValue=ylim[1,m],
            maxValue=ylim[2,m],
-           metadata=c("probe","symbol"))
+           metadata=metadata)
     })
 #     out <- paste(name, columns, sep="$")
   #    nms <- paste(id, columns, sep="__")
@@ -118,25 +119,16 @@ EpivizFeatureData$methods(
       }
       column
     },
-    .getMetadata=function(curHits, metadata) {
-      if(!all(sapply(metadata, function(x) x %in% c("probe","symbol"))))
+    .getMetadata=function(curHits, curMetadata) {
+      if(any(!curMetadata %in% metadata))
         stop("error getting metadata")
 
-      out <- list()
-      if ("probe" %in% metadata) {
-        if (length(curHits) > 0) {
-          out$probe <- rowData(object)$PROBEID[curHits]
-        } else {
-          out$probe <- list()
-        }
+      if (length(curHits) == 0) {
+        out <- lapply(curMetadata, function (x) list())
+        return(out)
       }
-      if ("symbol" %in% metadata) {
-        if (length(curHits) > 0) {
-          out$symbol <- rowData(object)$SYMBOL[curHits]
-        } else {
-          out$symbol <- list()
-        }
-      }
+      out <- as.list(mcols(rowData(object))[curHits,curMetadata])
+      names(out) <- curMetadata
       out
     },
   .getValues=function(curHits, measurement) {

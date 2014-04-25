@@ -53,21 +53,26 @@ setMethod("register", "GenomicRanges",
 })
 
 setMethod("register", "SummarizedExperiment",
-	function(object, columns=NULL, assay=1) {
+	function(object, columns=NULL, assay=1, metadata=NULL) {
           object <- reorderIfNeeded(object)
 		
 		if (!is(rowData(object), "GIntervalTree")) {
 			rowData(object) <- as(rowData(object), "GIntervalTree")
 		}
                 mcolNames <- names(mcols(rowData(object)))
-
+          if (!is.null(metadata) && any(!metadata %in% mcolNames)) {
+            stop("invalid metadata")
+          }
+          if (is.null(metadata)) {
 		if (!("PROBEID" %in% mcolNames)) {
 			rowData(object)$PROBEID <- ""
 		} 
 		if (!("SYMBOL" %in% mcolNames)) {
 			rowData(object)$SYMBOL <- ""
-		} 
-		EpivizFeatureData$new(object=object, columns=columns, assay=assay)
+		}
+                metadata <- c("probe", "symbol")
+              }
+		EpivizFeatureData$new(object=object, columns=columns, assay=assay, metadata=metadata)
 })
 
 setMethod("register", "ExpressionSet",
