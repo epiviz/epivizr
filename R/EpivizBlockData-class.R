@@ -6,7 +6,7 @@ EpivizBlockData <- setRefClass("EpivizBlockData",
   		columns <<- NULL
   	},
     plot=function(...) {
-      mgr$blockChart(ms=getMeasurements()[1], ...)
+      mgr$blockChart(ms=getMeasurements(), ...)
     }
   )
 )
@@ -25,14 +25,28 @@ setValidity2("EpivizBlockData", .valid.EpivizBlockData)
 
 EpivizBlockData$methods(
   getMeasurements=function() {
-      out <- name
-      names(out) <- id
+    out <- list(list(id=id,
+                name=name,
+                type="range",
+                datasourceId=id,
+                datasourceGroup=id,
+                defaultChartType="Blocks Track",
+                annotation=NULL,
+                minValue=NA,
+                maxValue=NA,
+                metadata=NULL))
       out
   },
   parseMeasurement=function(msId) {
     if (msId != id)
       stop("invalid parsed measurement")
     NULL
+  },
+  .getMetadata=function(curHits, metadata) {
+    return(NULL)
+  },
+  .getValues=function(curHits, measurement) {
+    return(NULL)
   },
   packageData=function(msId=NULL) {
     if (!length(curHits)) {
