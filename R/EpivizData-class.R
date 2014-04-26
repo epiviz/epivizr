@@ -223,6 +223,7 @@ EpivizData$methods(
     }
     return(out)
   },
+  # TODO: remove this method
   getData=function(query, msId=NULL) {
     if (!is(query, "GRanges"))
       stop("'query' must be a GRanges object")
