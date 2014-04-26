@@ -11,6 +11,9 @@ EpivizFeatureData <- setRefClass("EpivizFeatureData",
     update=function(newObject, ...) {
       if (!is(newObject, "SummarizedExperiment"))
         stop("'newObject' must be of class 'SummarizedExperiment'")
+
+      newObject <- reorderIfNecessary(newObject)
+      
       if(!is(rowData(newObject), "GIntervalTree"))
         rowData(newObject) <- as(rowData(newObject), "GIntervalTree")
       callSuper(newObject, ...)

@@ -56,9 +56,9 @@ EpivizData <- setRefClass("EpivizData",
       NULL
     },
     update=function(newObject, sendRequest=TRUE) {
-      if(class(newObject) != class(object)) {
-        stop("class of 'newObject' is not equal to class of current 'object'")
-      }
+#      if(class(newObject) != class(object)) {
+  #      stop("class of 'newObject' is not equal to class of current 'object'")
+    #  }
 
       oldObject <- object
       object <<- newObject
@@ -73,10 +73,10 @@ EpivizData <- setRefClass("EpivizData",
         ylim <<- .getLimits()
       }
 
-      object <<- reorderIfNeeded(object)
-      if(is(object,"SummarizedExperiment") && !is(rowData(object),"GIntervalTree")) {
-        rowData(object) <<- as(rowData(object), "GIntervalTree")
-      }
+      
+      #if(is(object,"SummarizedExperiment") && !is(rowData(object),"GIntervalTree")) {
+       # rowData(object) <<- as(rowData(object), "GIntervalTree")
+      #}
 
       naIndex <- .self$.getNAs()
       if (length(naIndex) > 0) {

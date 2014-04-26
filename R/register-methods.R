@@ -2,11 +2,11 @@ setGeneric("register", signature=c("object"),
 	function(object, columns=NULL, ...) standardGeneric("register"))
 
 setGeneric("reorderIfNeeded", signature=c("object"),
-           function(object) standardGeneric("reorderIfNeeded"))
+           function(object, ...) standardGeneric("reorderIfNeeded"))
 
 # TODO: add a sort check
 setMethod("reorderIfNeeded", "GenomicRanges",
-          function(object) {
+          function(object, ...) {
             stranded <- any(strand(object) != "*")
             if (stranded) {
               oobj <- object
@@ -24,7 +24,7 @@ setMethod("reorderIfNeeded", "GenomicRanges",
 })
 
 setMethod("reorderIfNeeded", "SummarizedExperiment",
-          function(object) {
+          function(object, ...) {
             gr <- rowData(object)
             stranded <- any(strand(gr) != "*")
             if (stranded) {
