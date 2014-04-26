@@ -11,7 +11,7 @@
 \usage{
   startEpiviz(port = 7312L, localURL = NULL, useDevel = FALSE,
     chr = "chr11", start = 99800000, end = 103383180, debug = FALSE,
-    proxy = TRUE, workspace = NULL, scripts=NULL, openBrowser = TRUE,
+    proxy = TRUE, workspace = NULL, scripts=NULL, gists=NULL, openBrowser = TRUE,
     daemonized = .epivizrCanDaemonize(), verbose = FALSE, 
     nonInteractive = FALSE, tryPorts = FALSE)
 }
@@ -45,8 +45,10 @@
   \item{workspace}{(character) a workspace id to load in the 
   epiviz web app on startup}
 
-  \item{scripts}{(character vector) URLs for JavaScript plugin scripts to be imported when epiviz is loaded}
+  \item{scripts}{(character vector) URLs for JavaScript plugin scripts to be imported when epiviz is loaded (see \url{http://epiviz.cbcb.umd.edu/help} for details).}
 
+  \item{gists}{(integer vector) Ids for github gists (\url{http://gist.github.com}) containing JavaScript plugin scripts to
+be imported when epiviz is loaded (see \url{http://epiviz.cbcb.umd.edu/help} for details).}
   \item{openBrowser}{(logical) browse to the epiviz URL before exiting function}
   
   \item{daemonized}{(logical) use non-blocking version if available}

@@ -34,6 +34,9 @@ test_that("register works for SummarizedExperiment", {
   dev <- epivizr::register(sset, columns=c("A","B"), assay="counts2")
   expect_true(validObject(dev))
 
+  order <- order(start(rowData(sset)))
+  sset <- sset[order,]
+  
   expect_is(dev, "EpivizFeatureData")
   expect_is(dev$object, "SummarizedExperiment")
   gr <- as(rowData(dev$object), "GRanges")
