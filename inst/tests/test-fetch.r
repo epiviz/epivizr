@@ -121,7 +121,7 @@ test_that("feature data fetch works", {
   res <- msObj$getValues(query, "SAMP_1")
   out <- list(globalStartIndex=min(hits),
               values=unname(mat[,"SAMP_1"]))
-#  print(res);print(out)
+  print(res);print(out)
   expect_equal(res,out)
 })
 
