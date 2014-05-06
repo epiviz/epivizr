@@ -116,12 +116,12 @@ test_that("feature data fetch works", {
                   SYMBOL=rowData(tmp)$SYMBOL)
                 ))
   expect_equal(res, out)
-  print(res); print(out)
+  #print(res); print(out)
   
   res <- msObj$getValues(query, "SAMP_1")
   out <- list(globalStartIndex=min(hits),
               values=unname(mat[,"SAMP_1"]))
-  print(res);print(out)
+#  print(res);print(out)
   expect_equal(res,out)
 })
 
@@ -174,7 +174,12 @@ test_that("mgr fetch works", {
 
     # dev 2
     res <- mgr$getRows(seqnames(query),start(query),end(query),NULL,devId2)
-    out <- list(useOffset=FALSE,values=list())
+    out <- list(globalStartIndex=NULL,
+                useOffset=FALSE,values=list(
+                                  id=list(),
+                                  start=list(),
+                                  end=list(),
+                                  metadata=NULL))
     expect_equal(res,out)
 
     # dev 3
@@ -185,7 +190,7 @@ test_that("mgr fetch works", {
                   id=seq(len=length(seq(1,100,by=5))),
                   start=30000000+seq(1,100,by=5),
                   end=30000000+seq(1,100,by=5),
-                  metadata=NULL))
+                  metadata=list(NULL)))
     expect_equal(res,out)
 
     res <- mgr$getValues(seqnames(query),start(query),end(query),devId3,"score1")
@@ -199,14 +204,14 @@ test_that("mgr fetch works", {
     expect_equal(res,out)
 
     # dev 4
-    res <- mgr$getRows(seqnames(query),start(query),end(query),c("probe","symbol"),devId4)
+    res <- mgr$getRows(seqnames(query),start(query),end(query),c("PROBEID","SYMBOL"),devId4)
     out <- list(globalStartIndex=hits[1],
                 useOffset=FALSE,
                 values=list(id=hits,
                   start=start(tmp),
                   end=end(tmp),
-                  metadata=list(probe=rowData(tmp)$PROBEID,
-                    symbol=rowData(tmp)$SYMBOL)))
+                  metadata=list(PROBEID=rowData(tmp)$PROBEID,
+                    SYMBOL=rowData(tmp)$SYMBOL)))
     expect_equal(res,out)
 
     res <- mgr$getValues(seqnames(query),start(query),end(query),devId4,"SAMP_1")
