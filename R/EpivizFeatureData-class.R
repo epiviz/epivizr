@@ -138,7 +138,8 @@ EpivizFeatureData$methods(
     if (!measurement %in% columns) {
       stop("could not find measurement", measurement)
     }
-    m <- match(measurement, columns)
+    colNames <- colnames(object)
+    m <- match(measurement, colNames)
     unname(assay(object, .self$assay)[curHits, m])
   },
     packageData=function(msId) {
