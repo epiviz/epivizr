@@ -56,10 +56,13 @@ setMethod("register", "SummarizedExperiment",
 	function(object, columns=NULL, assay=1, metadata=NULL) {
           object <- reorderIfNeeded(object)
 		
-		if (!is(rowData(object), "GIntervalTree")) {
-			rowData(object) <- as(rowData(object), "GIntervalTree")
-		}
-                mcolNames <- names(mcols(rowData(object)))
+          if (!is(rowData(object), "GIntervalTree")) {
+            rowData(object) <- as(rowData(object), "GIntervalTree")
+          }
+          mcolNames <- names(mcols(rowData(object)))
+          if (is.null(metadata) && !is.null(mcolNames)) {
+            metadata <- mcolNames
+          }
           if (!is.null(metadata) && any(!metadata %in% mcolNames)) {
             stop("invalid metadata")
           }
@@ -117,7 +120,7 @@ setMethod("register", "ExpressionSet",
 									  rowData=gr,
 									  colData=DataFrame(pd))
 
-		register(sumexp, columns=columns, assay=1)
+		register(sumexp, columns=columns, assay=1,metadata=c("PROBEID","SYMBOL"))
 })
 
 

@@ -100,7 +100,7 @@ test_that("addMeasurements works for SummarizedExperiment", {
            annotation=NULL,
            minValue=rngs[1,i],
            maxValue=rngs[2,i],
-           metadata=c("probe","symbol"))
+           metadata=c("probeid"))
     })
 
     expect_equal(length(mgr$msList$gene), 1)
@@ -137,7 +137,7 @@ test_that("addMeasurements works for ExpressionSet", {
            annotation=NULL,
            minValue=rngs[1,i],
            maxValue=rngs[2,i],
-           metadata=c("probe","symbol"))
+           metadata=c("PROBEID","SYMBOL"))
     })
 
     obsMs <- mgr$msList$gene[[msId]]$measurements
