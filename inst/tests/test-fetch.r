@@ -48,7 +48,7 @@ test_that("device data fetch works on bp data", {
               values=list(id=list(2),
                 start=list(6),
                 end=list(6),
-                metadata=list(NULL)))
+                metadata=NULL))
 
   expect_equal(res, out)
   #print(res);print(out)
@@ -190,7 +190,7 @@ test_that("mgr fetch works", {
                   id=seq(len=length(seq(1,100,by=5))),
                   start=30000000+seq(1,100,by=5),
                   end=30000000+seq(1,100,by=5),
-                  metadata=list(NULL)))
+                  metadata=NULL))
     expect_equal(res,out)
 
     res <- mgr$getValues(seqnames(query),start(query),end(query),devId3,"score1")

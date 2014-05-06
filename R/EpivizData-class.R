@@ -173,7 +173,7 @@ EpivizData$methods(
         return(invisible())
       }
       
-      if (S4Vectors:::isNotSorted(start(object)[curHits])) {
+      if (IRanges:::isNotSorted(start(object)[curHits])) {
         stop("these should be ordered by now...")
      }
       curHits <<- seq(min(curHits), max(curHits))
@@ -235,7 +235,7 @@ EpivizData$methods(
       curQuery <<- query
       olaps <- GenomicRanges::findOverlaps(query, object, select="all")
       curHits <<- subjectHits(olaps)
-      if (S4Vectors:::isNotSorted(start(object)[curHits])) {
+      if (IRanges:::isNotSorted(start(object)[curHits])) {
         ord <- order(start(object)[curHits])
         curHits <<- curHits[ord]
       }
