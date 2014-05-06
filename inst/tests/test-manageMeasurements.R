@@ -33,7 +33,7 @@ test_that("getMeasurements works", {
                annotation=rep(list(NULL),5),
                minValue=c(rngs4[1,],rngs3[1],rep(NA,2)),
                maxValue=c(rngs4[2,],rngs3[2],rep(NA,2)),
-               metadata=c(lapply(1:2,function(i) c("probe","symbol")),list(NULL),list(NULL),list(NULL))
+               metadata=c(lapply(1:2,function(i) c("PROBEID","SYMBOL")),list(NULL),list(NULL),list(NULL))
                )
     
     expect_equal(res,expMs)

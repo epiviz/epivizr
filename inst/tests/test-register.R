@@ -26,7 +26,7 @@ test_that("register works for bp data", {
   expect_equal(as(dev$object, "GRanges"), unname(gr))
   expect_equal(dev$columns, "score") 
   rng=range(pretty(range(gr$score)))
-  expect_equal(dev$ylim, cbind(score=rng))
+  expect_equal(dev$ylim, unname(cbind(rng)))
 })
 
 test_that("register works for SummarizedExperiment", {
@@ -40,20 +40,22 @@ test_that("register works for SummarizedExperiment", {
   expect_is(dev, "EpivizFeatureData")
   expect_is(dev$object, "SummarizedExperiment")
   gr <- as(rowData(dev$object), "GRanges")
-  expect_false(is.null(gr$PROBEID))
-  expect_false(is.null(gr$SYMBOL))
-  gr$PROBEID <- NULL
-  gr$SYMBOL <- NULL
-  expect_identical(gr, unname(rowData(sset)))
+  expect_false(is.null(gr$probeid))
 
-  expect_identical(assays(dev$object), assays(sset))
+  tmp <- rowData(sset)
+  strand(tmp) <- "*"
+  o <- order(tmp)
+  
+  expect_identical(gr, rowData(sset)[o,])
+  
+#  expect_identical(assays(dev$object), assays(sset)[o,])
   expect_identical(colData(dev$object), colData(sset))
 
   columns=c("A","B")
   expect_identical(dev$columns, columns)
   emat <- assay(sset,"counts2")[,c("A","B")]
   mat <- assay(dev$object,"counts2")[,c("A","B")]
-  expect_equal(emat, mat)
+  expect_equal(emat[o,], mat)
 
   rngs <- apply(emat, 2, function(x) range(pretty(range(x))))
   expect_equal(dev$ylim, rngs, check.attributes=FALSE)
