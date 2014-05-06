@@ -7,10 +7,12 @@ EpivizTrackData <- setRefClass("EpivizTrackData",
 	update=function(newObject, ...) {
 		if(!is(newObject,"GenomicRanges"))
 			stop("'newObject' must be of class 'GenomicRanges'")
-			
+
+                newObject <- reorderIfNeeded(newObject)
+                
 		if(!is(newObject, "GIntervalTree"))
 			newObject <- as(newObject, "GIntervalTree")
-		callSuper(newObject)
+		callSuper(newObject, ...)
 	}
   ))
 
@@ -24,5 +26,5 @@ EpivizTrackData <- setRefClass("EpivizTrackData",
 	c(.valid.EpivizTrackData.object(x))
 }
 
-IRanges::setValidity2("EpivizTrackData", .valid.EpivizTrackData)
+setValidity2("EpivizTrackData", .valid.EpivizTrackData)
 

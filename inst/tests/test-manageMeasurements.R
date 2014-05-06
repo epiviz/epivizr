@@ -17,14 +17,26 @@ test_that("getMeasurements works", {
     msObj3 <- mgr$addMeasurements(gr3, "dev3", sendRequest=sendRequest, type="bp"); msId3=msObj3$getId()
     msObj4 <- mgr$addMeasurements(eset, "dev4", sendRequest=sendRequest, columns=c("SAMP_1", "SAMP_2")); msId4=msObj4$getId()
 
+    rngs3 <- range(pretty(range(mcols(gr3)[,"score"],na.rm=TRUE)))
+    rngs4 <- sapply(1:2, function(i) range(pretty(range(exprs(eset)[,paste0("SAMP_",i)],na.rm=TRUE))))
+    
     if (sendRequest) wait_until(!mgr$server$requestWaiting)
     res <- mgr$getMeasurements()
 
-    out <- list(geneMeasurements=structure(list("dev4$SAMP_1","dev4$SAMP_2"), names=paste0(msId4, c("__SAMP_1","__SAMP_2"))),
-                bpMeasurements=structure(list("dev3$score"), names=paste0(msId3,"__score")), 
-                blockMeasurements=structure(list("dev1","dev2"), names=c(msId1,msId2)))
-
-    expect_equal(res,out)
+    expMs <- list(
+               id=c(paste0("SAMP_",1:2), "score", msId1,msId2),
+               name=c(paste0("SAMP_",1:2), "score", "dev1", "dev2"),
+               type=c(rep("feature",3),rep("range",2)),
+               datasourceId=c(rep(msId4,2),msId3,msId1,msId2),
+               datasourceGroup=c(rep(msId4,2),msId3,msId1,msId2),
+               defaultChartType=c(rep("Scatter Plot",2), rep("Line Track",1),rep("Blocks Track",2)),
+               annotation=rep(list(NULL),5),
+               minValue=c(rngs4[1,],rngs3[1],rep(NA,2)),
+               maxValue=c(rngs4[2,],rngs3[2],rep(NA,2)),
+               metadata=c(lapply(1:2,function(i) c("PROBEID","SYMBOL")),list(NULL),list(NULL),list(NULL))
+               )
+    
+    expect_equal(res,expMs)
   }, finally=mgr$stopServer())
 })
 

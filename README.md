@@ -5,7 +5,7 @@ The `epivizr` Bioconductor package implements two-way communication between the 
 
  
 ## Installation and requirements
-Epivizr is available as part of the [Bioconductor](http://bioconductor.org) project as of version 2.13. To install `epivizr`:
+Epivizr is available as part of the [Bioconductor](http://bioconductor.org) project as of version 2.13. To install the release version of `epivizr`:
 
 ```{r}
 source("http://bioconductor.org/biocLite.R")
@@ -28,7 +28,7 @@ You can get a quick tour of epiviz here: [http://youtu.be/099c4wUxozA](http://yo
 ## Development version
 
 This github repository contains the latest and greatest version of `epivizr` and is tracked by the devel version in Bioconductor (see
-[http://bioconductor.org/developers/how-to/useDevel/](http://bioconductor.org/developers/how-to/useDevel/) for more info.
+[http://bioconductor.org/developers/how-to/useDevel/](http://bioconductor.org/developers/how-to/useDevel/) for more info. In summary, if you install R-devel, you'll be set.
 
 ## Non-blocking
 
