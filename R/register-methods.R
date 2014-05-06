@@ -63,16 +63,7 @@ setMethod("register", "SummarizedExperiment",
           if (!is.null(metadata) && any(!metadata %in% mcolNames)) {
             stop("invalid metadata")
           }
-          if (is.null(metadata)) {
-		if (!("PROBEID" %in% mcolNames)) {
-			rowData(object)$PROBEID <- ""
-		} 
-		if (!("SYMBOL" %in% mcolNames)) {
-			rowData(object)$SYMBOL <- ""
-		}
-                metadata <- c("probe", "symbol")
-              }
-		EpivizFeatureData$new(object=object, columns=columns, assay=assay, metadata=metadata)
+          EpivizFeatureData$new(object=object, columns=columns, assay=assay, metadata=metadata)
 })
 
 setMethod("register", "ExpressionSet",

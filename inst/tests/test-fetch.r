@@ -51,7 +51,7 @@ test_that("device data fetch works on bp data", {
                 metadata=list(NULL)))
 
   expect_equal(res, out)
-
+  #print(res);print(out)
   res <- msObj1$getValues(query, c("score1"))
   out <- list(globalStartIndex=2,
               values=list(6))
@@ -104,7 +104,7 @@ test_that("feature data fetch works", {
   m <- match(rowData(tmp)$PROBEID, featureNames(eset))
   mat <- exprs(eset)[m, c("SAMP_1", "SAMP_2")]
 
-  res <- msObj$getRows(query, c("probe","symbol"))
+  res <- msObj$getRows(query, c("PROBEID","SYMBOL"))
   
   out <- list(globalStartIndex=min(hits),
               useOffset=FALSE,
@@ -112,14 +112,16 @@ test_that("feature data fetch works", {
                 id=hits,
                 start=start(tmp),
                 end=end(tmp),
-                metadata=list(probe=rowData(tmp)$PROBEID,
-                  symbol=rowData(tmp)$SYMBOL)
+                metadata=list(PROBEID=rowData(tmp)$PROBEID,
+                  SYMBOL=rowData(tmp)$SYMBOL)
                 ))
   expect_equal(res, out)
-
+  print(res); print(out)
+  
   res <- msObj$getValues(query, "SAMP_1")
   out <- list(globalStartIndex=min(hits),
               values=unname(mat[,"SAMP_1"]))
+  print(res);print(out)
   expect_equal(res,out)
 })
 
