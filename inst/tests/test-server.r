@@ -4,19 +4,25 @@ constrFunction <- function(...) epivizr:::EpivizServer$new(daemonized=getOption(
 
 mgr <- new.env()
 mgr$lastMessage <- ""
-mgr$callbackArray <- IndexedArray$new()
+mgr$callbackArray <- epivizr:::IndexedArray$new()
 mgr$verbose <- TRUE
-mgr$getData <- function(measurements, chr, start, end) return(chr)
+mgr$processRequest <- function(data) {
+  action <- data$action
+  print(action)
+  switch(action,
+         getAllData=data$chr)
+}
+
 mgr$makeRequest <- function(msg) {
-                           callback=function(newmsg) {
-                             mgr$lastMessage <<- newmsg
+                           callback=function(data) {
+                             mgr$lastMessage <<- data$msg
                              epivizrMsg("Response received")
                            }
                            requestId <- mgr$callbackArray$append(callback)
                            list(type="request",
-                                id=requestId,
-                                action="writeMsg",
-                                data=msg)
+                                requestId=requestId,
+                                data=list(action="writeMsg",
+                                  msg=msg))
                          }
 
 test_that("constructor creates a proper object", {
@@ -44,14 +50,14 @@ test_that("socket messaging works", {
   
   browseURL("http://localhost:7123/")
   tryCatch(server$service(), interrupt=function(int) invisible())
-  wait_until(substitute(server$socketConnected))
+  wait_until(server$socketConnected)
   
   expect_false(server$isClosed())
 
   request <- mgr$makeRequest("this msg")
   server$sendRequest(request)
 
-  wait_until(substitute(!server$requestWaiting))
+  wait_until(!server$requestWaiting)
   server$stopServer()
   expect_true(server$isClosed())
 })
@@ -92,7 +98,7 @@ test_that("tryPorts works", {
 
   browseURL(sprintf("http://localhost:%d/", server2$port))
   tryCatch(server2$service(), interrupt=function(int) invisible())
-  wait_until(substitute(server2$socketConnected))
+  wait_until(server2$socketConnected)
   
   server$stopServer()
 

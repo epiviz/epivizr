@@ -1,9 +1,48 @@
 setGeneric("register", signature=c("object"), 
 	function(object, columns=NULL, ...) standardGeneric("register"))
 
+setGeneric("reorderIfNeeded", signature=c("object"),
+           function(object, ...) standardGeneric("reorderIfNeeded"))
+
+# TODO: add a sort check
+setMethod("reorderIfNeeded", "GenomicRanges",
+          function(object, ...) {
+            stranded <- any(strand(object) != "*")
+            if (stranded) {
+              oobj <- object
+              strand(object) <- "*"
+            }
+            if (suppressWarnings(IRanges::is.unsorted(object))) {
+              order <- order(object)
+              if (stranded) {
+                object <- oobj[order,]
+              } else {
+                object <- object[order,]
+              }
+            }
+            return(object)
+})
+
+setMethod("reorderIfNeeded", "SummarizedExperiment",
+          function(object, ...) {
+            gr <- rowData(object)
+            stranded <- any(strand(gr) != "*")
+            if (stranded) {
+              ogr <- gr
+              strand(gr) <- "*"
+            }
+            if (suppressWarnings(IRanges::is.unsorted(gr))) {
+              order <- order(gr)
+              object <- object[order,]
+            }
+            return(object)
+})
+
 setMethod("register", "GenomicRanges",
 	function(object, columns, type=c("block","bp"), ...) {
 		type <- match.arg(type)
+                object <- reorderIfNeeded(object)
+
 		if (!is(object, "GIntervalTree")) {
 			object <- as(object, "GIntervalTree")
 		}
@@ -14,20 +53,20 @@ setMethod("register", "GenomicRanges",
 })
 
 setMethod("register", "SummarizedExperiment",
-	function(object, columns=NULL, assay=1) {
-		if (!is(rowData(object), "GIntervalTree")) {
-			rowData(object) <- as(rowData(object), "GIntervalTree")
-		}
-
-		mcolNames <- names(mcols(rowData(object)))
-
-		if (!("PROBEID" %in% mcolNames)) {
-			rowData(object)$PROBEID <- ""
-		} 
-		if (!("SYMBOL" %in% mcolNames)) {
-			rowData(object)$SYMBOL <- ""
-		} 
-		EpivizFeatureData$new(object=object, columns=columns, assay=assay)
+	function(object, columns=NULL, assay=1, metadata=NULL) {
+          object <- reorderIfNeeded(object)
+		
+          if (!is(rowData(object), "GIntervalTree")) {
+            rowData(object) <- as(rowData(object), "GIntervalTree")
+          }
+          mcolNames <- names(mcols(rowData(object)))
+          if (is.null(metadata) && !is.null(mcolNames)) {
+            metadata <- mcolNames
+          }
+          if (!is.null(metadata) && any(!metadata %in% mcolNames)) {
+            stop("invalid metadata")
+          }
+          EpivizFeatureData$new(object=object, columns=columns, assay=assay, metadata=metadata)
 })
 
 setMethod("register", "ExpressionSet",
@@ -78,10 +117,10 @@ setMethod("register", "ExpressionSet",
       pd <- pData(object)[columns,]
     }
 		sumexp <- SummarizedExperiment(assays=SimpleList(mat),
-									  rowData=GIntervalTree(gr),
+									  rowData=gr,
 									  colData=DataFrame(pd))
 
-		register(sumexp, columns=columns, assay=1)
+		register(sumexp, columns=columns, assay=1,metadata=c("PROBEID","SYMBOL"))
 })
 
 

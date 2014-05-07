@@ -22,6 +22,11 @@ EpivizData <- setRefClass("EpivizData",
       if (is.null(.self$columns))
         columns <<- .self$.getColumns()
 
+      naIndex <- .self$.getNAs()
+      if (length(naIndex)>0) {
+        object <<- object[-naIndex,]
+      }
+      
       if (!is.null(ylim)) {
         if (!.self$.checkLimits(ylim))
           stop("invalid 'ylim' argument")
@@ -34,6 +39,9 @@ EpivizData <- setRefClass("EpivizData",
       curHits <<- NULL
       inDevice <<- FALSE
       callSuper(...)
+    },
+    .getNAs=function() {
+      integer()
     },
     .checkColumns=function(columns) {
       is.null(columns)
@@ -48,13 +56,14 @@ EpivizData <- setRefClass("EpivizData",
       NULL
     },
     update=function(newObject, sendRequest=TRUE) {
-      if(class(newObject) != class(object)) {
-        stop("class of 'newObject' is not equal to class of current 'object'")
-      }
+#      if(class(newObject) != class(object)) {
+  #      stop("class of 'newObject' is not equal to class of current 'object'")
+    #  }
 
       oldObject <- object
       object <<- newObject
 
+      
       if (!is.null(columns)) {
         if (!.checkColumns(columns)) {
           object <<- oldObject
@@ -63,8 +72,19 @@ EpivizData <- setRefClass("EpivizData",
 
         ylim <<- .getLimits()
       }
+
+      
+      #if(is(object,"SummarizedExperiment") && !is(rowData(object),"GIntervalTree")) {
+       # rowData(object) <<- as(rowData(object), "GIntervalTree")
+      #}
+
+      naIndex <- .self$.getNAs()
+      if (length(naIndex) > 0) {
+        object <<- object[-naIndex,]
+      }
+      
       if (sendRequest && !is.null(mgr))
-        mgr$.clearChartCaches(.self, sendRequest=sendRequest)
+        mgr$.clearDatasourceGroupCache(.self, sendRequest=sendRequest)
 
       invisible()
     },
@@ -129,7 +149,7 @@ EpivizData <- setRefClass("EpivizData",
   c(.valid.EpivizData.columns(x))
 }
 
-IRanges::setValidity2("EpivizData", .valid.EpivizData)
+setValidity2("EpivizData", .valid.EpivizData)
 
 #######
 # get data
@@ -137,6 +157,73 @@ EpivizData$methods(
   packageData=function(msId) {
     stop("'packageData' called on object of virtual class")
   },
+  getHits=function(query) {
+    if (!is(query, "GRanges"))
+      stop("'query' must be a GRanges object")
+    if (length(query) != 1) {
+      stop("'query' must be of length 1")
+    }
+
+    if (is.null(curQuery) || !identical(unname(query), unname(curQuery))) {
+      curQuery <<- query
+      olaps <- GenomicRanges::findOverlaps(query, object, select="all")
+      curHits <<- subjectHits(olaps)
+
+      if (length(curHits) == 0) {
+        return(invisible())
+      }
+      
+      if (suppressWarnings(IRanges::is.unsorted(start(object)[curHits]))) {
+        stop("these should be ordered by now...")
+     }
+      curHits <<- seq(min(curHits), max(curHits))
+    }
+    invisible()
+  },
+  getRows=function(query, metadata) {
+    getHits(query)
+    if (length(curHits) == 0) {
+      out <- list(globalStartIndex=NULL, useOffset=FALSE,
+                  values=list(id=list(),
+                    start=list(),
+                    end=list(),
+                    metadata=.self$.getMetadata(curHits, metadata)))
+    } else {
+      out <- list(globalStartIndex=curHits[1],
+                  useOffset=FALSE,
+                  values=list(
+                    id=curHits,
+                    start=start(object)[curHits],
+                    end=end(object)[curHits],
+                    metadata=.self$.getMetadata(curHits, metadata)
+                   ))
+    }
+    if (length(out$values)>0 && length(out$values$id) == 1) {
+      for (slotName in names(out$values)) {
+        # TODO: switch to simplejson
+        if (slotName != "metadata")
+          out$values[[slotName]] <- list(out$values[[slotName]])
+      }
+    }
+    return(out)
+  },
+  .getValues=function(curHits, measurement) {
+    numeric()
+  },
+  getValues=function(query, measurement) {
+    getHits(query)
+    if (length(curHits) == 0) {
+      out <- list(globalStartIndex=NULL, values=list())
+    } else {
+      out <- list(globalStartIndex=curHits[1],
+                  values=.self$.getValues(curHits, measurement))
+      if (length(out$values) ==1) {
+        out$values <- list(out$values)
+      }
+    }
+    return(out)
+  },
+  # TODO: remove this method
   getData=function(query, msId=NULL) {
     if (!is(query, "GRanges"))
       stop("'query' must be a GRanges object")
@@ -148,7 +235,7 @@ EpivizData$methods(
       curQuery <<- query
       olaps <- GenomicRanges::findOverlaps(query, object, select="all")
       curHits <<- subjectHits(olaps)
-      if (IRanges:::isNotSorted(start(object)[curHits])) {
+      if (suppressWarnings(IRanges::is.unsorted(start(object)[curHits]))) {
         ord <- order(start(object)[curHits])
         curHits <<- curHits[ord]
       }

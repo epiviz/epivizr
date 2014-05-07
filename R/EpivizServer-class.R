@@ -51,6 +51,7 @@ EpivizServer <- setRefClass("EpivizServer",
       callbacks <- list(
         call=.self$.dummyTestPage,
         onWSOpen=function(ws) {
+          if (verbose) epivizrMsg("WS opened")
           websocket <<- ws
           socketConnected <<- TRUE
           websocket$onMessage(.self$msgCallback)
@@ -128,19 +129,35 @@ EpivizServer <- setRefClass("EpivizServer",
         }
         msg = rjson::fromJSON(msg)
         if (msg$type == "request") {
-          out=list(type="response",id=msg$id)
-          
-          if (msg$action=="getMeasurements") {
-            out$data=mgr$getMeasurements()
-          } else if(msg$action=="getAllData") {
-            out$data=mgr$getData(msg$measurements,msg$chr,msg$start,msg$end)
-          }
+          out=list(type="response",
+            requestId=msg$requestId)
+          msgData=msg$data
+          action=msgData$action
+          # request handling
+# defined here: http://epiviz.github.io/dataprovider-plugins.html
+
+          out$data=switch(action,
+             getMeasurements=mgr$getMeasurements(),
+             getRows=mgr$getRows(msgData$seqName,
+               msgData$start,
+               msgData$end,
+               msgData$metadata,
+               msgData$datasource),
+             getValues=mgr$getValues(msgData$seqName,
+               msgData$start,
+               msgData$end,
+               msgData$datasource,
+               msgData$measurement),
+             getSeqInfos=mgr$getSeqInfos(),
+             getAllData=msgData$chr)
           response=rjson::toJSON(out)
-          if (verbose) epivizrMsg("SEND: ", response)
-          
+          if (verbose) {
+            epivizrMsg("SEND: ", response)
+          }
           websocket$send(response)
         } else if (msg$type == "response") {
-          callback = mgr$callbackArray$get(msg$id)
+          # TODO: check response success
+          callback = mgr$callbackArray$get(msg$requestId)
           if (!is.null(callback)) {
             callback(msg$data)
           }
@@ -179,60 +196,60 @@ EpivizServer <- setRefClass("EpivizServer",
 )
  
 # Requests to the JS web app
-EpivizServer$methods(
-    addMeasurements=function(requestId, msType, measurements) {
-      request=list(type="request",
-                   id=requestId,
-                   action="addMeasurements",
-                   data=list(measurements=measurements,
-                             type=msType))
-      sendRequest(request)
-    },    
-    rmMeasurements=function(requestId, measurements, msType) {
-      request <- list(type="request",
-                      id=requestId,
-                      action="rmMeasurements",
-                      data=list(measurements=measurements,
-                                type=msType))
-      sendRequest(request)
-    },
-    addChart=function(requestId, chartType, measurements) {
-      request=list(type="request",
-                   id=requestId,
-                   action="addChart",
-                   data=list(measurements=measurements,
-                             type=chartType))
-      sendRequest(request)
-    },
-    rmChart=function(requestId, chartId) {
-      request=list(type="request",
-                   id=requestId,
-                   action="rmChart",
-                   data=list(chartId=chartId))
-      sendRequest(request)
-    },
-    clearChartCaches=function(requestId, chartIds) {
-      request=list(type="request",
-                   id=requestId,
-                   action="clearDeviceCaches",
-                   data=list(ids=chartIds))
-      sendRequest(request)
-    },
-    refresh=function() {
-      request=list(action="refresh")
-      # TODO: finish implementation
-      # sendRequest(request)
-      invisible()
-    },
-    navigate=function(requestId,chr,start,end) {
-      request=list(type="request",
-                   action="navigate",
-                   id=requestId,
-                   data=list(chr=chr,start=start,end=end))
-      sendRequest(request)
-    }
-)
-
+#EpivizServer$methods(
+#    addMeasurements=function(requestId, msType, measurements) {
+#      request=list(type="request",
+#                   id=requestId,
+#                   action="addMeasurements",
+#                   data=list(measurements=measurements,
+#                             type=msType))
+#      sendRequest(request)
+#    },    
+#    rmMeasurements=function(requestId, measurements, msType) {
+#      request <- list(type="request",
+#                      id=requestId,
+#                      action="rmMeasurements",
+#                      data=list(measurements=measurements,
+#                                type=msType))
+#      sendRequest(request)
+#    },
+#    addChart=function(requestId, chartType, measurements) {
+#      request=list(type="request",
+#                   id=requestId,
+#                   action="addChart",
+#                   data=list(measurements=measurements,
+#                             type=chartType))
+#      sendRequest(request)
+#    },
+#    rmChart=function(requestId, chartId) {
+#      request=list(type="request",
+#                   id=requestId,
+#                   action="rmChart",
+#                   data=list(chartId=chartId))
+#      sendRequest(request)
+#    },
+#    clearChartCaches=function(requestId, chartIds) {
+#      request=list(type="request",
+#                   id=requestId,
+#                   action="clearDeviceCaches",
+#                   data=list(ids=chartIds))
+#      sendRequest(request)
+#    },
+#    refresh=function() {
+#      request=list(action="refresh")
+#      # TODO: finish implementation
+#      # sendRequest(request)
+#      invisible()
+#    },
+#    navigate=function(requestId,chr,start,end) {
+#      request=list(type="request",
+#                   action="navigate",
+#                   id=requestId,
+#                   data=list(chr=chr,start=start,end=end))
+#      sendRequest(request)
+#    }
+#)
+#
 EpivizServer$methods(
     .dummyTestPage=function(req) {
       wsUrl = paste(sep='',
@@ -258,15 +275,15 @@ EpivizServer$methods(
           "<script>",
           sprintf("var ws = new WebSocket(%s);", wsUrl),
           "ws.onmessage = function(msg) {",
-          '  var data = JSON.parse(msg.data)',
+          '  var req = JSON.parse(msg.data)',
           '  msgDiv = document.createElement("pre");',
-          '  msgDiv.innerHTML = data.data.replace(/&/g, "&amp;").replace(/\\</g, "&lt;");',
+          '  msgDiv.innerHTML = req.data.msg.replace(/&/g, "&amp;").replace(/\\</g, "&lt;");',
           '  document.getElementById("output").appendChild(msgDiv);',
-          '  ws.send(JSON.stringify({type: "response", id: data.id, data: "that msg"}));',
+          '  ws.send(JSON.stringify({type: "response", requestId: req.requestId, data: {msg: "that msg"}}));',
           "}",
           "function sendInput() {",
           "  var input = document.getElementById('input');",
-          "  ws.send(JSON.stringify({type: 'request', id: 0, action: 'getAllData', measurements: {}, chr: input.value, start: 0, end: 0}));",
+          "  ws.send(JSON.stringify({type: 'request', requestId: 0, data: {action: 'getAllData', measurements: {}, chr: input.value, start: 0, end: 0}}));",
           "  input.value = '';",
           "}",
           "</script>",

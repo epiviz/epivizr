@@ -7,6 +7,12 @@ EpivizBpData <- setRefClass("EpivizBpData",
     .getColumns=function() {
       names(mcols(object))
     },
+    .getNAs=function() {
+      naMat <- is.na(mcols(object)[,columns])
+      if (!is.matrix(naMat))
+        naMat <- cbind(naMat)
+      which(rowSums(naMat)>0)
+    },
     .checkLimits=function(ylim) {
       if (!is.matrix(ylim))
         return(FALSE)
@@ -17,7 +23,8 @@ EpivizBpData <- setRefClass("EpivizBpData",
       TRUE
     },
     .getLimits=function() {
-      sapply(mcols(object)[columns], function(x) range(pretty(range(x, na.rm=TRUE))))
+      colIndex <- match(columns, colnames(mcols(object)))
+      unname(sapply(colIndex, function(i) range(pretty(range(mcols(object)[,i], na.rm=TRUE)))))
     },
     plot=function(...) {
       mgr$lineChart(ms=getMeasurements(), ...)
@@ -39,14 +46,37 @@ EpivizBpData <- setRefClass("EpivizBpData",
   c(.valid.EpivizBpData.ylim(x))
 }
 
-IRanges::setValidity2("EpivizBpData", .valid.EpivizBpData)
+setValidity2("EpivizBpData", .valid.EpivizBpData)
 
 EpivizBpData$methods(
   getMeasurements=function() {
-    out <- paste(name, columns, sep="$")
-    nms <- paste(id, columns, sep="__")
-    names(out) <- nms
+    out <- lapply(columns, function(curCol) {
+      m <- match(curCol, columns)
+      list(id=curCol,
+           name=curCol,
+           type="feature",
+           datasourceId=id,
+           datasourceGroup=id,
+           defaultChartType="Line Track",
+           annotation=NULL,
+           minValue=ylim[1,m],
+           maxValue=ylim[2,m],
+           metadata=NULL)
+    })
+    
+    #out <- paste(name, columns, sep="$")
+    #nms <- paste(id, columns, sep="__")
+    #names(out) <- nms
     out
+  },
+  .getMetadata=function(curHits, metadata) {
+    return(NULL)
+  },
+  .getValues=function(curHits, measurement) {
+    if(!measurement %in% columns) {
+      stop("could not find measurement", measurement)
+    }
+    unname(mcols(object)[curHits,measurement])
   },
   parseMeasurement=function(msId) {
     column <- strsplit(msId, split="__")[[1]][2]

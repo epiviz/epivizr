@@ -1,6 +1,6 @@
 startEpiviz <- function(port=7312L, localURL=NULL, useDevel=FALSE, 
                         chr="chr11", start=99800000, end=103383180, 
-                        debug=FALSE, proxy=TRUE, workspace=NULL, scripts=NULL,
+                        debug=FALSE, proxy=TRUE, workspace=NULL, scripts=NULL, gists=NULL,
                         openBrowser=TRUE, daemonized=.epivizrCanDaemonize(),
                         verbose=FALSE, nonInteractive=FALSE, tryPorts=FALSE) {
 
@@ -9,9 +9,8 @@ startEpiviz <- function(port=7312L, localURL=NULL, useDevel=FALSE,
   }
 
   if (missing(localURL) || is.null(localURL)) {
-    urlPrefix <- ifelse(useDevel,"epiviz-dev", "epiviz")
-    urlSuffix <- ifelse(useDevel, "", "/v1")
-    url <- sprintf("http://%s.cbcb.umd.edu%s/index.php", urlPrefix, urlSuffix)
+    url <- ifelse(useDevel,"epiviz-dev", "epiviz")
+    url <- sprintf("http://%s.cbcb.umd.edu/index.php", url)
   } else {
     url <- localURL
   }
@@ -19,14 +18,14 @@ startEpiviz <- function(port=7312L, localURL=NULL, useDevel=FALSE,
   wsURL <- "ws://localhost"
   controllerHost <- sprintf("%s:%d", wsURL, port)
   
-  url <- sprintf("%s?controllerHost=%s&debug=%s&proxy=%s&", 
+  url <- sprintf("%s?websocket-host[]=%s&debug=%s&proxy=%s&", 
               url,
               controllerHost,
               ifelse(debug,"true","false"),
-              ifelse(proxy,"false","false")) # TODO: fix proxy on v1 this needs to change
+              ifelse(proxy,"true","false"))
   
   if (!is.null(workspace)) {
-    url <- paste0(url,"workspace=",workspace,"&")
+    url <- paste0(url,"ws=",workspace,"&")
   } else {
     url <- paste0(url,
                sprintf("chr=%s&start=%d&end=%d&",
@@ -38,6 +37,11 @@ startEpiviz <- function(port=7312L, localURL=NULL, useDevel=FALSE,
   if (!is.null(scripts)) {
     scriptString = paste(sprintf("script[]=%s&", scripts),collapse="")
     url <- paste0(url,scriptString)
+  }
+
+  if (!is.null(gists)) {
+    gistString <- paste(sprintf("gist[]=%s&", gists), collapse="")
+    url <- paste0(url,gistString)
   }
 
   if (daemonized && !.epivizrCanDaemonize()) {
