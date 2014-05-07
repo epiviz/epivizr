@@ -4,7 +4,6 @@ setEpivizrTestOpts <- function(sendRequest=TRUE,
                                 devel=FALSE,
                                test=FALSE,
                                 debug=TRUE,
-                                proxy=TRUE,
                                port=7312L) {
   url <- if (devel) "epiviz-dev" else "epiviz"
 
@@ -24,7 +23,6 @@ setEpivizrTestOpts <- function(sendRequest=TRUE,
           epivizrTestDaemonized=daemonized,
           epivizrTestURL=url,
           epivizrTestDebug=debug,
-          epivizrTestProxy=proxy,
           epivizrTestPort=port)
   invisible()
 }
@@ -34,7 +32,6 @@ getEpivizrTestOpts=function() {
               daemonized=getOption("epivizrTestDaemonized"),
               url=getOption("epivizrTestURL"),
               debug=getOption("epivizrTestDebug"),
-              proxy=getOption("epivizrTestProxy"),
               port=getOption("epivizrTestPort"))
   print(out)
 }
@@ -44,12 +41,13 @@ setEpivizrTestOpts()
 test_srv=function(dem=TRUE) {setEpivizrTestOpts(daemonized=dem); test(filter=".*server.*")}
 test_reg=function() test(filter=".*register.*")
 test_mes=function(req=TRUE,dem=TRUE) {setEpivizrTestOpts(sendRequest=req, daemonized=dem); test(filter=".*Measure.*")}
+test_fet=function(req=TRUE) {setEpivizrTestOpts(sendRequest=req); test(filter=".*fetch.*")}
 test_cha=function(req=TRUE,dem=TRUE) {setEpivizrTestOpts(sendRequest=req, daemonized=dem); test(filter=".*Charts.*")}
 test_dev=function(req=TRUE,dem=TRUE) {setEpivizrTestOpts(sendRequest=req, daemonized=dem); test(filter=".*Device.*")}
 
 test_some=function(req=TRUE,dem=TRUE) {test_mes(req=req,dem=dem); test_cha(req=req,dem=dem); test_dev(req=req,dem=dem)}
 
-testb=function() {test_srv(); test_reg()}
+testb=function() {test_srv(); test_reg(); test_fet()}
 test0=function() test_some(FALSE,FALSE)
 test1=function() test_some(TRUE,FALSE)
 test2=function() test_some(TRUE,TRUE)
