@@ -3,6 +3,7 @@ import(Biobase)
 import(GenomicRanges)
 import(httpuv)
 import(rjson)
+import(IRanges)
 
 exportClasses(EpivizDeviceMgr,
 			  EpivizData,

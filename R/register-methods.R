@@ -12,7 +12,7 @@ setMethod("reorderIfNeeded", "GenomicRanges",
               oobj <- object
               strand(object) <- "*"
             }
-            if (IRanges:::isNotSorted(object)) {
+            if (suppressWarnings(IRanges::is.unsorted(object))) {
               order <- order(object)
               if (stranded) {
                 object <- oobj[order,]
@@ -31,7 +31,7 @@ setMethod("reorderIfNeeded", "SummarizedExperiment",
               ogr <- gr
               strand(gr) <- "*"
             }
-            if (IRanges:::isNotSorted(gr)) {
+            if (suppressWarnings(IRanges::is.unsorted(gr))) {
               order <- order(gr)
               object <- object[order,]
             }
