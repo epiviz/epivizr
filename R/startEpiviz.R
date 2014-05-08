@@ -17,12 +17,15 @@ startEpiviz <- function(port=7312L, localURL=NULL, useDevel=FALSE,
   
   wsURL <- "ws://localhost"
   controllerHost <- sprintf("%s:%d", wsURL, port)
+
+  if (!missing(proxy)) {
+    warning("Parameter 'proxy' is no longer used and will be removed in future versions.")
+  }
   
-  url <- sprintf("%s?websocket-host[]=%s&debug=%s&proxy=%s&", 
+  url <- sprintf("%s?websocket-host[]=%s&debug=%s&", 
               url,
               controllerHost,
-              ifelse(debug,"true","false"),
-              ifelse(proxy,"true","false"))
+              ifelse(debug,"true","false"))
   
   if (!is.null(workspace)) {
     url <- paste0(url,"ws=",workspace,"&")

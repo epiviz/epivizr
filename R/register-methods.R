@@ -12,7 +12,7 @@ setMethod("reorderIfNeeded", "GenomicRanges",
               oobj <- object
               strand(object) <- "*"
             }
-            if (S4Vectors:::isNotSorted(object)) {
+            if (!S4Vectors::isSorted(object)) {
               order <- order(object)
               if (stranded) {
                 object <- oobj[order,]
@@ -31,7 +31,7 @@ setMethod("reorderIfNeeded", "SummarizedExperiment",
               ogr <- gr
               strand(gr) <- "*"
             }
-            if (S4Vectors:::isNotSorted(gr)) {
+            if (!S4Vectors::isSorted(gr)) {
               order <- order(gr)
               object <- object[order,]
             }
