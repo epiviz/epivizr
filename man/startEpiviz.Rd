@@ -40,7 +40,7 @@
 
   \item{proxy}{(logical) start the epiviz browser using the data
   proxy. This is useful when hosting the web app locally, but
-  want to use data hosted in the epiviz server}
+  want to use data hosted in the epiviz server, (DEPRECATED, currently ignored)}
 
   \item{workspace}{(character) a workspace id to load in the 
   epiviz web app on startup}

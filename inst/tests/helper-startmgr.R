@@ -2,7 +2,6 @@
   if (openBrowser) {
     tryCatch(startEpiviz(localURL=getOption("epivizrTestURL"), 
     					debug=getOption("epivizrTestDebug"), 
-    					proxy=getOption("epivizrTestProxy"),
                                         daemonized=getOption("epivizrTestDaemonized"),
                                         port=getOption("epivizrTestPort"),
     					openBrowser=TRUE, 
@@ -10,7 +9,6 @@
   } else {
     startEpiviz(localURL=getOption("epivizrTestURL"),
     			debug=getOption("epivizrTestDebug"),
-    			proxy=getOption("epivizrTestProxy"),
                         daemonized=getOption("epivizrTestDaemonized"),
                         port=getOption("epivizrTestPort"),
     			openBrowser=FALSE, 
