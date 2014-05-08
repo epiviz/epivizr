@@ -51,7 +51,7 @@
 be imported when epiviz is loaded (see \url{http://epiviz.cbcb.umd.edu/help} for details).}
   \item{openBrowser}{(logical) browse to the epiviz URL before exiting function}
   
-  \item{daemonized}{(logical) use non-blocking version if available}
+  \item{daemonized}{(logical) use non-blocking version if available (UNIX-like platforms only)}
 
   \item{verbose}{(logical) display log messages on websocket requests}
 

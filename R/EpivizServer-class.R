@@ -149,7 +149,7 @@ EpivizServer <- setRefClass("EpivizServer",
                msgData$datasource,
                msgData$measurement),
              getSeqInfos=mgr$getSeqInfos(),
-             getAllData=msgData$chr)
+             getAllData=list(msg=msgData$chr))
           response=rjson::toJSON(out)
           if (verbose) {
             epivizrMsg("SEND: ", response)
