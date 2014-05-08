@@ -40,7 +40,7 @@
 
   \item{proxy}{(logical) start the epiviz browser using the data
   proxy. This is useful when hosting the web app locally, but
-  want to use data hosted in the epiviz server}
+  want to use data hosted in the epiviz server, (DEPRECATED, currently ignored)}
 
   \item{workspace}{(character) a workspace id to load in the 
   epiviz web app on startup}
@@ -51,7 +51,7 @@
 be imported when epiviz is loaded (see \url{http://epiviz.cbcb.umd.edu/help} for details).}
   \item{openBrowser}{(logical) browse to the epiviz URL before exiting function}
   
-  \item{daemonized}{(logical) use non-blocking version if available}
+  \item{daemonized}{(logical) use non-blocking version if available (UNIX-like platforms only)}
 
   \item{verbose}{(logical) display log messages on websocket requests}
 

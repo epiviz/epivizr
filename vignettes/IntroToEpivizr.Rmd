@@ -62,14 +62,31 @@ mgr$startServer()
 ```
 This opens a websocket connection between the interactive `R` session and the browser client. This will allow us to visualize data stored in the `Epiviz` server along with data in the interactive `R` session.
 
+----
+*Windows users:* In Windows platforms we need to use the `service` function to let the interactive `R` session connect to the `epiviz` web app and serve data requests. We then escape (using `ctl-c` or `esc` depending on your environment) to continue with the interactive `R` session. This is required anytime you want `epivizr` to serve data to the web app, for example, when interacting with the UI. (We are actively developing support for non-blocking sessions in Windows platforms).
+
+```{r, eval=TRUE}
+mgr$service()
+```
+----
+
 ### Adding block region devices
 
 Once the browser is open we can visualize the `colon_blocks` object containing blocks of methylation modifications in colon cancer.
-We use the `addDevice` method to do so. We then use the `service` function to let the interactive `R` session serve data requests from the browser client. We need to escape (using `ctl-c` or `esc` depending on your platform) to continue with the interactive `R` session.
+We use the `addDevice` method to do so. 
 
 ```{r,eval=TRUE}
 blocks_dev <- mgr$addDevice(colon_blocks, "450k colon_blocks")
 ```
+
+----
+*Windows users:* We need the `service` function to let the interactive `R` session serve data requests from the browser client as you interact with the UI. 
+Escape (using `ctl-c` or `esc` depending on your environment) to continue with the interactive `R` session.
+
+```{r,eval=TRUE}
+mgr$service()
+```
+----
 
 You should now see that a new track is added to the `Epiviz` web app. You can think of this track as an interactive display device in `R`. As you navigate on the browser, data is requested from the `R` session through the websocket connection. Remember to escape to continue with your interactive `R` session. The `blocks_dev` object inherits from class `EpivizDevice`, which contains information about the data being displayed and the chart used to display it.  Note that the "brushing" effect we implement in `Epiviz` works for `epivizr` tracks as well.
 
