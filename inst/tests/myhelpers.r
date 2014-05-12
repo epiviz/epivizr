@@ -47,10 +47,11 @@ test_dev=function(req=TRUE,dem=TRUE) {setEpivizrTestOpts(sendRequest=req, daemon
 
 test_some=function(req=TRUE,dem=TRUE) {test_mes(req=req,dem=dem); test_cha(req=req,dem=dem); test_dev(req=req,dem=dem)}
 
-testb=function() {test_srv(); test_reg(); test_fet()}
+testb=function() {test_srv(FALSE);test_reg();test_fet(FALSE)}
+testb1=function() {test_srv(TRUE); test_reg(); test_fet(TRUE)}
 test0=function() test_some(FALSE,FALSE)
 test1=function() test_some(TRUE,FALSE)
 test2=function() test_some(TRUE,TRUE)
 
-test_all=function() {testb(); test0(); test1(); test2()}
+test_all=function() {testb(); testb1(); test0(); test1(); test2()}
 
