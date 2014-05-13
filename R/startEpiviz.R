@@ -63,21 +63,26 @@ startEpiviz <- function(port=7312L, localURL=NULL, useDevel=FALSE,
   tryCatch({
     mgr <- EpivizDeviceMgr$new(server=server, url=url, verbose=verbose, nonInteractive=nonInteractive)
     mgr$bindToServer()
-
-    if (verbose) {
-      epivizrMsg("Opening connections...")
-    }
-    
-    if (openBrowser) {
-      mgr$openBrowser(url)
-    }
-
-    if (verbose) {
-      epivizrMsg("Done starting Epivizr!")
-    }
-    return(mgr)
   }, error=function(e) {
     server$stopServer()
     stop("Error starting Epiviz: ", e)
-  }, interrrupt=function(e) {NULL})  
+  })
+  
+  if (verbose) {
+    epivizrMsg("Opening connections...")
+  }
+
+  if (openBrowser) {
+    tryCatch({
+      mgr$openBrowser(url)
+    }, error=function(e) {
+      mgr$stopServer()
+      stop("Error starting Epiviz: ", e)
+    }, interrupt=function(e) {NULL})
+  }
+
+  if (verbose) {
+    epivizrMsg("Done starting Epivizr!")
+  }
+  return(mgr)
 }

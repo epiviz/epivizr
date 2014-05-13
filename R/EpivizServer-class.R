@@ -28,9 +28,6 @@ EpivizServer <- setRefClass("EpivizServer",
       verbose <<- verbose
       callSuper(...)
     },
-    finalize=function() {
-      stopServer()
-    },
     tryMorePorts=function(callbacks,minPort=7000L, maxPort=7999L) {
       success <- FALSE
       port <<- minPort

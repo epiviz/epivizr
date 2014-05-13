@@ -71,7 +71,7 @@ test_that("listDevices works", {
     
     ids <- c(devId3,devId4)
     if (sendRequest) {
-      expect_true(all(sapply(ids, function(id) exists(id, mgr$deviceList, inherits=FALSE))))
+      expect_false(any(sapply(mgr$deviceList[ids], is.null)))
     }
 
     type <- c("epiviz.plugins.charts.LineTrack",
