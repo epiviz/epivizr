@@ -124,3 +124,11 @@ setMethod("register", "ExpressionSet",
 })
 
 
+setMethod("register", "GAlignments",
+          function(object, coverage.only=TRUE, ...) {
+            if (!coverage.only) {
+              stop("Only coverage plots supported for GAlignments for now.")
+            }
+            cov <- coverage(object)
+            register(as(cov,"GRanges"), columns="score", type="bp", ...)
+})
