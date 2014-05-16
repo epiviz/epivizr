@@ -70,7 +70,7 @@ EpivizBpData$methods(
     out
   },
   .getMetadata=function(curHits, metadata) {
-    return(list(NULL))
+    return(NULL)
   },
   .getValues=function(curHits, measurement) {
     if(!measurement %in% columns) {
