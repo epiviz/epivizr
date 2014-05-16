@@ -132,3 +132,8 @@ setMethod("register", "GAlignments",
             cov <- coverage(object)
             register(as(cov,"GRanges"), columns="score", type="bp", ...)
 })
+
+setMethod("register", "BamFile",
+          function(object, ...) {
+            register(readGAlignments(object), ...)
+})
