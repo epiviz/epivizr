@@ -8,6 +8,10 @@ EpivizBpData <- setRefClass("EpivizBpData",
       names(mcols(object))
     },
     .getNAs=function() {
+      if (length(columns) == 0) {
+        return(integer())
+      }
+
       naMat <- is.na(mcols(object)[,columns])
       if (!is.matrix(naMat))
         naMat <- cbind(naMat)
@@ -24,7 +28,7 @@ EpivizBpData <- setRefClass("EpivizBpData",
     },
     .getLimits=function() {
       colIndex <- match(columns, colnames(mcols(object)))
-      unname(sapply(colIndex, function(i) range(pretty(range(mcols(object)[,i], na.rm=TRUE)))))
+      suppressWarnings(unname(sapply(colIndex, function(i) range(pretty(range(mcols(object)[,i], na.rm=TRUE))))))
     },
     plot=function(...) {
       mgr$lineChart(ms=getMeasurements(), ...)

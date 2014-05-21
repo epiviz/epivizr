@@ -2,6 +2,7 @@ import(methods)
 import(Biobase)
 import(S4Vectors)
 import(GenomicRanges)
+import(rtracklayer)
 import(httpuv)
 import(rjson)
 

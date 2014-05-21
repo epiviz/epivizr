@@ -124,16 +124,26 @@ setMethod("register", "ExpressionSet",
 })
 
 
+setMethod("register", "BigWigFile",
+          function(object, ...) {
+            dev <- EpivizWigData$new(file=object, ...)
+            return(dev)
+})
+          
 setMethod("register", "GAlignments",
           function(object, coverage.only=TRUE, ...) {
             if (!coverage.only) {
-              stop("Only coverage plots supported for GAlignments for now.")
+              stop("'coverage.only' must be 'TRUE'. Only coverage supported for GAlignments for now.")
             }
             cov <- coverage(object)
             register(as(cov,"GRanges"), columns="score", type="bp", ...)
 })
 
 setMethod("register", "BamFile",
-          function(object, ...) {
-            register(readGAlignments(object), ...)
+          function(object, coverage.only=TRUE, ...) {
+            if (!coverage.only) {
+              stop("'coverage.only' muse be 'TRUE'. Only coverage supported for BamFiles for now.")
+            }
+            cov <- coverage(object)
+            register(as(cov,"GRanges"), columns="score", type="bp", ...)
 })

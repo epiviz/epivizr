@@ -91,7 +91,10 @@ EpivizDeviceMgr$methods(list(
                       input_class="GRanges"),
               block=list(class="EpivizBlockData",
                          description="Genomic region data",
-                         input_class="GRanges"))
+                         input_class="GRanges"),
+                 wig=list(class="EpivizWigData",
+                   description="Genomic continuous data from wig file",
+                   input_class="BigWigFileViews"))
 
 EpivizDeviceMgr$methods(list(
    addMeasurements=function(obj, msName, sendRequest=!nonInteractive, ...) {
@@ -647,7 +650,7 @@ EpivizDeviceMgr$methods(list(
 )
 
 # navigation methods
-EpivizDeviceMgr$methods(list(
+EpivizDeviceMgr$methods(list(                          
   refresh=function() {
     'refresh browser'
     server$refresh()
@@ -662,6 +665,13 @@ EpivizDeviceMgr$methods(list(
                  requestId=requestId,
                  data=list(action="navigate",
                            range=rjson::toJSON(list(seqName=chr,start=start,end=end))))
+    server$sendRequest(request)
+  },
+  getCurrentLocation=function(callback) {
+    requestId <- callbackArray$append(callback)
+    request <- list(type="request",
+                    requestId=requestId,
+                    data=list(action="getCurrentLocation"))
     server$sendRequest(request)
   },
   slideshow=function(granges, n=10) {
