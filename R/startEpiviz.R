@@ -31,7 +31,7 @@ startEpiviz <- function(port=7312L, localURL=NULL, useDevel=FALSE,
     url <- paste0(url,"ws=",workspace,"&")
   } else {
     url <- paste0(url,
-               sprintf("chr=%s&start=%d&end=%d&",
+               sprintf("seqName=%s&start=%d&end=%d&",
                        chr,
                        as.integer(start),
                        as.integer(end)))
