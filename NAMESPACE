@@ -6,10 +6,11 @@ import(rjson)
 import(IRanges)
 
 exportClasses(EpivizDeviceMgr,
-			  EpivizData,
-			  EpivizTrackData,
-			  EpivizFeatureData,
-			  EpivizBlockData,
-			  EpivizBpData)
+              EpivizData,
+              EpivizTrackData,
+              EpivizFeatureData,
+              EpivizBlockData,
+              EpivizBpData,
+              EpivizChart)
 
 export(startEpiviz)
