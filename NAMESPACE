@@ -6,10 +6,11 @@ import(httpuv)
 import(rjson)
 
 exportClasses(EpivizDeviceMgr,
-			  EpivizData,
-			  EpivizTrackData,
-			  EpivizFeatureData,
-			  EpivizBlockData,
-			  EpivizBpData)
+              EpivizData,
+              EpivizTrackData,
+              EpivizFeatureData,
+              EpivizBlockData,
+              EpivizBpData,
+              EpivizChart)
 
 export(startEpiviz)

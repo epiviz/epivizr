@@ -202,20 +202,28 @@
   \describe{
     \item{}{
       \code{blockChart(ms, ...)}: Used to display data in \code{\link[GenomicRanges]{GenomicRanges}} objects as genomic regions using rectangles
-      in a browser track. \code{ms} is the id for a measurement provided by an object of class \code{\link{EpivizBlockData-class}}. The 
-      \code{plot} method for \code{\link{EpivizBlockData-class}} calls this method.
+      in a browser track. \code{ms} is a list of lists, each component describing a measurement provided by an object of class \code{\link{EpivizBlockData-class}}. 
+      They can be obtained using the \code{getMeasurements} method in the \code{\link{EpivizBlockData-class}}. \code{plot} method for \code{\link{EpivizBlockData-class}} calls this method.
     }
     
     \item{}{
-      \code{lineChart(ms, ...)}: Used to display continuous data at base-pair level as a line plot in a browser track. \code{ms} are ids
-      for measurements provided by objects of class \code{\link{EpivizBpData-class}}. The \code{plot} method for 
+      \code{lineChart(ms, ...)}: Used to display continuous data at base-pair level as a line plot in a browser track. 
+      \code{ms} is a list of lists, each component describing a measurement provided by objects of class \code{\link{EpivizBpData-class}}. 
+      They can be obtained using the \code{getMeasurements} method in the \code{\link{EpivizBlockData-class}}. The \code{plot} method for 
       \code{\link{EpivizBpData-class}} calls this method.
     }
     
     \item{}{
       \code{scatterChart(x, y, ...)}: Used to display genomic feature data in \code{\link[GenomicRanges]{SummarizedExperiment}} objects
-      as a scatter plot. \code{x} and \code{y} are ids for measurements provided by objects of class \code{\link{EpivizFeatureData-class}}.
+      as a scatter plot. \code{x} and \code{y} are lists for measurements provided by objects of class \code{\link{EpivizFeatureData-class}}.
+      They can be obtained using the \code{getMeasurements} method in the \code{\link{EpivizFeatureData-class}}.
       The \code{plot} method for \code{\link{EpivizFeatureData-class}} calls this method.
+    }
+
+    \item{}{
+      \code{heatmapChart(ms, ...)}: Used to display genomic feature data in \code{\link[GenomicRanges]{SummarizedExperiment}} objects
+      as a heatmap. \code{ms} is a list of lists, each component describing a measurement provided by an object of class \code{\link{EpivizFeatureData-class}}.
+      They can be obtained using the \code{getMeasurements} method in the \code{\link{EpivizFeatureData-class}}.
     }
   }
 }
