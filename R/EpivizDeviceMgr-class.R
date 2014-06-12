@@ -733,6 +733,15 @@ EpivizDeviceMgr$methods(list(
       type="epiviz.plugins.charts.ScatterPlot")
     addChart(chartObj, ...)
     chartObj
+  },
+
+  heatmapChart=function(ms, ...) {
+    chartObj <- EpivizChart$new(
+                  measurements=ms,
+                  mgr=.self,
+                  type="epiviz.plugins.charts.HeatmapPlot")
+    addChart(chartObj, ...)
+    chartObj
   }
 ))
 
