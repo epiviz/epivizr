@@ -1,9 +1,10 @@
 EpivizWigData <- setRefClass("EpivizWigData",
   contains="EpivizBpData",
-  fields=list(file="BigWigFile", cacheRange="GRanges"),                             
+  fields=list(cache="EpivizWigCache", file="BigWigFile"),                            
   methods=list(
     initialize=function(object=GIntervalTree(GRanges(score=numeric())), file=BigWigFile(), ...) {
       file <<- file
+      cache <<- EpivizWigCache(resource=file,...)
       callSuper(object=object, columns="score", ...)
     },
     .getLimits=function() {
@@ -11,8 +12,7 @@ EpivizWigData <- setRefClass("EpivizWigData",
         !is(summ, "list") ||
         !all(sapply(summ, is, "GenomicRanges")) ||
         !all(sapply(minSum, function(x) "score" %in% names(mcols(x))))
-      }
-              
+      }              
       minSumm <- summary(file, type="min")
       if (!.checkSumm(minSumm)) {
         minScore <- -6
@@ -27,34 +27,18 @@ EpivizWigData <- setRefClass("EpivizWigData",
       }
       cbind(c(minScore,maxScore))    
     },
-    import=function(query) {
-      querynm <- as.character(seqnames(query)[1])
-      if (length(seqnames(cacheRange)) == 0) {
-        cachenm <- ""
-      } else {
-        cachenm <- as.character(seqnames(cacheRange)[1])
+    getRows=function(query, metadata, useOffset=TRUE) {
+      newObject <- cache$getObject(query)
+      if (!is.null(newObject)) {
+        update(newObject)
       }
-      
-      if (querynm != cachenm) {
-        if (!querynm %in% seqnames(seqinfo(file))) {
-          newObj <- GIntervalTree(GRanges(score=numeric()))
-          rng <- GRanges()
-        } else {
-          rng <- GRanges(seqnames=querynm,
-                         IRanges(start=1, width=seqlengths(seqinfo(file))[querynm]))
-          epivizrMsg("importing data for seq ", querynm, " from bigwig file")
-          newObj <- import.bw(file, selection=as(rng,"BigWigSelection"))
-        }
-        update(newObj)
-        cacheRange <<- rng
-      }
-    },
-    getRows=function(query, metadata) {
-      import(query)
-      callSuper(query, metadata)
+      callSuper(query, metadata, useOffset=useOffset)
     },
     .getMetadata=function(curHits, curMetadata) {
       return(NULL)
+    },
+    .getValues=function(curHits, measurement, round=TRUE) {
+      callSuper(curHits, measurement, round=round)
     },
     plot=function(...) {
       ms <- getMeasurements()
