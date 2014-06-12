@@ -21,6 +21,7 @@ Suggests: testthat, roxygen2, knitr, antiProfilesData, hgu133plus2.db
 Collate: 'utils.r' 'EpivizServer-class.R' 'EpivizDeviceMgr-class.R'
         'startEpiviz.R' 'EpivizData-class.R' 'EpivizTrackData-class.R'
         'EpivizFeatureData-class.R' 'EpivizBlockData-class.R'
-        'EpivizBpData-class.R' 'EpivizWigData-class.R' 'register-methods.R'
+        'EpivizBpData-class.R' 'EpivizDataCache-class.R' 'EpivizWigCache-class.R'
+	'EpivizWigData-class.R' 'register-methods.R'
         'EpivizChart-class.R' 'EpivizDevice-class.R' 'zzz.R'
 biocViews: Visualization, Infrastructure, GUI
