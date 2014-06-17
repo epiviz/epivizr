@@ -669,6 +669,7 @@ EpivizDeviceMgr$methods(list(
     if (!is(granges, "GenomicRanges"))
       stop(("'granges' must be a 'GenomicRanges' object"))
     
+    n <- max(n, length(granges))
     ind <- seq(len=n)
     chr <- as.character(seqnames(granges)[ind])
     start <- start(granges)[ind]
