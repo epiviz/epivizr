@@ -664,11 +664,12 @@ EpivizDeviceMgr$methods(list(
                            range=rjson::toJSON(list(seqName=chr,start=start,end=end))))
     server$sendRequest(request)
   },
-  slideshow=function(granges, n=10) {
+  slideshow=function(granges, n=length(granges)) {
     'navidate to successive positions'
     if (!is(granges, "GenomicRanges"))
       stop(("'granges' must be a 'GenomicRanges' object"))
     
+    n <- max(n, length(granges))
     ind <- seq(len=n)
     chr <- as.character(seqnames(granges)[ind])
     start <- start(granges)[ind]
