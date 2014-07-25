@@ -103,7 +103,7 @@
     }
     
     \item{}{
-      \code{slideshow(granges, n=10)}: Navigate in web app to the first \code{n} regions in \code{\link{GenomicRanges-class}} object \code{granges} in succession.
+      \code{slideshow(granges, n=length(granges))}: Navigate in web app to the first \code{n} regions in \code{\link{GenomicRanges-class}} object \code{granges} in succession.
     }
   }
 }
