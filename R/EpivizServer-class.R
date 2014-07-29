@@ -49,24 +49,28 @@ EpivizServer <- setRefClass("EpivizServer",
       cat(sprintf("<EpivizServer> port: %d, %s", port, ifelse(socketConnected,"connected","not connected")),"\n")
       invisible(NULL)
     },
+    makeHttpuvApp=function() {
+      wwwDir <- system.file("inst/www", package="epivizr")
+      wsHandler <- function(ws) {
+        if (verbose) epivizrMsg("WS opened")
+        websocket <<- ws
+        socketConnected <<- TRUE
+        websocket$onMessage(.self$msgCallback)
+        websocket$onClose(function() {
+          socketConnected <<- FALSE
+          invisible()
+        })
+        popRequest()
+        invisible()
+      }
+      handlerMgr <- HandlerManager$new()
+      handlerMgr$addHandler(staticHandler(wwwDir), 'static')
+      handlerMgr$addWSHandler(wsHandler, 'ws')
+      handlerMgr$createHttpuvApp()
+    },
     startServer=function(...) {
       'start the websocket server'
-      callbacks <- list(
-        call=.self$.dummyTestPage,
-        onWSOpen=function(ws) {
-          if (verbose) epivizrMsg("WS opened")
-          websocket <<- ws
-          socketConnected <<- TRUE
-          websocket$onMessage(.self$msgCallback)
-          websocket$onClose(function() {
-            socketConnected <<- FALSE
-            invisible()
-          })
-          popRequest()
-          invisible()
-        }
-      )
-      
+      callbacks <- makeHttpuvApp()
       tryCatch({
         server <<- startServerFn("0.0.0.0", port, callbacks)  
       }, error=function(e) {
