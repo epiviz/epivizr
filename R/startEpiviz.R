@@ -1,4 +1,4 @@
-.constructURL <- function(port=7312L, localURL=NULL, useDevel=FALSE,
+.constructURL <- function(port=7312L, localURL=NULL, useDevel=FALSE, standalone=FALSE,
                           chr="chr11", start=99800000, end=103383180,
                           debug=FALSE, workspace=NULL, scripts=NULL, gists=NULL)
   {
@@ -8,39 +8,42 @@
   } else {
     url <- localURL
   }
+
+  if (isTRUE(standalone)) {
+    url <- sprintf("http://localhost:%d/index-standalone.html", port)
+  }
+
+  controllerHost <- sprintf("ws://localhost:%d", port)  
+  url <- sprintf("%s?websocket-host[]=%s&", url, controllerHost)
+
+  if (!isTRUE(standalone)) {
+    url <- paste0(url, sprintf("debug=%s&", ifelse(debug, "true", "false")))
   
-  wsURL <- "ws://localhost"
-  controllerHost <- sprintf("%s:%d", wsURL, port)
+    if (!is.null(workspace)) {
+      url <- paste0(url,"ws=",workspace,"&")
+    } else {
+      url <- paste0(url,
+                    sprintf("seqName=%s&start=%d&end=%d&",
+                            chr,
+                            as.integer(start),
+                            as.integer(end)))
+    }
 
-  url <- sprintf("%s?websocket-host[]=%s&debug=%s&", 
-              url,
-              controllerHost,
-              ifelse(debug,"true","false"))
+    if (!is.null(scripts)) {
+      scriptString = paste(sprintf("script[]=%s&", scripts),collapse="")
+      url <- paste0(url,scriptString)
+    }
+    
+    if (!is.null(gists)) {
+      gistString <- paste(sprintf("gist[]=%s&", gists), collapse="")
+      url <- paste0(url,gistString)
+    }
+  }
   
-  if (!is.null(workspace)) {
-    url <- paste0(url,"ws=",workspace,"&")
-  } else {
-    url <- paste0(url,
-               sprintf("seqName=%s&start=%d&end=%d&",
-                       chr,
-                       as.integer(start),
-                       as.integer(end)))
-  }
-
-  if (!is.null(scripts)) {
-    scriptString = paste(sprintf("script[]=%s&", scripts),collapse="")
-    url <- paste0(url,scriptString)
-  }
-
-  if (!is.null(gists)) {
-    gistString <- paste(sprintf("gist[]=%s&", gists), collapse="")
-    url <- paste0(url,gistString)
-  }
-
   url
   }
 
-startEpiviz <- function(port=7312L, localURL=NULL, useDevel=FALSE, 
+startEpiviz <- function(port=7312L, localURL=NULL, useDevel=FALSE, standalone=FALSE, 
                         chr="chr11", start=99800000, end=103383180, 
                         debug=FALSE, workspace=NULL, scripts=NULL, gists=NULL,
                         openBrowser=TRUE, daemonized=.epivizrCanDaemonize(),
@@ -64,7 +67,7 @@ startEpiviz <- function(port=7312L, localURL=NULL, useDevel=FALSE,
   if (server$port != port && tryPorts) 
     port <- server$port
   
-  url <- .constructURL(port, localURL, useDevel, chr, start, end, debug, workspace, scripts, gists)
+  url <- .constructURL(port, localURL, useDevel, standalone, chr, start, end, debug, workspace, scripts, gists)
   
   if (verbose) {
     epivizrMsg("Initializing session manager...")
