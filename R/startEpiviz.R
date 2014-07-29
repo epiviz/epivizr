@@ -1,13 +1,7 @@
-startEpiviz <- function(port=7312L, localURL=NULL, useDevel=FALSE, 
-                        chr="chr11", start=99800000, end=103383180, 
-                        debug=FALSE, proxy=TRUE, workspace=NULL, scripts=NULL, gists=NULL,
-                        openBrowser=TRUE, daemonized=.epivizrCanDaemonize(),
-                        verbose=FALSE, nonInteractive=FALSE, tryPorts=FALSE) {
-
-  if (verbose) {
-    epivizrMsg("Starting Epivizr!")
-  }
-
+.constructURL <- function(port=7312L, localURL=NULL, useDevel=FALSE,
+                          chr="chr11", start=99800000, end=103383180,
+                          debug=FALSE, workspace=NULL, scripts=NULL, gists=NULL)
+  {
   if (missing(localURL) || is.null(localURL)) {
     url <- ifelse(useDevel,"epiviz-dev", "epiviz")
     url <- sprintf("http://%s.cbcb.umd.edu/index.php", url)
@@ -18,10 +12,6 @@ startEpiviz <- function(port=7312L, localURL=NULL, useDevel=FALSE,
   wsURL <- "ws://localhost"
   controllerHost <- sprintf("%s:%d", wsURL, port)
 
-  if (!missing(proxy)) {
-    warning("Parameter 'proxy' is no longer used and will be removed in future versions.")
-  }
-  
   url <- sprintf("%s?websocket-host[]=%s&debug=%s&", 
               url,
               controllerHost,
@@ -47,6 +37,19 @@ startEpiviz <- function(port=7312L, localURL=NULL, useDevel=FALSE,
     url <- paste0(url,gistString)
   }
 
+  url
+  }
+
+startEpiviz <- function(port=7312L, localURL=NULL, useDevel=FALSE, 
+                        chr="chr11", start=99800000, end=103383180, 
+                        debug=FALSE, workspace=NULL, scripts=NULL, gists=NULL,
+                        openBrowser=TRUE, daemonized=.epivizrCanDaemonize(),
+                        verbose=FALSE, nonInteractive=FALSE, tryPorts=FALSE) {
+
+  if (verbose) {
+    epivizrMsg("Starting Epivizr!")
+  }
+  
   if (daemonized && !.epivizrCanDaemonize()) {
         warning("You've requested to run non-blocking epivizr, but your version of httpuv does not support it.\n",
                 "You can download an appropriate version of httpuv from github:\n",
@@ -56,6 +59,12 @@ startEpiviz <- function(port=7312L, localURL=NULL, useDevel=FALSE,
 
   server <- EpivizServer$new(port=port, tryPorts=tryPorts,
                            daemonized=daemonized,verbose=verbose)
+
+  # change port if server started on a different port
+  if (server$port != port && tryPorts) 
+    port <- server$port
+  
+  url <- .constructURL(port, localURL, useDevel, chr, start, end, debug, workspace, scripts, gists)
   
   if (verbose) {
     epivizrMsg("Initializing session manager...")

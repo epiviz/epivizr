@@ -11,7 +11,7 @@
 \usage{
   startEpiviz(port = 7312L, localURL = NULL, useDevel = FALSE,
     chr = "chr11", start = 99800000, end = 103383180, debug = FALSE,
-    proxy = TRUE, workspace = NULL, scripts=NULL, gists=NULL, openBrowser = TRUE,
+    workspace = NULL, scripts=NULL, gists=NULL, openBrowser = TRUE,
     daemonized = .epivizrCanDaemonize(), verbose = FALSE, 
     nonInteractive = FALSE, tryPorts = FALSE)
 }
@@ -37,10 +37,6 @@
 
   \item{debug}{(logical) start the epiviz browser in debug
   mode}
-
-  \item{proxy}{(logical) start the epiviz browser using the data
-  proxy. This is useful when hosting the web app locally, but
-  want to use data hosted in the epiviz server, (DEPRECATED, currently ignored)}
 
   \item{workspace}{(character) a workspace id to load in the 
   epiviz web app on startup}
