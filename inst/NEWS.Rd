@@ -5,7 +5,8 @@
 
 \section{Version 1.3.12}{
   \itemize{
-
+    \item Standalone mode introduced, a version of epiviz with reduced capabilities
+    	  is now included as part of epivizr.
   }		 
 }
 
