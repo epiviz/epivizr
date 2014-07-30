@@ -39,7 +39,7 @@ setMethod("reorderIfNeeded", "SummarizedExperiment",
 })
 
 setMethod("register", "GenomicRanges",
-	function(object, columns, type=c("block","bp"), ...) {
+	function(object, columns, type=c("block","bp","geneInfo"), ...) {
 		type <- match.arg(type)
                 object <- reorderIfNeeded(object)
 
@@ -48,7 +48,8 @@ setMethod("register", "GenomicRanges",
 		}
 		dev <- switch(type,
 					  block=EpivizBlockData$new(object=object, ...),
-					  bp=EpivizBpData$new(object=object, columns=columns, ...))
+					  bp=EpivizBpData$new(object=object, columns=columns, ...),
+                                          geneInfo=EpivizGeneInfoData$new(object=object, ...))
 		return(dev)
 })
 

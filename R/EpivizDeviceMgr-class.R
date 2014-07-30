@@ -91,7 +91,11 @@ EpivizDeviceMgr$methods(list(
                       input_class="GRanges"),
               block=list(class="EpivizBlockData",
                          description="Genomic region data",
-                         input_class="GRanges"))
+                         input_class="GRanges"),
+               geneInfo=list(class="EpivizGeneInfoData",
+                         description="Gene annotation data",
+                         input_class="GRanges")
+                 )
 
 EpivizDeviceMgr$methods(list(
    addMeasurements=function(obj, msName, sendRequest=!nonInteractive, ...) {
@@ -731,6 +735,15 @@ EpivizDeviceMgr$methods(list(
                   measurements=ms,
                   mgr=.self,
                   type="epiviz.plugins.charts.HeatmapPlot")
+    addChart(chartObj, ...)
+    chartObj
+  },
+
+  genesChart=function(ms, ...) {
+    chartObj <- EpivizChart$new(
+                  measurements=ms,
+                  mgr=.self,
+                  type="epiviz.plugins.charts.GenesTrack")
     addChart(chartObj, ...)
     chartObj
   }

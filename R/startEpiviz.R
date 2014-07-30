@@ -63,11 +63,17 @@ startEpiviz <- function(port=7312L, localURL=NULL, useDevel=FALSE, standalone=FA
   server <- EpivizServer$new(port=port, tryPorts=tryPorts,
                            daemonized=daemonized,verbose=verbose)
 
-  # change port if server started on a different port
-  if (server$port != port && tryPorts) 
-    port <- server$port
-  
-  url <- .constructURL(port, localURL, useDevel, standalone, chr, start, end, debug, workspace, scripts, gists)
+  url <- .constructURL(port=server$port,
+                       localURL=localURL,
+                       useDevel=useDevel,
+                       standalone=standalone,
+                       chr=chr,
+                       start=start,
+                       end=end,
+                       debug=debug,
+                       workspace=workspace,
+                       scripts=scripts,
+                       gists=gists)
   
   if (verbose) {
     epivizrMsg("Initializing session manager...")
