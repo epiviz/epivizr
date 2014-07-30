@@ -13,10 +13,10 @@
     url <- sprintf("http://localhost:%d/index-standalone.html", port)
   }
 
-  controllerHost <- sprintf("ws://localhost:%d", port)  
-  url <- sprintf("%s?websocket-host[]=%s&", url, controllerHost)
-
   if (!isTRUE(standalone)) {
+    controllerHost <- sprintf("ws://localhost:%d", port)  
+    url <- sprintf("%s?websocket-host[]=%s&", url, controllerHost)
+
     url <- paste0(url, sprintf("debug=%s&", ifelse(debug, "true", "false")))
   
     if (!is.null(workspace)) {

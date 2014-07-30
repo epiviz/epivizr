@@ -736,3 +736,37 @@ EpivizDeviceMgr$methods(list(
   }
 ))
 
+# seqinfos and genes
+EpivizDeviceMgr$methods(
+  addSeqInfo=function(x) {
+    if (is(x,"Seqinfo")) {
+      x <- seqlengths(x)
+    }
+
+    if (is.null(names(x))) {
+      stop("argument 'x' must be a 'Seqinfo' object or a named vector that can be cast to integer")
+    }
+
+    nms <- names(x)
+    x <- tryCatch(as.integer(x),
+                  error=function(e) {
+                    stop("argument 'x' must be vector that can be cast to integer", e)
+                  })
+    names(x) <- NULL
+
+    out <- lapply(seq(along=x), function(i) {
+      list(nms[i], 1, x[i])
+    })
+    callback <- function(data) {
+      invisible(NULL)
+    }
+    requestId <- callbackArray$append(callback)
+    request <- list(type="request",
+                    requestId=requestId,
+                    data=list(action="addSeqInfos",
+                      seqInfos=rjson::toJSON(out)))
+    server$sendRequest(request)                      
+  }
+)
+
+

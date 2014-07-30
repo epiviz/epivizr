@@ -9,7 +9,7 @@
 }
 
 \usage{
-  startEpiviz(port = 7312L, localURL = NULL, useDevel = FALSE,
+  startEpiviz(port = 7312L, localURL = NULL, useDevel = FALSE, standalone=FALSE,
     chr = "chr11", start = 99800000, end = 103383180, debug = FALSE,
     workspace = NULL, scripts=NULL, gists=NULL, openBrowser = TRUE,
     daemonized = .epivizrCanDaemonize(), verbose = FALSE, 
@@ -25,6 +25,8 @@
   from the local host}
   
   \item{useDevel}{(logical) use the devel branch of the epiviz server (http://epiviz-dev.cbcb.umd.edu)}
+
+  \item{standalone}{(logical) run the epiviz app on localhost using the httpuv http server}
 
   \item{chr}{(character) chromosome to browse to on
   startup}

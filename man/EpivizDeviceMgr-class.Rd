@@ -92,6 +92,15 @@
   }
 }
 
+\section{Seqinfo methods}{
+  \describe{
+    \item{}{
+      \code{addSeqinfo(x)}: Add sequence space (e.g., chromosome) informationto the web app.
+      \code{x} should be a \code{\link{Seqinfo-class}} object, or a named integer (or numeric) vector.
+    }
+  }		 
+}
+
 \section{Navigation methods}{
   \describe{
     \item{}{
