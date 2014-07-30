@@ -738,7 +738,7 @@ EpivizDeviceMgr$methods(list(
 
 # seqinfos and genes
 EpivizDeviceMgr$methods(
-  addSeqInfo=function(x) {
+  addSeqinfo=function(x) {
     if (is(x,"Seqinfo")) {
       x <- seqlengths(x)
     }
@@ -766,6 +766,18 @@ EpivizDeviceMgr$methods(
                     data=list(action="addSeqInfos",
                       seqInfos=rjson::toJSON(out)))
     server$sendRequest(request)                      
+  },
+
+  rmSeqinfo=function(seqnames) {
+    callback <- function(data) {
+      invisible(NULL)
+    }
+    requestId <- callbackArray$append(callback)
+    request <- list(type="request",
+                    requestId=requestId,
+                    data=list(action="removeSeqNames",
+                      seqNames=rjson::toJSON(seqnames)))
+    server$sendRequest(request)
   }
 )
 

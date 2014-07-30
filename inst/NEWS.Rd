@@ -6,7 +6,9 @@
 \section{Version 1.3.12}{
   \itemize{
     \item Standalone mode introduced, a version of epiviz with reduced capabilities
-    	  is now included as part of epivizr.
+    	  is now included as part of epivizr. The epiviz web app is run locally using 'httpuv's
+	  http server
+    \item Add and remove seqinfo (e.g., chromosome info)
   }		 
 }
 
