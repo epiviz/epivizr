@@ -61,7 +61,7 @@ startEpiviz <- function(port=7312L, localURL=NULL, useDevel=FALSE, standalone=FA
   }
 
   server <- EpivizServer$new(port=port, tryPorts=tryPorts,
-                           daemonized=daemonized,verbose=verbose)
+                           daemonized=daemonized, standalone=standalone, verbose=verbose)
 
   url <- .constructURL(port=server$port,
                        localURL=localURL,

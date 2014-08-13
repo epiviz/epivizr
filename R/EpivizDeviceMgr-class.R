@@ -66,6 +66,11 @@ EpivizDeviceMgr$methods(list(
   })
 )
 
+# standalone helper
+EpivizDeviceMgr$methods(list(
+  standalone=function() server$standalone                          
+))
+
 # daemonization helpers
 EpivizDeviceMgr$methods(list(
   daemonized=function() server$daemonized,

@@ -1,9 +1,10 @@
 setEpivizrTestOpts <- function(sendRequest=TRUE,
-                                daemonized=TRUE,
+                               daemonized=TRUE,
                                local=FALSE,
-                                devel=FALSE,
+                               standalone=FALSE,
+                               devel=FALSE,
                                test=FALSE,
-                                debug=TRUE,
+                               debug=TRUE,
                                port=7312L) {
   url <- if (devel) "epiviz-dev" else "epiviz"
 
@@ -21,6 +22,7 @@ setEpivizrTestOpts <- function(sendRequest=TRUE,
 
   options(epivizrTestSendRequest=sendRequest,
           epivizrTestDaemonized=daemonized,
+          epivizrTestStandalone=standalone,
           epivizrTestURL=url,
           epivizrTestDebug=debug,
           epivizrTestPort=port)
@@ -30,6 +32,7 @@ setEpivizrTestOpts <- function(sendRequest=TRUE,
 getEpivizrTestOpts=function() {
   out <- list(sendRequest=getOption("epivizrTestSendRequest"),
               daemonized=getOption("epivizrTestDaemonized"),
+              standalone=getOption("epivizrTestStandalone"),
               url=getOption("epivizrTestURL"),
               debug=getOption("epivizrTestDebug"),
               port=getOption("epivizrTestPort"))
@@ -40,18 +43,33 @@ setEpivizrTestOpts()
 
 test_srv=function(dem=TRUE) {setEpivizrTestOpts(daemonized=dem); test(filter=".*server.*")}
 test_reg=function() test(filter=".*register.*")
-test_mes=function(req=TRUE,dem=TRUE) {setEpivizrTestOpts(sendRequest=req, daemonized=dem); test(filter=".*Measure.*")}
+test_mes=function(req=TRUE,  dem=TRUE,stand=FALSE)
+{
+  setEpivizrTestOpts(sendRequest=req, daemonized=dem, standalone=stand); test(filter=".*Measure.*")
+}
 test_fet=function(req=TRUE) {setEpivizrTestOpts(sendRequest=req); test(filter=".*fetch.*")}
-test_cha=function(req=TRUE,dem=TRUE) {setEpivizrTestOpts(sendRequest=req, daemonized=dem); test(filter=".*Charts.*")}
-test_dev=function(req=TRUE,dem=TRUE) {setEpivizrTestOpts(sendRequest=req, daemonized=dem); test(filter=".*Device.*")}
+test_cha=function(req=TRUE,dem=TRUE,stand=FALSE)
+{
+  setEpivizrTestOpts(sendRequest=req, daemonized=dem, standalone=stand); test(filter=".*Charts.*")
+}
+test_dev=function(req=TRUE,dem=TRUE,stand=FALSE)
+{
+  setEpivizrTestOpts(sendRequest=req, daemonized=dem, standalone=stand); test(filter=".*Device.*")
+}
 
-test_some=function(req=TRUE,dem=TRUE) {test_mes(req=req,dem=dem); test_cha(req=req,dem=dem); test_dev(req=req,dem=dem)}
+test_some=function(req=TRUE,dem=TRUE,stand=FALSE)
+{
+  test_mes(req=req,dem=dem,stand=stand);
+  test_cha(req=req,dem=dem,stand=stand);
+  test_dev(req=req,dem=dem,stand=stand)
+}
 
 testb=function() {test_srv(FALSE);test_reg();test_fet(FALSE)}
 testb1=function() {test_srv(TRUE); test_reg(); test_fet(TRUE)}
-test0=function() test_some(FALSE,FALSE)
-test1=function() test_some(TRUE,FALSE)
-test2=function() test_some(TRUE,TRUE)
+test0=function() test_some(FALSE,FALSE,FALSE)
+test1=function() test_some(TRUE,FALSE,FALSE)
+test2=function() test_some(TRUE,TRUE,FALSE)
+test3=function() test_some(TRUE,TRUE,TRUE)
 
-test_all=function() {testb(); testb1(); test0(); test1(); test2()}
+test_all=function() {testb(); testb1(); test0(); test1(); test2(); test3()}
 

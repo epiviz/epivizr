@@ -61,11 +61,12 @@ EpivizServer <- setRefClass("EpivizServer",
     requestWaiting="logical",
     tryPorts="logical",
     daemonized="logical",
+    standalone="logical",
     startServerFn="function",
     stopServerFn="function"
   ),
   methods=list(
-    initialize=function(port=7312L, tryPorts=FALSE, daemonized=NULL, verbose=FALSE, ...) {
+    initialize=function(port=7312L, tryPorts=FALSE, daemonized=NULL, standalone=NULL, verbose=FALSE, ...) {
       port <<- port
       interrupted <<- FALSE
       socketConnected <<- FALSE
@@ -75,6 +76,7 @@ EpivizServer <- setRefClass("EpivizServer",
       daemonized <<-  .epivizrCanDaemonize() && isTRUE(daemonized)
       startServerFn <<- if (.self$daemonized) httpuv::startDaemonizedServer else httpuv::startServer
       stopServerFn <<- if (.self$daemonized) httpuv::stopDaemonizedServer else httpuv::stopServer
+      standalone <<- isTRUE(standalone)
       verbose <<- verbose
       callSuper(...)
     },
@@ -99,7 +101,7 @@ EpivizServer <- setRefClass("EpivizServer",
       cat(sprintf("<EpivizServer> port: %d, %s", port, ifelse(socketConnected,"connected","not connected")),"\n")
       invisible(NULL)
     },
-    makeHttpuvApp=function(standalone=FALSE) {
+    makeHttpuvApp=function() {
       wwwDir <- system.file("inst/www", package="epivizr")
       wsHandler <- function(ws) {
         if (verbose) epivizrMsg("WS opened")
@@ -122,9 +124,9 @@ EpivizServer <- setRefClass("EpivizServer",
       handlerMgr$addWSHandler(wsHandler, 'ws')
       handlerMgr$createHttpuvApp()
     },
-    startServer=function(standalone=FALSE, ...) {
+    startServer=function(...) {
       'start the websocket server'
-      callbacks <- makeHttpuvApp(standalone=standalone)
+      callbacks <- makeHttpuvApp()
       tryCatch({
         server <<- startServerFn("0.0.0.0", port, callbacks)  
       }, error=function(e) {
