@@ -4,6 +4,7 @@ import(S4Vectors)
 import(GenomicRanges)
 import(httpuv)
 import(rjson)
+importClassesFrom(OrganismDbi, OrganismDb)
 
 exportClasses(EpivizDeviceMgr,
               EpivizData,

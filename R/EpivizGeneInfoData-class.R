@@ -18,24 +18,26 @@ EpivizGeneInfoData <- setRefClass("EpivizGeneInfoData",
 }
 
 .valid.EpivizGeneInfoData.metadata <- function(x) {
-  nms <- mcols(x)
+  mdata <- mcols(x$object)
+  nms <- names(mdata)
   requiredNames <- c("Gene","Exons")
-  if (any(!requireNames %in% nms))
+  if (any(!requiredNames %in% nms))
     return("'metadata' must contain columns 'Gene' and 'Exons'")
 
-  if (is(x$Gene, "Rle") && !is.character(runValue(x$Gene)))
-    return("'Gene' must be a 'character' vector or Rle")
-  if (!is(x$Gene, "Rle") && !is.character(x$Gene))
-    return("'Gene' must be a 'character' vector or Rle")
-
-  if (!is(x$Exons, "IRangesList"))
+  if (is(mdata$Gene, "Rle") && !is.character(runValue(mdata$Gene)))
+    return("'Gene' must be a 'character' vector or Rle, or 'CharacterList'")
+  if (!is(mdata$Gene, "Rle") && !(is.character(mdata$Gene) || is(mdata$Gene, "CharacterList")))
+    return("'Gene' must be a 'character' vector or Rle, or 'CharacterList'")
+  
+  if (!is(mdata$Exons, "IRangesList"))
     return("'Exons' must be an 'IRangesList'")
 
   NULL
 }
 
 .valid.EpivizGeneInfoData <- function(x) {
-  c(.valid.EpivizGeneInfoData.ylim(x))
+  c(.valid.EpivizGeneInfoData.ylim(x),
+    .valid.EpivizGeneInfoData.metadata(x))
 }
 
 setValidity2("EpivizGeneInfoData", .valid.EpivizGeneInfoData)
