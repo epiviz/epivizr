@@ -1,3 +1,53 @@
+.dummyTestPage=function(req) {
+  wsUrl = paste(sep='',
+    '"',
+    "ws://",
+    ifelse(is.null(req$HTTP_HOST), req$SERVER_NAME, req$HTTP_HOST),
+    '"')
+  
+  list(
+    status = 200L,
+    headers = list(
+      'Content-Type' = 'text/html'
+      ),
+    body = paste(
+      sep = "\r\n",
+      "<!DOCTYPE html>",
+      "<html>",
+      "<head>",
+      '<style type="text/css">',
+      'body { font-family: Helvetica; }',
+      'pre { margin: 0 }',
+      '</style>',
+      "<script>",
+      sprintf("var ws = new WebSocket(%s);", wsUrl),
+      "ws.onmessage = function(msg) {",
+      '  var req = JSON.parse(msg.data)',
+      '  msgDiv = document.createElement("pre");',
+      '  msgDiv.innerHTML = req.data.msg.replace(/&/g, "&amp;").replace(/\\</g, "&lt;");',
+      '  document.getElementById("output").appendChild(msgDiv);',
+      '  ws.send(JSON.stringify({type: "response", requestId: req.requestId, data: {msg: "that msg"}}));',
+      "}",
+      "function sendInput() {",
+      "  var input = document.getElementById('input');",
+      "  ws.send(JSON.stringify({type: 'request', requestId: 0, data: {action: 'getAllData', measurements: {}, chr: input.value, start: 0, end: 0}}));",
+      "  input.value = '';",
+      "}",
+      "</script>",
+      "</head>",
+      "<body>",
+      '<h3>Send Message</h3>',
+      '<form action="" onsubmit="sendInput(); return false">',
+      '<input type="text" id="input"/>',
+      '<h3>Received</h3>',
+      '<div id="output"/>',
+      '</form>',
+      "</body>",
+      "</html>"
+      )
+    )
+}
+
 EpivizServer <- setRefClass("EpivizServer",
   fields=list(
     port="integer",
@@ -49,7 +99,7 @@ EpivizServer <- setRefClass("EpivizServer",
       cat(sprintf("<EpivizServer> port: %d, %s", port, ifelse(socketConnected,"connected","not connected")),"\n")
       invisible(NULL)
     },
-    makeHttpuvApp=function() {
+    makeHttpuvApp=function(standalone=FALSE) {
       wwwDir <- system.file("inst/www", package="epivizr")
       wsHandler <- function(ws) {
         if (verbose) epivizrMsg("WS opened")
@@ -64,13 +114,17 @@ EpivizServer <- setRefClass("EpivizServer",
         invisible()
       }
       handlerMgr <- HandlerManager$new()
-      handlerMgr$addHandler(staticHandler(wwwDir), 'static')
+      if (standalone) {
+        handlerMgr$addHandler(staticHandler(wwwDir), 'static')
+      } else {
+        handlerMgr$addHandler(.dummyTestPage, 'static')
+      }
       handlerMgr$addWSHandler(wsHandler, 'ws')
       handlerMgr$createHttpuvApp()
     },
-    startServer=function(...) {
+    startServer=function(standalone=FALSE, ...) {
       'start the websocket server'
-      callbacks <- makeHttpuvApp()
+      callbacks <- makeHttpuvApp(standalone=standalone)
       tryCatch({
         server <<- startServerFn("0.0.0.0", port, callbacks)  
       }, error=function(e) {
@@ -201,110 +255,3 @@ EpivizServer <- setRefClass("EpivizServer",
     }
   )
 )
- 
-# Requests to the JS web app
-#EpivizServer$methods(
-#    addMeasurements=function(requestId, msType, measurements) {
-#      request=list(type="request",
-#                   id=requestId,
-#                   action="addMeasurements",
-#                   data=list(measurements=measurements,
-#                             type=msType))
-#      sendRequest(request)
-#    },    
-#    rmMeasurements=function(requestId, measurements, msType) {
-#      request <- list(type="request",
-#                      id=requestId,
-#                      action="rmMeasurements",
-#                      data=list(measurements=measurements,
-#                                type=msType))
-#      sendRequest(request)
-#    },
-#    addChart=function(requestId, chartType, measurements) {
-#      request=list(type="request",
-#                   id=requestId,
-#                   action="addChart",
-#                   data=list(measurements=measurements,
-#                             type=chartType))
-#      sendRequest(request)
-#    },
-#    rmChart=function(requestId, chartId) {
-#      request=list(type="request",
-#                   id=requestId,
-#                   action="rmChart",
-#                   data=list(chartId=chartId))
-#      sendRequest(request)
-#    },
-#    clearChartCaches=function(requestId, chartIds) {
-#      request=list(type="request",
-#                   id=requestId,
-#                   action="clearDeviceCaches",
-#                   data=list(ids=chartIds))
-#      sendRequest(request)
-#    },
-#    refresh=function() {
-#      request=list(action="refresh")
-#      # TODO: finish implementation
-#      # sendRequest(request)
-#      invisible()
-#    },
-#    navigate=function(requestId,chr,start,end) {
-#      request=list(type="request",
-#                   action="navigate",
-#                   id=requestId,
-#                   data=list(chr=chr,start=start,end=end))
-#      sendRequest(request)
-#    }
-#)
-#
-EpivizServer$methods(
-    .dummyTestPage=function(req) {
-      wsUrl = paste(sep='',
-                    '"',
-                    "ws://",
-                    ifelse(is.null(req$HTTP_HOST), req$SERVER_NAME, req$HTTP_HOST),
-                    '"')
-      
-      list(
-        status = 200L,
-        headers = list(
-          'Content-Type' = 'text/html'
-        ),
-        body = paste(
-          sep = "\r\n",
-          "<!DOCTYPE html>",
-          "<html>",
-          "<head>",
-          '<style type="text/css">',
-          'body { font-family: Helvetica; }',
-          'pre { margin: 0 }',
-          '</style>',
-          "<script>",
-          sprintf("var ws = new WebSocket(%s);", wsUrl),
-          "ws.onmessage = function(msg) {",
-          '  var req = JSON.parse(msg.data)',
-          '  msgDiv = document.createElement("pre");',
-          '  msgDiv.innerHTML = req.data.msg.replace(/&/g, "&amp;").replace(/\\</g, "&lt;");',
-          '  document.getElementById("output").appendChild(msgDiv);',
-          '  ws.send(JSON.stringify({type: "response", requestId: req.requestId, data: {msg: "that msg"}}));',
-          "}",
-          "function sendInput() {",
-          "  var input = document.getElementById('input');",
-          "  ws.send(JSON.stringify({type: 'request', requestId: 0, data: {action: 'getAllData', measurements: {}, chr: input.value, start: 0, end: 0}}));",
-          "  input.value = '';",
-          "}",
-          "</script>",
-          "</head>",
-          "<body>",
-          '<h3>Send Message</h3>',
-          '<form action="" onsubmit="sendInput(); return false">',
-          '<input type="text" id="input"/>',
-          '<h3>Received</h3>',
-          '<div id="output"/>',
-          '</form>',
-          "</body>",
-          "</html>"
-        )
-      )
-    }
-)                           
