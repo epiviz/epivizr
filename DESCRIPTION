@@ -24,3 +24,4 @@ Collate: 'utils.r' 'middleware.R' 'EpivizServer-class.R' 'EpivizDeviceMgr-class.
         'EpivizBpData-class.R' 'EpivizGeneInfoData-class.R' 'register-methods.R'
         'EpivizChart-class.R' 'EpivizDevice-class.R' 'zzz.R'
 biocViews: Visualization, Infrastructure, GUI
+Video: https://www.youtube.com/watch?v=099c4wUxozA
