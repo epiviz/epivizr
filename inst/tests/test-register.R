@@ -82,3 +82,22 @@ test_that("register works for ExpressionSet", {
   expect_equal(dev$ylim, rngs, check.attributes=FALSE)
 })
 
+test_that("register works for gene info granges", {
+  gr <- makeGeneInfo()
+  dev <- epivizr::register(gr, type="geneInfo")
+  expect_true(validObject(dev))
+
+  expect_is(dev, "EpivizGeneInfoData")
+  expect_is(dev$object, "GIntervalTree")
+  expect_true(is.null(dev$columns))
+})
+
+test_that("register works for OrganismDb object", {
+  library(Mus.musculus)
+  dev <- epivizr::register(Mus.musculus, keepSeqlevels=paste0("chr",c(1:19,"X","Y")))
+  expect_true(validObject(dev))
+
+  expect_is(dev, "EpivizGeneInfoData")
+  expect_is(dev$object, "GIntervalTree")
+  expect_true(is.null(dev$columns))
+}) 

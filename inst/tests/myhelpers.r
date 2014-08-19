@@ -76,5 +76,5 @@ test1=function() test_some(TRUE,FALSE,FALSE)
 test2=function() test_some(TRUE,TRUE,FALSE)
 test3=function() test_some(TRUE,TRUE,TRUE)
 
-test_all=function() {testb(); testb1(); test0(); test1(); test2(); test3()}
+test_all=function() {testb(); testb1(); testb2(); test0(); test1(); test2(); test3()}
 
