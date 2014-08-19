@@ -3,6 +3,7 @@ import(Biobase)
 import(S4Vectors)
 import(GenomicRanges)
 import(httpuv)
+import(shiny)
 import(rjson)
 importClassesFrom(OrganismDbi, OrganismDb)
 
