@@ -41,7 +41,11 @@ getEpivizrTestOpts=function() {
 
 setEpivizrTestOpts()
 
-test_srv=function(dem=TRUE) {setEpivizrTestOpts(daemonized=dem); test(filter=".*server.*")}
+test_srv=function(dem=TRUE, stand=FALSE) {
+  setEpivizrTestOpts(daemonized=dem, standalone=stand);
+  test(filter=".*server.*")
+}
+
 test_reg=function() test(filter=".*register.*")
 test_mes=function(req=TRUE,  dem=TRUE,stand=FALSE)
 {
@@ -66,6 +70,7 @@ test_some=function(req=TRUE,dem=TRUE,stand=FALSE)
 
 testb=function() {test_srv(FALSE);test_reg();test_fet(FALSE)}
 testb1=function() {test_srv(TRUE); test_reg(); test_fet(TRUE)}
+testb2=function() {test_srv(TRUE,TRUE); test_reg(); test_fet(TRUE)}
 test0=function() test_some(FALSE,FALSE,FALSE)
 test1=function() test_some(TRUE,FALSE,FALSE)
 test2=function() test_some(TRUE,TRUE,FALSE)
