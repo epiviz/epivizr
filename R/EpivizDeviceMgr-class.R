@@ -133,31 +133,6 @@ EpivizDeviceMgr$methods(list(
     }
     return(epivizObject)
    },
-#    .findMeasurements=function(msType, ms) {
-#       typeList <- msList[[msType]]
-#       ids <- ls(typeList)
-#       allMeasurements <- lapply(ids, function(id) typeList[[id]]$measurements)
-#       m <- sapply(ms, function(curMs) {
-#         isFound <- sapply(allMeasurements, function(x) curMs %in% x)
-#         if (any(isFound)) which(isFound) else NA
-#       })  
-#    },
-#    .checkMeasurements=function(msType, ms, sendRequest=!nonInteractive, ...) {
-#     if (!is.character(ms)) return(FALSE)
-#     if (!(msType %in% names(msList))) return(FALSE)
-# 
-#     m <- .findMeasurements(msType, names(ms))
-#     if (any(is.na(m)))
-#       return(FALSE)
-# 
-#     if (sendRequest) {
-#       typeList <- msList[[msType]]
-#       isConnected <- sapply(typeList, "[[", "connected")[m]
-#       all(isConnected)
-#     } else {
-#       TRUE
-#     }
-#    },
   .clearDatasourceGroupCache=function(msObj, sendRequest=!nonInteractive) {
      if(!is(msObj, "EpivizData")) {
       stop("'msObj' must be an 'EpivizData' object")
@@ -468,14 +443,6 @@ EpivizDeviceMgr$methods(list(
     rownames(out) <- NULL
     out
    }
-#    setActive=function (devId) {
-#      'set given device as active in browser'
-#      slot=which(sapply(lapply(devices,names), function(x) devId %in% x))
-#      if (length(slot)<1)
-#        stop("device Id not found")
-#      activeId <<- devId
-#      invisible(NULL)
-#    }
 ))
 
 # device management methods
