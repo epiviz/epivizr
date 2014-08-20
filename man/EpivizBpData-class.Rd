@@ -25,19 +25,9 @@
     }
     
     \item{}{
-      \code{getMeasurements()}: Returns named character vector. Entries are of format '<name>$<column>'. Vector names are of format
-      '<id>__<column>'.
+      \code{getMeasurements()}: Returns a list describing data encapsulated by this object.
     }
-    
-    \item{}{
-      \code{parseMeasurement(msId)}: Parses measurement of format '<id>__<column>'. 
-    }
-    
-    \item{}{
-      \code{packageData(msId)}: Get data for \code{msId} for rows overlapping \code{curQuery}. Returns a list with components: \code{min}: min value for data range, \code{max}: max value for data range, \code{data}: list with slots: \code{bp}: genomic location,
-      \code{value}: numeric data value.
-    }
-  }
+  }    
 }
 
 \author{Hector Corrada Bravo}
