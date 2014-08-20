@@ -9,7 +9,7 @@
 
 \section{Fields}{
   \describe{
-    \item{\code{measurements}:}{Named character vector of measurements displayed in chart. Entries are measurement names, vector names are measurement ids.}
+    \item{\code{measurements}:}{List describing measurements displayed in chart.}
     \item{\code{id}:}{(character) id assigned by session manager to chart. Use \code{getId} method to get id.}
     \item{\code{mgr}:}{(\code{\link{EpivizDeviceMgr}}) session manager object.}
     \item{\code{inDevice}:}{(logical) \code{TRUE} if chart is defined within an \code{\link{EpivizDevice-class}} object.}
