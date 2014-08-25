@@ -20,7 +20,7 @@ An object containing gene annotation information. See \code{\link{register-metho
 (character) The name of the gene annotation to display on the UI.
 }
   \item{seqinfo}{
-\code{\link[OrganismDbi]{Seqinfo-class}} object containing sequence names and lengths.
+\code{\link[GenomeInfoDb]{Seqinfo-class}} object containing sequence names and lengths.
 Ignored if \code{geneInfo} is not NULL.
 }
   \item{chr}{
@@ -36,7 +36,7 @@ Ending genomic position when loading UI.
 List containing other arguments to pass \code{\link{startEpiviz}}.
 }
   \item{\dots}{
-Arguments passed to \code{addDevice} method of \code{\link{EpivizDeviceManager}} when
+Arguments passed to \code{addDevice} method of \code{\link{EpivizDeviceMgr}} when
 adding gene annotation. For instance, \code{keepSeqlevels}.
 }
 }
