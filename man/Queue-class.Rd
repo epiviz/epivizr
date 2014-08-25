@@ -23,7 +23,10 @@
     \item{}{
       \code{pop()}: Pop item on top of queue
     }
-    
+
+    \item{}{
+	\code{peek()}: Return but not pop item on top of queue.
+    }    
     \item{}{
       \code{empty()}: Empty the queue
     }

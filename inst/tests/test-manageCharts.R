@@ -21,7 +21,7 @@ test_that("rmChart works", {
     mgr$rmChart(chartObj)
     
     if (sendRequest) wait_until(!mgr$server$requestWaiting)
-    expect_equal(length(mgr$chartList), 0)
+    expect_equal(length(ls(mgr$chartList)), 0)
     expect_true(is.null(mgr$chartList[[chartId]]))
 
     chartObj <- msObj$plot(sendRequest=sendRequest)
@@ -29,7 +29,7 @@ test_that("rmChart works", {
 
     if (sendRequest) wait_until(!mgr$server$requestWaiting)
     mgr$rmChart(chartId)
-    expect_equal(length(mgr$chartList), 0)
+    expect_equal(length(ls(mgr$chartList)), 0)
     expect_true(is.null(mgr$chartList[[chartId]]))
   },finally=mgr$stopServer())
 })
@@ -62,9 +62,9 @@ test_that("listCharts works", {
     if (sendRequest) {
       wait_until(!mgr$server$requestWaiting)
       print(mgr$chartList)
-      print(mgr$chartList[ids])
+      print(sapply(ids, function(id) mgr$chartList[[id]]))
       print(ids)
-      expect_false(any(sapply(mgr$chartList[ids], is.null)))
+      expect_false(any(sapply(ids, function(id) is.null(mgr$chartList[[id]]))))
     }
 
     type <- c("epiviz.plugins.charts.BlocksTrack",
@@ -115,9 +115,9 @@ test_that("rmAllCharts works", {
     if (sendRequest) {
       wait_until(!mgr$server$requestWaiting)
       print(mgr$chartList)
-      print(mgr$chartList[ids])
+      print(sapply(ids, function(id) mgr$chartList[[id]]))
       print(ids)
-      expect_false(any(sapply(mgr$chartList[ids], is.null)))
+      expect_false(any(sapply(ids, function(id) is.null(mgr$chartList[[id]]))))
     }
 
     type <- c("blocksTrack", "blocksTrack", "lineTrack", "geneScatterPlot")
@@ -136,6 +136,6 @@ test_that("rmAllCharts works", {
     mgr$rmAllCharts()
 
     if (sendRequest) wait_until(!mgr$server$requestWaiting)
-    expect_true(length(mgr$chartList) == 0)
+    expect_true(length(ls(mgr$chartList)) == 0)
   }, finally=mgr$stopServer())
 })

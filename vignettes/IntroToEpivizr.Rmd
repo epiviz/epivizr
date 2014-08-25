@@ -221,6 +221,44 @@ To close the connection to `Epiviz` and remove all tracks added during the inter
 mgr$stopServer()
 ```
 
+### Standalone version and browsing arbitrary genomes
+
+The `epivizr` package contains all files required to run the web app UI locally. This feature
+can be used to browse any genome of interest. For example, to browse the mouse genome
+we would do the following.
+
+```{r,eval=FALSE,echo=TRUE}
+library(Mus.musculus)
+mgr <- epivizr::startStandalone(Mus.musculus, geneInfoName="mm10",
+    keepSeqlevels=paste0("chr",c(1:19,"X","Y")))	
+```
+
+```{r,eval=TRUE,echo=FALSE}
+library(Mus.musculus)
+mgr <- epivizr::startStandalone(Mus.musculus, geneInfoName="mm10",
+    keepSeqlevels=paste0("chr",c(1:19,"X","Y")),start.args=list(debug=TRUE,
+openBrowser=FALSE,nonInteractive=TRUE,tryPorts=TRUE))
+mgr$startServer()	
+```
+
+Now the web app UI serves as a mouse genome browser.
+
+```{r}
+mgr$stopServer()
+```
+
+Note that this feature is available outside the standalone version as well. For instance,
+
+```{r,eval=FALSE,echo=TRUE}
+mgr <- startEpiviz()
+dev <- mgr$addDevice(Mus.musculus, "mm10", keepSeqlevels=paste0("chr",c(1:19,"X","Y")))
+mgr$stopServer()
+```
+
+can be used to browse the mouse genome using the official web UI. See the documentation
+for `?startStandalone` to see features not available in the standalone version, for instance,
+workspaces and gist plugins are not available in the standalone version.
+
 ### SessionInfo
 
 ```{r session-info, cache=FALSE}

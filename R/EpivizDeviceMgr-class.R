@@ -66,6 +66,11 @@ EpivizDeviceMgr$methods(list(
   })
 )
 
+# standalone helper
+EpivizDeviceMgr$methods(list(
+  standalone=function() server$standalone                          
+))
+
 # daemonization helpers
 EpivizDeviceMgr$methods(list(
   daemonized=function() server$daemonized,
@@ -91,7 +96,11 @@ EpivizDeviceMgr$methods(list(
                       input_class="GRanges"),
               block=list(class="EpivizBlockData",
                          description="Genomic region data",
-                         input_class="GRanges"))
+                         input_class="GRanges"),
+               geneInfo=list(class="EpivizGeneInfoData",
+                         description="Gene annotation data",
+                         input_class="GRanges")
+                 )
 
 EpivizDeviceMgr$methods(list(
    addMeasurements=function(obj, msName, sendRequest=!nonInteractive, ...) {
@@ -124,31 +133,6 @@ EpivizDeviceMgr$methods(list(
     }
     return(epivizObject)
    },
-#    .findMeasurements=function(msType, ms) {
-#       typeList <- msList[[msType]]
-#       ids <- ls(typeList)
-#       allMeasurements <- lapply(ids, function(id) typeList[[id]]$measurements)
-#       m <- sapply(ms, function(curMs) {
-#         isFound <- sapply(allMeasurements, function(x) curMs %in% x)
-#         if (any(isFound)) which(isFound) else NA
-#       })  
-#    },
-#    .checkMeasurements=function(msType, ms, sendRequest=!nonInteractive, ...) {
-#     if (!is.character(ms)) return(FALSE)
-#     if (!(msType %in% names(msList))) return(FALSE)
-# 
-#     m <- .findMeasurements(msType, names(ms))
-#     if (any(is.na(m)))
-#       return(FALSE)
-# 
-#     if (sendRequest) {
-#       typeList <- msList[[msType]]
-#       isConnected <- sapply(typeList, "[[", "connected")[m]
-#       all(isConnected)
-#     } else {
-#       TRUE
-#     }
-#    },
   .clearDatasourceGroupCache=function(msObj, sendRequest=!nonInteractive) {
      if(!is(msObj, "EpivizData")) {
       stop("'msObj' must be an 'EpivizData' object")
@@ -459,14 +443,6 @@ EpivizDeviceMgr$methods(list(
     rownames(out) <- NULL
     out
    }
-#    setActive=function (devId) {
-#      'set given device as active in browser'
-#      slot=which(sapply(lapply(devices,names), function(x) devId %in% x))
-#      if (length(slot)<1)
-#        stop("device Id not found")
-#      activeId <<- devId
-#      invisible(NULL)
-#    }
 ))
 
 # device management methods
@@ -733,6 +709,61 @@ EpivizDeviceMgr$methods(list(
                   type="epiviz.plugins.charts.HeatmapPlot")
     addChart(chartObj, ...)
     chartObj
+  },
+
+  genesChart=function(ms, ...) {
+    chartObj <- EpivizChart$new(
+                  measurements=ms,
+                  mgr=.self,
+                  type="epiviz.plugins.charts.GenesTrack")
+    addChart(chartObj, ...)
+    chartObj
   }
 ))
+
+# seqinfos and genes
+EpivizDeviceMgr$methods(
+  addSeqinfo=function(x) {
+    if (is(x,"Seqinfo")) {
+      x <- seqlengths(x)
+    }
+
+    if (is.null(names(x))) {
+      stop("argument 'x' must be a 'Seqinfo' object or a named vector that can be cast to integer")
+    }
+
+    nms <- names(x)
+    x <- tryCatch(as.integer(x),
+                  error=function(e) {
+                    stop("argument 'x' must be vector that can be cast to integer", e)
+                  })
+    names(x) <- NULL
+
+    out <- lapply(seq(along=x), function(i) {
+      list(nms[i], 1, x[i])
+    })
+    callback <- function(data) {
+      invisible(NULL)
+    }
+    requestId <- callbackArray$append(callback)
+    request <- list(type="request",
+                    requestId=requestId,
+                    data=list(action="addSeqInfos",
+                      seqInfos=rjson::toJSON(out)))
+    server$sendRequest(request)                      
+  },
+
+  rmSeqinfo=function(seqnames) {
+    callback <- function(data) {
+      invisible(NULL)
+    }
+    requestId <- callbackArray$append(callback)
+    request <- list(type="request",
+                    requestId=requestId,
+                    data=list(action="removeSeqNames",
+                      seqNames=rjson::toJSON(seqnames)))
+    server$sendRequest(request)
+  }
+)
+
 

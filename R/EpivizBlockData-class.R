@@ -47,31 +47,6 @@ EpivizBlockData$methods(
   },
   .getValues=function(curHits, measurement) {
     return(NULL)
-  },
-  packageData=function(msId=NULL) {
-    if (!length(curHits)) {
-      out <- list(start=integer(), end=integer())
-    } else {
-      out <- list(start=start(object)[curHits], end=end(object)[curHits])
-    }
   }
 )
 
-EpivizBlockDataPack <- setRefClass("EpivizBlockDataPack",
-  contains="EpivizDataPack",
-  fields=list(data="list"),
-  methods=list(
-    initialize=function(...) {
-      callSuper(...)
-      data <<- structure(vector("list",length), names=rep("", length))
-    },
-    set=function(curData, msId, index=1) {
-      if(index > length) 
-        stop("cannot set to 'index'")
-      data[[index]] <<- curData
-      names(data)[index] <<- msId
-    },
-    getData=function() {list(data=data)}
-  )
-)
-EpivizBlockData$methods(.initPack=function(length=0) {EpivizBlockDataPack$new(length=length)})
