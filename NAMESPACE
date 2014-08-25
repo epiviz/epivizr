@@ -17,3 +17,5 @@ exportClasses(EpivizDeviceMgr,
               EpivizChart)
 
 export(startEpiviz)
+export(startStandalone)
+
