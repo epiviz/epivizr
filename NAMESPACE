@@ -3,7 +3,9 @@ import(Biobase)
 import(S4Vectors)
 import(GenomicRanges)
 import(httpuv)
+import(shiny)
 import(rjson)
+importClassesFrom(OrganismDbi, OrganismDb)
 
 exportClasses(EpivizDeviceMgr,
               EpivizData,
@@ -11,6 +13,9 @@ exportClasses(EpivizDeviceMgr,
               EpivizFeatureData,
               EpivizBlockData,
               EpivizBpData,
+              EpivizGeneInfoData,
               EpivizChart)
 
 export(startEpiviz)
+export(startStandalone)
+

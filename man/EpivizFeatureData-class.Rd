@@ -33,16 +33,7 @@ to be a \code{\link[GenomicRanges]{GIntervalTree}} object, its \code{mcols} must
     }
     
     \item{}{
-      \code{getMeasurements()}: Returns named character vector. Entries are of format '<name>$<column>'. Vector names are of format
-      '<id>__<column>'.
-    }
-    
-    \item{}{
-      \code{parseMeasurement(msId)}: Parses measurement of format '<id>__<column>'. 
-    }
-    
-    \item{}{
-      \code{packageData(msId)}: Get data for \code{msId} for rows overlapping \code{curQuery}. Returns a list with components: \code{min}: min value for data range, \code{max}: max value for data range, \code{data}: list with slots: \code{gene}: from \code{SYMBOL} column of \code{mcols(rowData(object))}, \code{start}: feature start position, \code{end}: feature end position, \code{probe}: from \code{PROBEID} column of \code{mcols(rowData(object))}, \code{value}: numeric data value.  
+      \code{getMeasurements()}: Returns list describing data encapsulated in this object.
     }
   }
 }

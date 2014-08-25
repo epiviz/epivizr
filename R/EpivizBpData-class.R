@@ -84,52 +84,6 @@ EpivizBpData$methods(
       stop("invalid parsed measurement")
     }
     column
-  },
-  packageData=function(msId) {
-    column <- parseMeasurement(msId)
-    m <- match(column, columns)
-    out <- list(min=unname(ylim[1,m]), max=unname(ylim[2, m]))
-    out$data <- list(bp=integer(), value=numeric())
-
-    if (length(curHits)) {
-      vals <- mcols(object)[curHits,column]
-      naIndx <- is.na(vals)
-      if (!all(naIndx)) {
-        if (any(naIndx)) {
-          out$data <- list(bp=start(object)[curHits[!naIndx]], value=vals[!naIndx])  
-        } else {
-          out$data <- list(bp=start(object)[curHits], value=vals)
-        }
-      }
-    }
-    out
   }
 )
 
-EpivizBpDataPack <- setRefClass("EpivizBpDataPack",
-  contains="EpivizDataPack",
-  fields=list(
-    min="numeric",
-    max="numeric",
-    data="list"),
-  methods=list(
-    initialize=function(...) {
-      callSuper(...)
-      min <<- structure(rep(-6, length), names=rep("", length))
-      max <<- structure(rep(6, length), names=rep("", length))
-      data <<- lapply(seq(len=length), function(i) list(bp=integer(), value=numeric()))
-      names(data) <<- rep("", length)
-    },
-    set=function(curData, msId, index) {
-      min[index] <<- curData$min
-      max[index] <<- curData$max
-      names(min)[index] <<- msId
-      names(max)[index] <<- msId
-      data[[index]] <<- curData$data
-      names(data)[index] <<- msId
-    },
-    getData=function() {
-      list(min=min,max=max,data=data)
-    }
-  ))
-EpivizBpData$methods(.initPack=function(length=0L) {EpivizBpDataPack$new(length=length)})
