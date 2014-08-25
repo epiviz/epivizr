@@ -13,6 +13,7 @@ exportClasses(EpivizDeviceMgr,
               EpivizFeatureData,
               EpivizBlockData,
               EpivizBpData,
+              EpivizGeneInfoData,
               EpivizChart)
 
 export(startEpiviz)

@@ -96,7 +96,7 @@
   \describe{
     \item{}{
       \code{addSeqinfo(x)}: Add sequence space (e.g., chromosome) informationto the web app.
-      \code{x} should be a \code{\link{Seqinfo-class}} object, or a named integer (or numeric) vector.
+      \code{x} should be a \code{\link[GenomeInfoDb]{Seqinfo-class}} object, or a named integer (or numeric) vector.
     }
     \item{}{
       \code{rmSeqinfo(seqnames)}: Remove sequence spaces (e.g., chromosome) information
@@ -242,14 +242,14 @@
       as a heatmap. \code{ms} is a list of lists, each component describing a measurement provided by an object of class \code{\link{EpivizFeatureData-class}}.
       They can be obtained using the \code{getMeasurements} method in the \code{\link{EpivizFeatureData-class}}.
     }
-  }
 
-  \item{}{
-    \code{genesChart(ms, ...)}: Used to display a gene annotation track. \code{ms} is a list 
-    containing a single entry: a list describing data provided by an object of class
-    \code{\link{EpivizGeneInfoData-class}}. This list can be obtained using the 
-    \code{getMeasurements} method in the \code{\link{EpivizGeneInfoData-class}}.
-  } 
+   \item{}{
+     \code{genesChart(ms, ...)}: Used to display a gene annotation track. \code{ms} is a list 
+     containing a single entry: a list describing data provided by an object of class
+     \code{\link{EpivizGeneInfoData-class}}. This list can be obtained using the 
+     \code{getMeasurements} method in the \code{\link{EpivizGeneInfoData-class}}.
+   } 
+ }
 }
 
 \section{Device management methods}{
