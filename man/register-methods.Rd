@@ -4,6 +4,7 @@
 \alias{register,GenomicRanges-method}
 \alias{register,SummarizedExperiment-method}
 \alias{register,ExpressionSet-method}
+\alias{register,OrganismDb-method}
 
 \title{Encapsulate data object in Epiviz}
 \description{
