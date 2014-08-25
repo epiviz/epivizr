@@ -15,7 +15,7 @@
 \S4method{register}{GenomicRanges}(object, columns=NULL, type=c("block", "bp", "geneInfo"), ...)
 \S4method{register}{SummarizedExperiment}(object, columns=NULL, assay=1)
 \S4method{register}{ExpressionSet}(object, columns=NULL, annotation=NULL)
-\S4method{register}{OragnismDb}(object, kind=c("gene", "tx"), keepSeqlevels=NULL, ...)
+\S4method{register}{OrganismDb}(object, kind=c("gene", "tx"), keepSeqlevels=NULL, ...)
 }
 \arguments{
   \item{object}{data object to encapsulate}
@@ -27,7 +27,7 @@
     "transcript" annotation. Only gene annotations are currently
     supported.}
   \item{keepSeqlevels}{for \code{OrganismDb} objects, a list of seqnames
-    to retain in the gene annotation. See \code{\link[GenomeInfoDb]{keepSeqlevels}}.
+    to retain in the gene annotation. See \code{\link[GenomeInfoDb]{keepSeqlevels}}}.
   \item{...}{arguments passed to \code{\link{EpivizData-class}} subclasses constructors}
 }
 
