@@ -92,6 +92,20 @@
   }
 }
 
+\section{Seqinfo methods}{
+  \describe{
+    \item{}{
+      \code{addSeqinfo(x)}: Add sequence space (e.g., chromosome) informationto the web app.
+      \code{x} should be a \code{\link[GenomeInfoDb]{Seqinfo-class}} object, or a named integer (or numeric) vector.
+    }
+    \item{}{
+      \code{rmSeqinfo(seqnames)}: Remove sequence spaces (e.g., chromosome) information
+      from the web app. \code{seqnames} should be a character vector containing chromosome 
+      names.
+    }
+  }		 
+}
+
 \section{Navigation methods}{
   \describe{
     \item{}{
@@ -103,7 +117,7 @@
     }
     
     \item{}{
-      \code{slideshow(granges, n=10)}: Navigate in web app to the first \code{n} regions in \code{\link{GenomicRanges-class}} object \code{granges} in succession.
+      \code{slideshow(granges, n=length(granges))}: Navigate in web app to the first \code{n} regions in \code{\link{GenomicRanges-class}} object \code{granges} in succession.
     }
   }
 }
@@ -119,16 +133,7 @@
     }
     
     \item{}{
-      \code{.findMeasurements(msType, ms)}: Finds the index of objects in \code{msList} where measurements \code{ms} of type \code{msType} are defined. See below to see valid types. Argument \code{ms} is a character vector of measurement ids. This method is for internal use only.
-    }
-    
-    \item{}{
-      \code{.checkMeasurements(msType, ms, sendRequest=TRUE, ...)}: Checks that measurements in \code{ms}, of type \code{msType} are valid.
-      If \code{sendRequest==TRUE} it also checks measurements are properly added to web app. This method is for internal use only.
-    }
-    
-    \item{}{
-      \code{.clearChartCaches(msObj, sendRequest=TRUE)}: Clears chart data caches in web app using any of the measurements defined by \code{msObj}
+      \code{.clearDatasourceGroupCache(msObj, sendRequest=!nonInteractive)}: Clears data caches in web app using any of the measurements defined by \code{msObj}
       of class (\code{\link{EpivizData-class}}). Only affects web app if \code{sendRequest==TRUE}. This method is for internal use only.
     }
     
@@ -167,6 +172,22 @@
   }
 }
 
+\section{Data fetch methods}{
+  \describe{
+    \item{}{
+	\code{getRows(chr, start, end, metadata, datasource)}: Get genomic location and metadata
+	for rows in given \code{datasource} that overlap the region defined by \code{chr},
+	\code{start} and \code{end}.
+    }
+
+    \item{}{
+      \code{getValues(chr, start, end, datasource, measurement)}: Get data values for column
+      \code{measurement} for rows in \code{datasource} that overlap the region defined by 
+      \code{chr}, \code{start} and \code{end}.
+    }      
+  }	      
+}
+
 \section{Chart management methods}{
   \describe{
     \item{}{
@@ -190,10 +211,6 @@
     
     \item{}{
       \code{listCharts()}: List all charts currently added to session manager.
-    }
-    
-    \item{}{
-      \code{setActive()}: NOT USED
     }
   }
 }
@@ -225,8 +242,16 @@
       as a heatmap. \code{ms} is a list of lists, each component describing a measurement provided by an object of class \code{\link{EpivizFeatureData-class}}.
       They can be obtained using the \code{getMeasurements} method in the \code{\link{EpivizFeatureData-class}}.
     }
-  }
+
+   \item{}{
+     \code{genesChart(ms, ...)}: Used to display a gene annotation track. \code{ms} is a list 
+     containing a single entry: a list describing data provided by an object of class
+     \code{\link{EpivizGeneInfoData-class}}. This list can be obtained using the 
+     \code{getMeasurements} method in the \code{\link{EpivizGeneInfoData-class}}.
+   } 
+ }
 }
+
 \section{Device management methods}{
   \describe{
     \item{}{
@@ -243,7 +268,7 @@
     }
     
     \item{}{
-      \code{rmAllDevice()}: Remove all devices added to the session manager.
+      \code{rmAllDevices()}: Remove all devices added to the session manager.
     }
     
     \item{}{
@@ -259,28 +284,11 @@
   }
 }
 
-\section{Data fetch methods}{
-  \describe{
-    \item{}{
-      \code{.initPack(msType, length=0L)}: Initialize a \code{\link{EpivizDataPack-class}} object of given \code{length}.
-    }
-    
-    \item{}{
-      \code{getData(measurements, chr, start, end)}: Query \code{measurements} for overlap with given genomic position. \code{measurements} is
-      assumed to be a named list, with each component's name indicating measurement type as stored in \code{msList}. Each component in the list
-      is a character vector of measurement ids. This method returns a list of the same length as \code{measurements}, each component containing
-      the result of the overlap query in the appropriate format determined by the measurement type. See the various \code{\link{EpivizData-class}}
-      classes for details on the result format.
-    }
-  }
-}
-
 \author{Hector Corrada Bravo}
 
 \seealso{
   \link{startEpiviz}
   \link{EpivizData-class}
-  \link{EpivizDataPack-class}
   \link{EpivizChart-class}
   \link{EpivizDevice-class}
   \link{GenomicRanges-class}

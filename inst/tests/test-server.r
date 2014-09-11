@@ -1,17 +1,13 @@
 context("server")
 
-constrFunction <- function(...) epivizr:::EpivizServer$new(daemonized=getOption("epivizrTestDaemonized"), ...)
+constrFunction <- function(...) epivizr:::EpivizServer$new(daemonized=getOption("epivizrTestDaemonized"),
+                                                           standalone=getOption("epivizrTestStandalone"),
+                                                           verbose=TRUE, ...)
 
 mgr <- new.env()
 mgr$lastMessage <- ""
 mgr$callbackArray <- epivizr:::IndexedArray$new()
 mgr$verbose <- TRUE
-mgr$processRequest <- function(data) {
-  action <- data$action
-  print(action)
-  switch(action,
-         getAllData=data$chr)
-}
 
 mgr$makeRequest <- function(msg) {
                            callback=function(data) {
@@ -24,12 +20,17 @@ mgr$makeRequest <- function(msg) {
                                 data=list(action="writeMsg",
                                   msg=msg))
                          }
+mgr$getSeqInfos <- function(msg) return(NULL)
+mgr$getMeasurements <- function(msg) return(NULL)
+mgr$getRows <- function(msg) return(NULL)
+mgr$getValues <- function(msg) return(NULL)
 
 test_that("constructor creates a proper object", {
   server <- constrFunction(port=7123L)
   expect_is(server, "EpivizServer")
   expect_true(server$isClosed())
   expect_equal(server$daemonized, getOption("epivizrTestDaemonized"))
+  expect_equal(server$standalone, getOption("epivizrTestStandalone"))
 })
 
 test_that("startServer and stopServer work appropriately", {
@@ -39,6 +40,7 @@ test_that("startServer and stopServer work appropriately", {
   server$startServer()
   expect_false(server$isClosed())
   expect_equal(server$daemonized, getOption("epivizrTestDaemonized"))
+  expect_equal(server$standalone, getOption("epivizrTestStandalone"))
   server$stopServer()
   expect_true(server$isClosed())
 })
@@ -47,8 +49,13 @@ test_that("socket messaging works", {
   server <- constrFunction(port=7123L)
   server$bindManager(mgr)
   server$startServer()
+
+  if (!server$standalone) {
+    browseURL("http://localhost:7123/")
+  } else {
+    browseURL("http://localhost:7123/index-standalone.html")
+  }
   
-  browseURL("http://localhost:7123/")
   tryCatch(server$service(), interrupt=function(int) invisible())
   wait_until(server$socketConnected)
   
@@ -96,7 +103,11 @@ test_that("tryPorts works", {
   
   expect_false(server2$isClosed())
 
-  browseURL(sprintf("http://localhost:%d/", server2$port))
+  if (!server2$standalone) {
+    browseURL(sprintf("http://localhost:%d/", server2$port))
+  } else {
+    browseURL(sprintf("http://localhost:%d/index-standalone.html", server2$port))
+  }
   tryCatch(server2$service(), interrupt=function(int) invisible())
   wait_until(server2$socketConnected)
   

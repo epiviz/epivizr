@@ -3,6 +3,7 @@
     tryCatch(startEpiviz(localURL=getOption("epivizrTestURL"), 
     					debug=getOption("epivizrTestDebug"), 
                                         daemonized=getOption("epivizrTestDaemonized"),
+                         standalone=getOption("epivizrTestStandalone"),
                                         port=getOption("epivizrTestPort"),
     					openBrowser=TRUE, 
     					verbose=verbose, ...), interrupt=function(e) invisible())
@@ -10,6 +11,7 @@
     startEpiviz(localURL=getOption("epivizrTestURL"),
     			debug=getOption("epivizrTestDebug"),
                         daemonized=getOption("epivizrTestDaemonized"),
+                standalone=getOption("epivizrTestStandalone"),
                         port=getOption("epivizrTestPort"),
     			openBrowser=FALSE, 
     			verbose=verbose, ...)

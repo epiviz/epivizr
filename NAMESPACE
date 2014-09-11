@@ -4,7 +4,9 @@ import(S4Vectors)
 import(GenomicRanges)
 import(rtracklayer)
 import(httpuv)
+import(shiny)
 import(rjson)
+importClassesFrom(OrganismDbi, OrganismDb)
 
 exportClasses(EpivizDeviceMgr,
               EpivizData,
@@ -15,6 +17,9 @@ exportClasses(EpivizDeviceMgr,
               EpivizDataCache,
               EpivizWigCache,
               EpivizWigData,
+              EpivizGeneInfoData,
               EpivizChart)
 
 export(startEpiviz)
+export(startStandalone)
+
