@@ -48,8 +48,8 @@
     )
 }
 
-.standalonePage <- function() {
-  filePath <- system.file("inst/www", package="epivizr")
+.standalonePage <- function(path="inst/www") {
+  filePath <- system.file(path, package="epivizr")
   shiny:::staticHandler(filePath)
 }
 
@@ -67,11 +67,12 @@ EpivizServer <- setRefClass("EpivizServer",
     tryPorts="logical",
     daemonized="logical",
     standalone="logical",
+    staticSitePath="character",
     startServerFn="function",
     stopServerFn="function"
   ),
   methods=list(
-    initialize=function(port=7312L, tryPorts=FALSE, daemonized=NULL, standalone=NULL, verbose=FALSE, ...) {
+    initialize=function(port=7312L, tryPorts=FALSE, daemonized=NULL, standalone=NULL, verbose=FALSE, staticSitePath="inst/www", ...) {
       port <<- port
       interrupted <<- FALSE
       socketConnected <<- FALSE
@@ -82,6 +83,7 @@ EpivizServer <- setRefClass("EpivizServer",
       startServerFn <<- if (.self$daemonized) httpuv::startDaemonizedServer else httpuv::startServer
       stopServerFn <<- if (.self$daemonized) httpuv::stopDaemonizedServer else httpuv::stopServer
       standalone <<- isTRUE(standalone)
+      staticSitePath <<- staticSitePath 
       verbose <<- verbose
       callSuper(...)
     },
@@ -121,7 +123,7 @@ EpivizServer <- setRefClass("EpivizServer",
       }
       
       if (standalone) {
-        httpHandler <- .standalonePage()
+        httpHandler <- .standalonePage(staticSitePath)
       } else {
         httpHandler <- .dummyTestPage
       }

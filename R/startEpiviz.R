@@ -10,7 +10,7 @@
   }
 
   if (isTRUE(standalone)) {
-    url <- sprintf("http://localhost:%d/index-standalone.html", port)
+    url <- sprintf("http://localhost:%d/index-standalone.html?websocket=true", port)
   }
 
   if (!isTRUE(standalone)) {
@@ -43,7 +43,7 @@
   url
   }
 
-startEpiviz <- function(port=7312L, localURL=NULL, useDevel=FALSE, standalone=FALSE, 
+startEpiviz <- function(port=7312L, localURL=NULL, useDevel=FALSE, standalone=FALSE, staticSitePath = "inst/www", 
                         chr="chr11", start=99800000, end=103383180, 
                         debug=FALSE, workspace=NULL, scripts=NULL, gists=NULL,
                         openBrowser=TRUE, daemonized=.epivizrCanDaemonize(),
@@ -61,7 +61,7 @@ startEpiviz <- function(port=7312L, localURL=NULL, useDevel=FALSE, standalone=FA
   }
 
   server <- EpivizServer$new(port=port, tryPorts=tryPorts,
-                           daemonized=daemonized, standalone=standalone, verbose=verbose)
+                           daemonized=daemonized, standalone=standalone, staticSitePath = staticSitePath, verbose=verbose)
 
   url <- .constructURL(port=server$port,
                        localURL=localURL,
