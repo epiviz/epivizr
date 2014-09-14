@@ -10,7 +10,7 @@
   }
 
   if (isTRUE(standalone)) {
-    url <- sprintf("http://localhost:%d/index-standalone.html", port)
+    url <- sprintf("http://localhost:%d/index-standalone.html?websocket=true", port)
   }
 
   if (!isTRUE(standalone)) {
