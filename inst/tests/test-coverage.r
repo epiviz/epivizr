@@ -45,12 +45,19 @@ res <- reduceByRange(bfv1, MAP, REDUCE)
 require(epivizr)
 mgr <- startEpiviz(chr="chr2",start=100,end=2000,verbose=TRUE)
 
-fl <- system.file("tests", "test.bw", package = "rtracklayer")
-ms <- mgr$addMeasurements(BigWigFile(fl), "cov")
+library(rtracklayer)
+
+mgr <- startStandalone()
+fl <- BigWigFile(system.file("tests", "test.bw", package = "rtracklayer"))
+mgr$addSeqinfo(seqinfo(fl))
+
+ms <- mgr$addMeasurements(fl, "cov")
+mgr$navigate("chr2", 300, 1000)
+
 query <- GRanges("chr2", IRanges(300,1000))
 tmp <- ms$getRows(query, NULL)
 
-dev <- mgr$addDevice(BigWigFile(fl),"cov")
+dev <- mgr$addDevice(fl, "cov")
 
 
 
