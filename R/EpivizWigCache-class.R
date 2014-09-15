@@ -21,7 +21,8 @@ EpivizWigCache <- setRefClass("EpivizWigCache",
         if (end(rng) > chrlen)
           end(rng) <- chrlen
         cacheRange <<- rng
-        res <- suppressWarnings(summary(resource, which=rng, size=maxPoints)[[1]])
+        size <- min(width(rng), maxPoints)
+        res <- suppressWarnings(summary(resource, which=rng, size=size)[[1]])
         return(res)
       }
 

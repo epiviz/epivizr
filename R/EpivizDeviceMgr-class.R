@@ -91,20 +91,19 @@ EpivizDeviceMgr$methods(list(
 .typeMap <- list(gene=list(class="EpivizFeatureData",
                            description="Data indexed by feature",
                            input_class="SummarizedExperiment"),
-              bp=list(class="EpivizBpData",
+                 bp=list(class="EpivizBpData",
                       description="Basepair resolution data",
                       input_class="GRanges"),
-              block=list(class="EpivizBlockData",
+                 block=list(class="EpivizBlockData",
                          description="Genomic region data",
                          input_class="GRanges"),
                  wig=list(class="EpivizWigData",
-                   description="Genomic continuous data from wig file",
-                   input_class="BigWigFileViews"))
-                         input_class="GRanges"),
-               geneInfo=list(class="EpivizGeneInfoData",
+                     description="Genomic continuous data from wig file",
+                     input_class="BigWigFile"),
+                 geneInfo=list(class="EpivizGeneInfoData",
                          description="Gene annotation data",
-                         input_class="GRanges")
-                 )
+                         input_class="GRanges"))
+                 
 
 EpivizDeviceMgr$methods(list(
    addMeasurements=function(obj, msName, sendRequest=!nonInteractive, ...) {
@@ -651,7 +650,6 @@ EpivizDeviceMgr$methods(list(
                     data=list(action="getCurrentLocation"))
     server$sendRequest(request)
   },
-  slideshow=function(granges, n=10) {
   slideshow=function(granges, n=length(granges)) {
     'navidate to successive positions'
     if (!is(granges, "GenomicRanges"))
@@ -671,8 +669,7 @@ EpivizDeviceMgr$methods(list(
     }
     invisible(NULL)
   }
-)
-)
+))
 
 # chart methods
 EpivizDeviceMgr$methods(list(

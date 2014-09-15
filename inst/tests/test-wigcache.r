@@ -10,13 +10,12 @@ test_that("cache mgmt works", {
   expect_equal(length(ms$cache$cacheRange), 0)
 
   query <- GRanges("chr2", IRanges(300, 400))
-  obj <- import.bw(BigWigFile(fl))
   ms$getRows(query, NULL)
 
   rng <- resize(query, width=3*width(query), fix="center")
+  obj <- summary(BigWigFile(fl), rng, size=width(rng))[[1]]
 
-  print(subsetByOverlaps(obj, rng)); print(ms$object)
-  expect_equal(as(ms$object, "GRanges"), subsetByOverlaps(obj, rng))
+  expect_equal(as(ms$object, "GRanges"), obj)
   expect_equal(ms$cache$cacheRange, rng)
 })
 
