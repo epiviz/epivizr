@@ -146,10 +146,10 @@ EpivizDeviceMgr$methods(list(
 
      if (sendRequest) {
        callback <- function(data) {
-         epivizrMsg("DatasourceGroup caches cleared", tagPrompt=TRUE)
+         if (verbose) epivizrMsg("DatasourceGroup caches cleared", tagPrompt=TRUE)
        }
        callback2 <- function(data) {
-         epivizrMsg("Redrawn", tagPrompt=TRUE)
+         if (verbose) epivizrMsg("Redrawn", tagPrompt=TRUE)
        }
        
        requestId <- callbackArray$append(callback)
