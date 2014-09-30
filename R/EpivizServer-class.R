@@ -50,7 +50,7 @@
 
 .standalonePage <- function(path="inst/www") {
   filePath <- system.file(path, package="epivizr")
-  shiny:::staticHandler(filePath)
+  staticHandler(filePath)
 }
 
 EpivizServer <- setRefClass("EpivizServer",
@@ -128,7 +128,7 @@ EpivizServer <- setRefClass("EpivizServer",
         httpHandler <- .dummyTestPage
       }
 
-      handlerMgr <- shiny:::HandlerManager$new()
+      handlerMgr <- HandlerManager$new()
       handlerMgr$addHandler(httpHandler, 'static')
       handlerMgr$addWSHandler(wsHandler, 'ws')
       handlerMgr$createHttpuvApp()
