@@ -19,10 +19,13 @@ EpivizWigCache <- setRefClass("EpivizWigCache",
         if (end(rng) > chrlen)
             end(rng) <- chrlen
 
-        cacheRange <<- switch(action,
-                              replace=rng,
-                              left=c(rng, cacheRange),
-                              right=c(cacheRange, rng))
+        if (action=="replace") {
+            cacheRange <<- rng
+        } else if (action=="right") {
+            end(cacheRange) <<- end(rng)
+        } else {
+            start(cacheRange) <<- start(rng)
+        }
         
         if (windowSize > 0) {
             size <- ceiling(width(rng) / windowSize)
@@ -30,6 +33,14 @@ EpivizWigCache <- setRefClass("EpivizWigCache",
         } else {
             res <- suppressWarnings(import.bw(resource, which=rng, as="GRanges"))
         }
+
+        if (action != "replace") {
+            naIndex <- is.na(res$score)
+            if (any(naIndex)) {
+                res <- res[!naIndex,]
+            }
+        }
+        
         return(list(res, action))
     },
     getObject=function(query) {
