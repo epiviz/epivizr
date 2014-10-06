@@ -1,16 +1,19 @@
 EpivizWigData <- setRefClass("EpivizWigData",
   contains="EpivizBpData",
-  fields=list(caches="list", stashObjects="list", file="BigWigFile", indexOffset="integer", currentCache="integer"),                            
+  fields=list(caches="list", stashObjects="list",
+      file="BigWigFile", indexOffset="integer",
+      currentCache="integer", triggerValues="integer"),                            
   methods=list(
     initialize=function(object=GIntervalTree(GRanges(score=numeric())),
         file=BigWigFile(),
-        windowSizes = c(0L, 1000L, 10000L), ...) {
+        windowSizes = c(0L, 1000L, 10000L),
+        triggerValues = c(100L, 5000L), ...) {
       file <<- file
       indexOffset <<- 0L
       caches <<- lapply(windowSizes, function (size) EpivizWigCache(resource=file, windowSize=size, ...))
-      stashObjects <<- lapply(windowSizes, function(size) GIntervalTree(GRanges(score=numeric())))
+      stashObjects <<- lapply(windowSizes, function(size) list(obj=GIntervalTree(GRanges(score=numeric())), indexOffset=0L))
       currentCache <<- as.integer(pmin(length(caches), 2))
-      indexOffset <<- indexOffset
+      triggerValues <<- triggerValues
       
       callSuper(object=object, columns="score", ...)
     },
@@ -35,7 +38,37 @@ EpivizWigData <- setRefClass("EpivizWigData",
       cbind(c(minScore,maxScore))    
     },
     cache=function() caches[[currentCache]],
+    switchCache=function(newCache) {
+        stashObjects[[currentCache]] <<- list(obj=object, indexOffset=indexOffset)
+        tmp <- stashObjects[[newCache]]
+        currentCache <<- newCache
+        object <<- tmp$obj
+        indexOffset <<- tmp$indexOffset
+        return(invisible(NULL))
+    },
+    verifyCache=function(query) {
+        currentWindowSize <- cache()$windowSize
+        if (currentWindowSize > 0) {
+            expectedResultSize <- ceiling(width(query) / currentWindowSize)
+        } else {
+            expectedResultSize <- width(query)
+        }
+        if (expectedResultSize < triggerValues[1] && currentCache > 1) {
+            # increase cache resolution
+            newCache <- currentCache - 1L
+            switchCache(newCache)
+            return(invisible(NULL))
+        } else if (expectedResultSize > triggerValues[2] && currentCache < length(caches)) {
+            newCache <- currentCache + 1L
+            switchCache(newCache)
+            return(invisible(NULL))
+        }
+    },
     getRows=function(query, metadata, useOffset=TRUE) {
+      if (length(caches) > 1) {
+          verifyCache(query)
+      }
+      
       tmp <- cache()$getObject(query)
       if (!is.null(tmp)) {
           newObject <- tmp[[1]]
