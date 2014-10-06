@@ -50,7 +50,7 @@
 
 .standalonePage <- function(path="") {
     if (path == "") {
-        filePath <- system.file("inst","www", package="epivizr")
+        filePath <- system.file("www", package="epivizr")
     } else {
         filePath <- path
     }
