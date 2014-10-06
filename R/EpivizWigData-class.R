@@ -1,13 +1,15 @@
 EpivizWigData <- setRefClass("EpivizWigData",
   contains="EpivizBpData",
-  fields=list(cache="EpivizWigCache", file="BigWigFile", indexOffset="integer"),                            
+  fields=list(caches="list", stashObjects="list", file="BigWigFile", indexOffset="integer", currentCache="integer"),                            
   methods=list(
     initialize=function(object=GIntervalTree(GRanges(score=numeric())),
         file=BigWigFile(),
-        windowSize = 0L,
-        indexOffset=0L, ...) {
+        windowSizes = c(0L, 1000L, 10000L), ...) {
       file <<- file
-      cache <<- EpivizWigCache(resource=file, windowSize=windowSize, ...)
+      indexOffset <<- 0L
+      caches <<- lapply(windowSizes, function (size) EpivizWigCache(resource=file, windowSize=size, ...))
+      stashObjects <<- lapply(windowSizes, function(size) GIntervalTree(GRanges(score=numeric())))
+      currentCache <<- as.integer(pmin(length(caches), 2))
       indexOffset <<- indexOffset
       
       callSuper(object=object, columns="score", ...)
@@ -32,8 +34,9 @@ EpivizWigData <- setRefClass("EpivizWigData",
       }
       cbind(c(minScore,maxScore))    
     },
+    cache=function() caches[[currentCache]],
     getRows=function(query, metadata, useOffset=TRUE) {
-      tmp <- cache$getObject(query)
+      tmp <- cache()$getObject(query)
       if (!is.null(tmp)) {
           newObject <- tmp[[1]]
           action <- tmp[[2]]

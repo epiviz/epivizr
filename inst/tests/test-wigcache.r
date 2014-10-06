@@ -4,10 +4,16 @@ sendRequest=getOption("epivizrTestSendRequest")
 fl <- BigWigFile(system.file("tests", "test.bw", package = "rtracklayer"))
 
 test_that("cache mgmt works with import.bw", {
-  ms <- register(fl)
+  ms <- register(fl, windowSizes=0L)
   
   expect_is(ms, "EpivizWigData")
-  expect_equal(length(ms$cache$cacheRange), 0)
+  expect_is(ms$caches, "list")
+  expect_equal(length(ms$caches), 1)
+  expect_equal(ms$currentCache, 1)
+  cat("current cache: ", ms$currentCache, "\n")
+  expect_is(ms$cache(), "EpivizWigCache")
+  
+  expect_equal(length(ms$cache()$cacheRange), 0)
 
   query <- GRanges("chr2", IRanges(500, 600))
   res <- ms$getRows(query, NULL)
@@ -26,12 +32,12 @@ test_that("cache mgmt works with import.bw", {
           metadata=NULL))
   
   expect_equal(as(ms$object, "GRanges"), obj)
-  expect_equal(ms$cache$cacheRange, rng)
+  expect_equal(ms$cache()$cacheRange, rng)
   expect_equal(res, expectedRes)
 })
 
 test_that("import.bw: hit cache", {
-  ms <- register(fl)
+  ms <- register(fl, windowSizes=0L)
   query <- GRanges("chr2", IRanges(500, 600))
   ms$getRows(query, NULL)
 
@@ -53,12 +59,12 @@ test_that("import.bw: hit cache", {
           metadata=NULL))
   
   expect_equal(as(ms$object, "GRanges"), obj)
-  expect_equal(ms$cache$cacheRange, rng)
+  expect_equal(ms$cache()$cacheRange, rng)
   expect_equal(res, expectedRes)
 }  )
 
 test_that("import.bw: extend right", {
-    ms <- register(fl)
+    ms <- register(fl, windowSizes=0L)
     query <- GRanges("chr2", IRanges(500, 600))
     ms$getRows(query, NULL)
 
@@ -90,12 +96,12 @@ test_that("import.bw: extend right", {
           metadata=NULL))
     
     expect_equal(as(ms$object, "GRanges"), obj2)
-    expect_equal(ms$cache$cacheRange, rng2)
+    expect_equal(ms$cache()$cacheRange, rng2)
     expect_equal(res, expectedRes)
 })
 
 test_that("import.bw: extend left", {
-    ms <- register(fl)
+    ms <- register(fl, windowSizes=0L)
     query <- GRanges("chr2", IRanges(500, 600))
     ms$getRows(query, NULL)
     
@@ -138,12 +144,12 @@ test_that("import.bw: extend left", {
           metadata=NULL))
 
   expect_equal(as(ms$object, "GRanges"), obj3)
-  expect_equal(ms$cache$cacheRange, rng3)
+  expect_equal(ms$cache()$cacheRange, rng3)
   expect_equal(res, expectedRes)
 })
 
 test_that("import.bw: hit cache again", {
-        ms <- register(fl)
+        ms <- register(fl, windowSizes=0L)
     query <- GRanges("chr2", IRanges(500, 600))
     ms$getRows(query, NULL)
     
@@ -190,12 +196,12 @@ test_that("import.bw: hit cache again", {
           metadata=NULL))
   
   expect_equal(as(ms$object, "GRanges"), obj3)
-  expect_equal(ms$cache$cacheRange, rng3)
+  expect_equal(ms$cache()$cacheRange, rng3)
   expect_equal(res, expectedRes)
 })  
 
 test_that("import.bw: zoom out", {
-            ms <- register(fl)
+            ms <- register(fl, windowSizes=0L)
     query <- GRanges("chr2", IRanges(500, 600))
     ms$getRows(query, NULL)
     
@@ -254,16 +260,16 @@ test_that("import.bw: zoom out", {
           metadata=NULL))
 
   expect_equal(as(ms$object, "GRanges"), obj)
-  expect_equal(ms$cache$cacheRange, rng)
+  expect_equal(ms$cache()$cacheRange, rng)
             expect_equal(res, expectedRes)
 })
 
 test_that("cache mgmt works with summary", {
-    windowSize <- 100L
-  ms <- register(fl, windowSize=windowSize)
+    windowSizes <- windowSize <- 100L
+  ms <- register(fl, windowSizes=windowSizes)
 
   expect_is(ms, "EpivizWigData")
-  expect_equal(length(ms$cache$cacheRange), 0)
+  expect_equal(length(ms$cache()$cacheRange), 0)
 
   query <- GRanges("chr2", IRanges(500, 600))
   res <- ms$getRows(query, NULL)
@@ -283,13 +289,13 @@ test_that("cache mgmt works with summary", {
           metadata=NULL))
     
   expect_equal(as(ms$object, "GRanges"), obj)
-  expect_equal(ms$cache$cacheRange, rng)
+  expect_equal(ms$cache()$cacheRange, rng)
   expect_equal(res, expectedRes)
 })
 
 test_that("summary: hit cache", {
-    windowSize <- 100L
-  ms <- register(fl, windowSize=windowSize)
+    windowSizes <- windowSize <- 100L
+  ms <- register(fl, windowSizes=windowSizes)
   query <- GRanges("chr2", IRanges(500, 600))
   ms$getRows(query, NULL)
 
@@ -311,13 +317,13 @@ test_that("summary: hit cache", {
           metadata=NULL))
 
     expect_equal(as(ms$object, "GRanges"), obj)
-  expect_equal(ms$cache$cacheRange, rng)
+  expect_equal(ms$cache()$cacheRange, rng)
       expect_equal(res, expectedRes)
 })
 
 test_that("summary: extend right", {
-    windowSize <- 100L
-  ms <- register(fl, windowSize=windowSize)
+    windowSizes <- windowSize <- 100L
+  ms <- register(fl, windowSizes=windowSizes)
   query <- GRanges("chr2", IRanges(500, 600))
   ms$getRows(query, NULL)
 
@@ -349,13 +355,13 @@ test_that("summary: extend right", {
     
 
   expect_equal(as(ms$object, "GRanges"), obj2)
-  expect_equal(ms$cache$cacheRange, rng2)
+  expect_equal(ms$cache()$cacheRange, rng2)
     expect_equal(res, expectedRes)
 })
 
 test_that("summary: extend left", {
-    windowSize <- 100L
-  ms <- register(fl, windowSize=windowSize)
+    windowSizes <- windowSize <- 100L
+  ms <- register(fl, windowSizes=windowSizes)
   query <- GRanges("chr2", IRanges(500, 600))
   ms$getRows(query, NULL)
 
@@ -398,13 +404,13 @@ test_that("summary: extend left", {
           metadata=NULL))
 
   expect_equal(as(ms$object, "GRanges"), obj3)
-  expect_equal(ms$cache$cacheRange, rng3)
+  expect_equal(ms$cache()$cacheRange, rng3)
       expect_equal(res, expectedRes)
 })
 
 test_that("summary: hit cache again", {
-        windowSize <- 100L
-  ms <- register(fl, windowSize=windowSize)
+        windowSizes <- windowSize <- 100L
+  ms <- register(fl, windowSizes=windowSizes)
   query <- GRanges("chr2", IRanges(500, 600))
   ms$getRows(query, NULL)
 
@@ -452,13 +458,13 @@ indexOffset <- length(obj3) + 1
   
 
   expect_equal(as(ms$object, "GRanges"), obj3)
-  expect_equal(ms$cache$cacheRange, rng3)
+  expect_equal(ms$cache()$cacheRange, rng3)
           expect_equal(res, expectedRes)
     })
 
 test_that("summary: zoom out", {
-            windowSize <- 100L
-  ms <- register(fl, windowSize=windowSize)
+            windowSizes <- windowSize <- 100L
+  ms <- register(fl, windowSizes=windowSizes)
   query <- GRanges("chr2", IRanges(500, 600))
   ms$getRows(query, NULL)
 
@@ -519,7 +525,7 @@ test_that("summary: zoom out", {
           metadata=NULL))
             
   expect_equal(as(ms$object, "GRanges"), obj)
-  expect_equal(ms$cache$cacheRange, rng)
+  expect_equal(ms$cache()$cacheRange, rng)
             expect_equal(res, expectedRes)
 })
 
