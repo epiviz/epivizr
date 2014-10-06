@@ -4,9 +4,9 @@ EpivizWigData <- setRefClass("EpivizWigData",
   methods=list(
     initialize=function(object=GIntervalTree(GRanges(score=numeric())),
         file=BigWigFile(),
-        maxPoints = 50000L, ...) {
+        windowSize = 0L, ...) {
       file <<- file
-      cache <<- EpivizWigCache(resource=file, maxPoints=maxPoints, ...)
+      cache <<- EpivizWigCache(resource=file, windowSize=windowSize, ...)
       callSuper(object=object, columns="score", ...)
     },
     .getLimits=function() {
