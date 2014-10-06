@@ -1,11 +1,11 @@
 context("fetch wig")
 
 sendRequest=getOption("epivizrTestSendRequest")
+fl <- BigWigFile(system.file("tests", "test.bw", package = "rtracklayer"))
 
 test_that("cache mgmt works with import.bw", {
-  fl <- BigWigFile(system.file("tests", "test.bw", package = "rtracklayer"))
   ms <- register(fl)
-
+  
   expect_is(ms, "EpivizWigData")
   expect_equal(length(ms$cache$cacheRange), 0)
 
@@ -28,13 +28,20 @@ test_that("cache mgmt works with import.bw", {
   expect_equal(as(ms$object, "GRanges"), obj)
   expect_equal(ms$cache$cacheRange, rng)
   expect_equal(res, expectedRes)
-  
-  cat("first call done\n")
-  
+})
+
+test_that("import.bw: hit cache", {
+  ms <- register(fl)
+  query <- GRanges("chr2", IRanges(500, 600))
+  ms$getRows(query, NULL)
+
+  rng <- resize(query, width=3*width(query), fix="center")
+  obj <- import.bw(fl, which=rng, as="GRanges")
+
   # no change since this query is in cache
   query <- GRanges("chr2", IRanges(600,700))
   res <- ms$getRows(query, NULL)
-
+  
   tmp <- subjectHits(GenomicRanges::findOverlaps(query, obj, select="all"))
   expectedRes <- list(
       globalStartIndex=tmp[1],
@@ -48,21 +55,32 @@ test_that("cache mgmt works with import.bw", {
   expect_equal(as(ms$object, "GRanges"), obj)
   expect_equal(ms$cache$cacheRange, rng)
   expect_equal(res, expectedRes)
-  
-  cat("second call done\n")
-  
-  # new stuff on the right
-  query <- GRanges("chr2", IRanges(700, 800))
-  rng2 <- setdiff(query, rng)
-  rng2 <- resize(rng2, fix="start", width=2*width(rng2))
-  
-  res <- ms$getRows(query, NULL)
-  obj2 <- import.bw(fl, which=rng2, as="GRanges")
-  obj2 <- c(obj, obj2)
-  start(rng2) <- start(rng)
+}  )
 
-  tmp <- subjectHits(GenomicRanges::findOverlaps(query, obj2, select="all"))
-  expectedRes <- list(
+test_that("import.bw: extend right", {
+    ms <- register(fl)
+    query <- GRanges("chr2", IRanges(500, 600))
+    ms$getRows(query, NULL)
+
+    rng <- resize(query, width=3*width(query), fix="center")
+    obj <- import.bw(fl, which=rng, as="GRanges")
+
+    query <- GRanges("chr2", IRanges(600,700))
+    ms$getRows(query, NULL)
+
+  # new stuff on the right
+    query <- GRanges("chr2", IRanges(700, 800))
+  
+    rng2 <- setdiff(query, rng)
+    rng2 <- resize(rng2, fix="start", width=2*width(rng2))
+  
+    res <- ms$getRows(query, NULL)
+    obj2 <- import.bw(fl, which=rng2, as="GRanges")
+    obj2 <- c(obj, obj2)
+    start(rng2) <- start(rng)
+
+    tmp <- subjectHits(GenomicRanges::findOverlaps(query, obj2, select="all"))
+    expectedRes <- list(
       globalStartIndex=tmp[1],
       useOffset=TRUE,
       values=list(
@@ -70,12 +88,33 @@ test_that("cache mgmt works with import.bw", {
           start=c(start(obj2)[tmp[1]], diff(start(obj2)[tmp])),
           end=c(end(obj2)[tmp[1]], diff(end(obj2)[tmp])),
           metadata=NULL))
+    
+    expect_equal(as(ms$object, "GRanges"), obj2)
+    expect_equal(ms$cache$cacheRange, rng2)
+    expect_equal(res, expectedRes)
+})
 
-  expect_equal(as(ms$object, "GRanges"), obj2)
-  expect_equal(ms$cache$cacheRange, rng2)
-  expect_equal(res, expectedRes)
+test_that("import.bw: extend left", {
+    ms <- register(fl)
+    query <- GRanges("chr2", IRanges(500, 600))
+    ms$getRows(query, NULL)
+    
+    rng <- resize(query, width=3*width(query), fix="center")
+    obj <- import.bw(fl, which=rng, as="GRanges")
+    
+    query <- GRanges("chr2", IRanges(600,700))
+    ms$getRows(query, NULL)
+    
+                                        # new stuff on the right
+    query <- GRanges("chr2", IRanges(700, 800))
   
-  cat("third call done\n")
+    rng2 <- setdiff(query, rng)
+    rng2 <- resize(rng2, fix="start", width=2*width(rng2))
+  
+    res <- ms$getRows(query, NULL)
+    obj2 <- import.bw(fl, which=rng2, as="GRanges")
+    obj2 <- c(obj, obj2)
+    start(rng2) <- start(rng)
 
   # new stuff on the left
   query <- GRanges("chr2", IRanges(300,500))
@@ -101,8 +140,40 @@ test_that("cache mgmt works with import.bw", {
   expect_equal(as(ms$object, "GRanges"), obj3)
   expect_equal(ms$cache$cacheRange, rng3)
   expect_equal(res, expectedRes)
+})
+
+test_that("import.bw: hit cache again", {
+        ms <- register(fl)
+    query <- GRanges("chr2", IRanges(500, 600))
+    ms$getRows(query, NULL)
+    
+    rng <- resize(query, width=3*width(query), fix="center")
+    obj <- import.bw(fl, which=rng, as="GRanges")
+    
+    query <- GRanges("chr2", IRanges(600,700))
+    ms$getRows(query, NULL)
+    
+                                        # new stuff on the right
+    query <- GRanges("chr2", IRanges(700, 800))
   
-  cat("fourth call done\n")
+    rng2 <- setdiff(query, rng)
+    rng2 <- resize(rng2, fix="start", width=2*width(rng2))
+  
+    res <- ms$getRows(query, NULL)
+    obj2 <- import.bw(fl, which=rng2, as="GRanges")
+    obj2 <- c(obj, obj2)
+    start(rng2) <- start(rng)
+
+  # new stuff on the left
+  query <- GRanges("chr2", IRanges(300,500))
+  rng3 <- setdiff(query, rng2)
+  rng3 <- resize(rng3, fix="end", width=2*width(rng3))
+
+  res <- ms$getRows(query, NULL)
+  obj3 <- import.bw(fl, which=rng3, as="GRanges")
+  indexOffset <- length(obj3) + 1
+  obj3 <- c(obj3, obj2)
+  end(rng3) <- end(rng2)
 
   # no change since this query is in cache
   query <- GRanges("chr2", IRanges(500, 600))
@@ -121,9 +192,10 @@ test_that("cache mgmt works with import.bw", {
   expect_equal(as(ms$object, "GRanges"), obj3)
   expect_equal(ms$cache$cacheRange, rng3)
   expect_equal(res, expectedRes)
-  
-  cat("fifth call done\n")
+})  
 
+test_that("import.bw: zoom out", {
+    ms <- register(fl)
   # zoom out, which should replace the whole thing
   query <- GRanges("chr2", IRanges(1,2000))
   rng <- resize(query, width=3*width(query), fix="center")
