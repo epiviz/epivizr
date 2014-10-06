@@ -30,9 +30,19 @@ EpivizWigData <- setRefClass("EpivizWigData",
       cbind(c(minScore,maxScore))    
     },
     getRows=function(query, metadata, useOffset=TRUE) {
-      newObject <- cache$getObject(query)
-      if (!is.null(newObject)) {
-        update(newObject)
+      tmp <- cache$getObject(query)
+      if (!is.null(tmp)) {
+          newObject <- tmp[[1]]
+          action <- tmp[[2]]
+          if (action == "replace") {
+              update(newObject)
+          }
+          else if (action == "right") {
+              object <<- GIntervalTree(c(as(object, "GRanges"), newObject))
+          } else {
+              # TODO: fix indexing issue here
+              object <<- c(newObject, object)
+          }
       }
       callSuper(query, metadata, useOffset=useOffset)
     },

@@ -10,7 +10,7 @@ EpivizWigCache <- setRefClass("EpivizWigCache",
       windowSize <<- as.integer(windowSize)
       callSuper(...)
     },
-    readResource=function(rng) {
+    readResource=function(rng, action="replace") {
         if (start(rng) < 1)
             start(rng) <- 1
 
@@ -18,15 +18,19 @@ EpivizWigCache <- setRefClass("EpivizWigCache",
         chrlen <- seqlengths(seqinfo(resource))[querynm]
         if (end(rng) > chrlen)
             end(rng) <- chrlen
+
+        cacheRange <<- switch(action,
+                              replace=rng,
+                              left=c(rng, cacheRange),
+                              right=c(cacheRange, rng))
         
-        cacheRange <<- rng
         if (windowSize > 0) {
             size <- ceiling(width(rng) / windowSize)
             res <- suppressWarnings(summary(resource, which=rng, size=size)[[1]])
         } else {
             res <- suppressWarnings(import.bw(resource, which=rng, as="GRanges"))
         }
-        return(res)
+        return(list(res, action))
     },
     getObject=function(query) {
       querynm <- as.character(seqnames(query)[1])
@@ -39,7 +43,7 @@ EpivizWigCache <- setRefClass("EpivizWigCache",
         
         qwidth <- width(query)
         rng <- resize(query, width=3*qwidth, fix="center")
-        return(readResource(rng))
+        return(readResource(rng, action="replace"))
       }
 
       if (length(seqnames(cacheRange)) == 0) {
@@ -57,16 +61,21 @@ EpivizWigCache <- setRefClass("EpivizWigCache",
         # query contained in cache
         return(NULL)
       }
-      
+
       if (length(rng) > 1) {
         # xxx|cache|xxx
         rng2 <- resize(query, width=3*width(query), fix="center")
-        return(readResource(rng2))
+        return(readResource(rng2, action="replace"))
       }
 
       # anything else
-      rng2 <- resize(query, width=width(cacheRange), fix="center")
-      return(readResource(rng2))
+      if (end(rng) > end(cacheRange)) {
+          ## cache|xxx
+          rng2 <- resize(rng, fix="start", width=2*width(rng))
+          return(readResource(rng2, action="right"))
+      }
+      rng2 <- resize(rng, fix="end", width=2*width(rng))
+      return(readResource(rng2, action="left"))
     }
   )
 )                              
