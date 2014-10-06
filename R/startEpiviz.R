@@ -43,7 +43,7 @@
   url
   }
 
-startEpiviz <- function(port=7312L, localURL=NULL, useDevel=FALSE, standalone=FALSE, staticSitePath = "inst/www", 
+startEpiviz <- function(port=7312L, localURL=NULL, useDevel=FALSE, standalone=FALSE, staticSitePath = "", 
                         chr="chr11", start=99800000, end=103383180, 
                         debug=FALSE, workspace=NULL, scripts=NULL, gists=NULL,
                         openBrowser=TRUE, daemonized=.epivizrCanDaemonize(),
