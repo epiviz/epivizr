@@ -48,8 +48,13 @@
     )
 }
 
-.standalonePage <- function(path="inst/www") {
-  filePath <- system.file(path, package="epivizr")
+.standalonePage <- function(path="") {
+    if (path == "") {
+        filePath <- system.file("www", package="epivizr")
+    } else {
+        filePath <- path
+    }
+    epivizrMsg("loading standalone from ", filePath)
   staticHandler(filePath)
 }
 
@@ -72,7 +77,7 @@ EpivizServer <- setRefClass("EpivizServer",
     stopServerFn="function"
   ),
   methods=list(
-    initialize=function(port=7312L, tryPorts=FALSE, daemonized=NULL, standalone=NULL, verbose=FALSE, staticSitePath="inst/www", ...) {
+    initialize=function(port=7312L, tryPorts=FALSE, daemonized=NULL, standalone=NULL, verbose=FALSE, staticSitePath="", ...) {
       port <<- port
       interrupted <<- FALSE
       socketConnected <<- FALSE
