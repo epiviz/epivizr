@@ -1,12 +1,15 @@
 EpivizWigData <- setRefClass("EpivizWigData",
   contains="EpivizBpData",
-  fields=list(cache="EpivizWigCache", file="BigWigFile"),                            
+  fields=list(cache="EpivizWigCache", file="BigWigFile", indexOffset="integer"),                            
   methods=list(
     initialize=function(object=GIntervalTree(GRanges(score=numeric())),
         file=BigWigFile(),
-        windowSize = 0L, ...) {
+        windowSize = 0L,
+        indexOffset=0L, ...) {
       file <<- file
       cache <<- EpivizWigCache(resource=file, windowSize=windowSize, ...)
+      indexOffset <<- indexOffset
+      
       callSuper(object=object, columns="score", ...)
     },
     .getLimits=function() {
@@ -34,17 +37,28 @@ EpivizWigData <- setRefClass("EpivizWigData",
       if (!is.null(tmp)) {
           newObject <- tmp[[1]]
           action <- tmp[[2]]
+          
           if (action == "replace") {
               update(newObject)
+              indexOffset <<- 0L
           }
           else if (action == "right") {
               object <<- GIntervalTree(c(as(object, "GRanges"), newObject))
           } else {
-              # TODO: fix indexing issue here
-              object <<- c(newObject, object)
+              indexOffset <<- as.integer(length(newObject) + 1)
+              object <<- GIntervalTree(c(newObject, as(object, "GRanges")))
           }
       }
-      callSuper(query, metadata, useOffset=useOffset)
+      res <- callSuper(query, metadata, useOffset=useOffset)
+      if (indexOffset != 0 && !is.null(res$globalStartIndex)) {
+          res$globalStartIndex <- res$globalStartIndex - indexOffset
+          if (!is.list(res$values$id)) {
+              res$values$id <- res$values$id - indexOffset
+          } else {
+              res$values$id <- list(res$values$id[[1]] - indexOffset)
+          }
+      }
+      return(res)
     },
     .getMetadata=function(curHits, curMetadata) {
       return(NULL)

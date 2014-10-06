@@ -40,7 +40,6 @@ EpivizWigCache <- setRefClass("EpivizWigCache",
                 res <- res[!naIndex,]
             }
         }
-        
         return(list(res, action))
     },
     getObject=function(query) {
