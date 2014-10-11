@@ -3,12 +3,12 @@
 
 \encoding{UTF-8}
 
-\section{Version 1.3.12}{
+\section{Version 1.3.20}{
   \itemize{
     \item Standalone mode introduced, a version of epiviz with reduced capabilities
     	  is now included as part of epivizr. The epiviz web app is run locally using 'httpuv's
 	  http server
-    \item Add and remove seqinfo (e.g., chromosome info)
+    \item Add and remove seqinfo (e.g., chromosome info) to any epiviz session
   }		 
 }
 

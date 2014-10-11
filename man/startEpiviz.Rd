@@ -10,7 +10,7 @@
 
 \usage{
   startEpiviz(port = 7312L, localURL = NULL, useDevel = FALSE, standalone=FALSE, 
-    staticSitePath = "inst/www", chr = "chr11", start = 99800000, end = 103383180, 
+    staticSitePath = "", chr = "chr11", start = 99800000, end = 103383180, 
     debug = FALSE, workspace = NULL, scripts=NULL, gists=NULL, openBrowser = TRUE,
     daemonized = .epivizrCanDaemonize(), verbose = FALSE, 
     nonInteractive = FALSE, tryPorts = FALSE)
@@ -29,7 +29,7 @@
   \item{standalone}{(logical) run the epiviz app on localhost using the httpuv http server}
   
   \item{staticSitePath}{(character) location of standalone epiviz static
-    site directory}
+    site directory. Uses the \code{"www"} directory of the installed package by default (i.e., when \code{staticSitePath==""}}
   
   \item{chr}{(character) chromosome to browse to on
   startup}
