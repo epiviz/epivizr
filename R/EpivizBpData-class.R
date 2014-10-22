@@ -8,6 +8,10 @@ EpivizBpData <- setRefClass("EpivizBpData",
       names(mcols(object))
     },
     .getNAs=function() {
+      if (length(columns) == 0) {
+        return(integer())
+      }
+
       naMat <- is.na(mcols(object)[,columns])
       if (!is.matrix(naMat))
         naMat <- cbind(naMat)
@@ -24,7 +28,7 @@ EpivizBpData <- setRefClass("EpivizBpData",
     },
     .getLimits=function() {
       colIndex <- match(columns, colnames(mcols(object)))
-      unname(sapply(colIndex, function(i) range(pretty(range(mcols(object)[,i], na.rm=TRUE)))))
+      suppressWarnings(unname(sapply(colIndex, function(i) range(pretty(range(mcols(object)[,i], na.rm=TRUE))))))
     },
     plot=function(...) {
       mgr$lineChart(ms=getMeasurements(), ...)
@@ -72,11 +76,15 @@ EpivizBpData$methods(
   .getMetadata=function(curHits, metadata) {
     return(NULL)
   },
-  .getValues=function(curHits, measurement) {
+  .getValues=function(curHits, measurement, round=FALSE) {
     if(!measurement %in% columns) {
       stop("could not find measurement", measurement)
     }
-    unname(mcols(object)[curHits,measurement])
+    vals <- unname(mcols(object)[curHits,measurement])
+    if (round) {
+      vals <- round(vals, 3)
+    }
+    vals
   },
   parseMeasurement=function(msId) {
     column <- strsplit(msId, split="__")[[1]][2]
