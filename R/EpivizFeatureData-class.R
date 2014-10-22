@@ -134,7 +134,7 @@ EpivizFeatureData$methods(
       names(out) <- curMetadata
       out
     },
-  .getValues=function(curHits, measurement) {
+  .getValues=function(curHits, measurement, round=FALSE) {
     if (!measurement %in% columns) {
       stop("could not find measurement", measurement)
     }
