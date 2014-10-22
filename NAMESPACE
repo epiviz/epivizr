@@ -2,6 +2,7 @@ import(methods)
 import(Biobase)
 import(S4Vectors)
 import(GenomicRanges)
+import(rtracklayer)
 import(httpuv)
 import(R6)
 import(mime)
@@ -14,6 +15,9 @@ exportClasses(EpivizDeviceMgr,
               EpivizFeatureData,
               EpivizBlockData,
               EpivizBpData,
+              EpivizDataCache,
+              EpivizWigCache,
+              EpivizWigData,
               EpivizGeneInfoData,
               EpivizChart)
 

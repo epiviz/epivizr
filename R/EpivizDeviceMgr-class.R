@@ -91,16 +91,19 @@ EpivizDeviceMgr$methods(list(
 .typeMap <- list(gene=list(class="EpivizFeatureData",
                            description="Data indexed by feature",
                            input_class="SummarizedExperiment"),
-              bp=list(class="EpivizBpData",
+                 bp=list(class="EpivizBpData",
                       description="Basepair resolution data",
                       input_class="GRanges"),
-              block=list(class="EpivizBlockData",
+                 block=list(class="EpivizBlockData",
                          description="Genomic region data",
                          input_class="GRanges"),
-               geneInfo=list(class="EpivizGeneInfoData",
+                 wig=list(class="EpivizWigData",
+                     description="Genomic continuous data from wig file",
+                     input_class="BigWigFile"),
+                 geneInfo=list(class="EpivizGeneInfoData",
                          description="Gene annotation data",
-                         input_class="GRanges")
-                 )
+                         input_class="GRanges"))
+                 
 
 EpivizDeviceMgr$methods(list(
    addMeasurements=function(obj, msName, sendRequest=!nonInteractive, ...) {
@@ -143,10 +146,10 @@ EpivizDeviceMgr$methods(list(
 
      if (sendRequest) {
        callback <- function(data) {
-         epivizrMsg("DatasourceGroup caches cleared", tagPrompt=TRUE)
+         if (verbose) epivizrMsg("DatasourceGroup caches cleared", tagPrompt=TRUE)
        }
        callback2 <- function(data) {
-         epivizrMsg("Redrawn", tagPrompt=TRUE)
+         if (verbose) epivizrMsg("Redrawn", tagPrompt=TRUE)
        }
        
        requestId <- callbackArray$append(callback)
@@ -623,7 +626,7 @@ EpivizDeviceMgr$methods(list(
 )
 
 # navigation methods
-EpivizDeviceMgr$methods(list(
+EpivizDeviceMgr$methods(list(                          
   refresh=function() {
     'refresh browser'
     server$refresh()
@@ -638,6 +641,13 @@ EpivizDeviceMgr$methods(list(
                  requestId=requestId,
                  data=list(action="navigate",
                            range=rjson::toJSON(list(seqName=chr,start=start,end=end))))
+    server$sendRequest(request)
+  },
+  getCurrentLocation=function(callback) {
+    requestId <- callbackArray$append(callback)
+    request <- list(type="request",
+                    requestId=requestId,
+                    data=list(action="getCurrentLocation"))
     server$sendRequest(request)
   },
   slideshow=function(granges, n=length(granges)) {
@@ -659,8 +669,7 @@ EpivizDeviceMgr$methods(list(
     }
     invisible(NULL)
   }
-)
-)
+))
 
 # chart methods
 EpivizDeviceMgr$methods(list(
