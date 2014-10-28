@@ -163,3 +163,27 @@ test_that("plot feature works", {
   }, finally=mgr$stopServer())
 })
 
+test_that("plot gene track works", {
+  sendRequest=sendRequest
+  gr <- makeGeneInfo()
+  mgr <- .startMGR(openBrowser=sendRequest)
+  
+  tryCatch({
+    if (sendRequest) wait_until(mgr$server$socketConnected)
+    msObj <- mgr$addMeasurements(gr, "hg19", type="geneInfo", sendRequest=sendRequest)
+    msId <- msObj$getId()
+    
+    if (sendRequest) wait_until(!mgr$server$requestWaiting)
+    chartObj <- msObj$plot(sendRequest=sendRequest)
+    chartId <- chartObj$getId()
+    
+    ms <- msObj$getMeasurements()
+    expect_equal(chartObj$measurements, ms)
+    expect_equal(chartObj$type, "epiviz.plugins.charts.GenesTrack")
+    expect_false(is.null(mgr$chartList[[chartId]]))
+    
+    if (sendRequest) wait_until(!mgr$server$requestWaiting)
+    connected <- !is.null(mgr$chartIdMap[[chartId]])
+    expect_equal(connected, sendRequest)
+  }, finally=mgr$stopServer())
+})
