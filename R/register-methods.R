@@ -12,7 +12,7 @@ setMethod("reorderIfNeeded", "GenomicRanges",
               oobj <- object
               strand(object) <- "*"
             }
-            if (suppressWarnings(IRanges::is.unsorted(object))) {
+            if (!S4Vectors::isSorted(object)) {
               order <- order(object)
               if (stranded) {
                 object <- oobj[order,]
@@ -31,7 +31,7 @@ setMethod("reorderIfNeeded", "SummarizedExperiment",
               ogr <- gr
               strand(gr) <- "*"
             }
-            if (suppressWarnings(IRanges::is.unsorted(gr))) {
+            if (!S4Vectors::isSorted(gr)) {
               order <- order(gr)
               object <- object[order,]
             }
@@ -39,7 +39,7 @@ setMethod("reorderIfNeeded", "SummarizedExperiment",
 })
 
 setMethod("register", "GenomicRanges",
-	function(object, columns, type=c("block","bp"), ...) {
+	function(object, columns, type=c("block","bp","geneInfo"), ...) {
 		type <- match.arg(type)
                 object <- reorderIfNeeded(object)
 
@@ -48,7 +48,8 @@ setMethod("register", "GenomicRanges",
 		}
 		dev <- switch(type,
 					  block=EpivizBlockData$new(object=object, ...),
-					  bp=EpivizBpData$new(object=object, columns=columns, ...))
+					  bp=EpivizBpData$new(object=object, columns=columns, ...),
+                                          geneInfo=EpivizGeneInfoData$new(object=object, ...))
 		return(dev)
 })
 
@@ -124,3 +125,30 @@ setMethod("register", "ExpressionSet",
 })
 
 
+setMethod("register", "OrganismDb",
+          function(object, kind=c("gene","tx"), keepSeqlevels=NULL, ...) {
+            epivizrMsg("creating gene annotation")
+            kind <- match.arg(kind)
+            gr <- genes(object, columns=c("GENEID", "SYMBOL"))
+            exons <- exonsBy(object, by=kind)
+            
+            ids <- as.character(gr$GENEID)
+            exons <- reduce(ranges(exons)[ids])
+            gr$Exons <- exons
+            
+            if (!is.null(keepSeqlevels)) {
+              gr <- keepSeqlevels(gr, keepSeqlevels)
+            }
+            
+            nms <- names(mcols(gr))
+            geneNameIdx <- match("SYMBOL", nms)
+            nms[geneNameIdx] <- "Gene"
+            names(mcols(gr)) <- nms
+
+            args <- list(...)
+            if (!is.null(args$type)) {
+              register(gr, ...)
+            } else {
+              register(gr, type="geneInfo", ...)
+            }
+})            

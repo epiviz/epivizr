@@ -21,16 +21,11 @@ of class \code{\link[GenomicRanges]{GIntervalTree}}. Its
     }
     
     \item{}{
-      \code{getMeasurements()}: The measurements names and ids for data encapsulated by this object. Returns a named character vector of length 1 containing \code{name} with \code{id} as the vector name.
-    }
+      \code{getMeasurements()}: Returns a list describing data encapsulated by this object.}
     
     \item{}{
       \code{parseMeasurement(msId=NULL)}: Checks \code{msId==id}.
-    }
-    
-    \item{}{
-      \code{packageData(msId=NULL)}: Returns list with slots \code{start} and \code{end} for ranges overlapping \code{curQuery}. 
-    }
+    }    
   }
 }
 

@@ -154,9 +154,6 @@ setValidity2("EpivizData", .valid.EpivizData)
 #######
 # get data
 EpivizData$methods(
-  packageData=function(msId) {
-    stop("'packageData' called on object of virtual class")
-  },
   getHits=function(query) {
     if (!is(query, "GRanges"))
       stop("'query' must be a GRanges object")
@@ -173,7 +170,7 @@ EpivizData$methods(
         return(invisible())
       }
       
-      if (suppressWarnings(IRanges::is.unsorted(start(object)[curHits]))) {
+      if (!S4Vectors::isSorted(start(object)[curHits])) {
         stop("these should be ordered by now...")
      }
       curHits <<- seq(min(curHits), max(curHits))
@@ -222,43 +219,8 @@ EpivizData$methods(
       }
     }
     return(out)
-  },
-  # TODO: remove this method
-  getData=function(query, msId=NULL) {
-    if (!is(query, "GRanges"))
-      stop("'query' must be a GRanges object")
-    if (length(query) != 1) {
-      stop("'query' must be of length 1")
-    }
-
-    if (is.null(curQuery) || !identical(unname(query), unname(curQuery))) {
-      curQuery <<- query
-      olaps <- GenomicRanges::findOverlaps(query, object, select="all")
-      curHits <<- subjectHits(olaps)
-      if (suppressWarnings(IRanges::is.unsorted(start(object)[curHits]))) {
-        ord <- order(start(object)[curHits])
-        curHits <<- curHits[ord]
-      }
-    }
-    packageData(msId=msId)
   }
 )
 
-EpivizDataPack <- setRefClass("EpivizDataPack",
-  fields=list(
-    length="integer"),
-  methods=list(
-    initialize=function(length=0L, ...) {
-      length <<- length
-      callSuper(...)
-    },
-    set=function(curData, msId, index) {
-      step("calling 'set' on virtual class")
-    },
-    getData=function() {
-      stop("calling 'getData' on virtual class")
-    }
-  )
-)
 
 

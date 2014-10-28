@@ -3,6 +3,8 @@ epivizR
 
 The `epivizr` Bioconductor package implements two-way communication between the [R/Bioconductor](http://bioconductor.org) environment and the [epiviz](http://epiviz.cbcb.umd.edu) web app for interactive data visualization. Objects in the R environment can be displayed as tracks or plots on Epiviz. Epivizr uses Websockets for communication between the browser Javascript client and the R environment using the same technology underlying the popular [Shiny](http://www.rstudio.com/shiny) system for authoring interactive web-based reports in R.
 
+**Epiviz2** We updated the `epiviz` web app to `Epiviz2` on April 2014. To use `Epiviz2` with `epivizr` you must
+use its [development branch](#development-version)
  
 ## Installation and requirements
 Epivizr is available as part of the [Bioconductor](http://bioconductor.org) project as of version 2.13. To install the release version of `epivizr`:

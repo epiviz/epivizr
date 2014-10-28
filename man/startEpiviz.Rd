@@ -9,9 +9,9 @@
 }
 
 \usage{
-  startEpiviz(port = 7312L, localURL = NULL, useDevel = FALSE,
-    chr = "chr11", start = 99800000, end = 103383180, debug = FALSE,
-    proxy = TRUE, workspace = NULL, scripts=NULL, gists=NULL, openBrowser = TRUE,
+  startEpiviz(port = 7312L, localURL = NULL, useDevel = FALSE, standalone=FALSE, 
+    staticSitePath = "", chr = "chr11", start = 99800000, end = 103383180, 
+    debug = FALSE, workspace = NULL, scripts=NULL, gists=NULL, openBrowser = TRUE,
     daemonized = .epivizrCanDaemonize(), verbose = FALSE, 
     nonInteractive = FALSE, tryPorts = FALSE)
 }
@@ -26,6 +26,11 @@
   
   \item{useDevel}{(logical) use the devel branch of the epiviz server (http://epiviz-dev.cbcb.umd.edu)}
 
+  \item{standalone}{(logical) run the epiviz app on localhost using the httpuv http server}
+  
+  \item{staticSitePath}{(character) location of standalone epiviz static
+    site directory. Uses the \code{"www"} directory of the installed package by default (i.e., when \code{staticSitePath==""}}
+  
   \item{chr}{(character) chromosome to browse to on
   startup}
 
@@ -38,10 +43,6 @@
   \item{debug}{(logical) start the epiviz browser in debug
   mode}
 
-  \item{proxy}{(logical) start the epiviz browser using the data
-  proxy. This is useful when hosting the web app locally, but
-  want to use data hosted in the epiviz server. (DEPRECATED, currently ignored)}
-
   \item{workspace}{(character) a workspace id to load in the 
   epiviz web app on startup}
 
@@ -51,7 +52,7 @@
 be imported when epiviz is loaded (see \url{http://epiviz.cbcb.umd.edu/help} for details).}
   \item{openBrowser}{(logical) browse to the epiviz URL before exiting function}
   
-  \item{daemonized}{(logical) use non-blocking version if available (UNIX-like only)}
+  \item{daemonized}{(logical) use non-blocking version if available (UNIX-like platforms only)}
 
   \item{verbose}{(logical) display log messages on websocket requests}
 

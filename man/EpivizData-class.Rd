@@ -72,12 +72,14 @@ common functionality for subclass objects. Objects in this class hierarchy are c
     \item{}{\code{plot()}: Plot data in this object. VIRTUAL.}
     
     \item{}{
-      \code{packageData(msId)}: Package data for measurement \code{msId} in appropriate format for web app. VIRTUAL.
+	\code{getRows(query, metadata)}: Get rows overlapping \code{query}, 
+	a \code{GenomicRanges} object. \code{metadata}: list of metadata columns;
+	metadata values returned for each row.
     }
-    
+
     \item{}{
-      \code{getData(query, msId=NULL)}: Get data overlapping query. Subclasses should not need to implement this method. It calls
-      the \code{packageData} method which performs class-specific data packaging.
+	\code{getValues(query, measurement)}: Get \code{measurement} values for
+	rows overlapping \code{query}, a \code{GenomicRanges} object.
     }
   }
 }

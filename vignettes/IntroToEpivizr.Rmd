@@ -62,6 +62,14 @@ mgr$startServer()
 ```
 This opens a websocket connection between the interactive `R` session and the browser client. This will allow us to visualize data stored in the `Epiviz` server along with data in the interactive `R` session.
 
+----
+*Windows users:* In Windows platforms we need to use the `service` function to let the interactive `R` session connect to the `epiviz` web app and serve data requests. We then escape (using `ctl-c` or `esc` depending on your environment) to continue with the interactive `R` session. This is required anytime you want `epivizr` to serve data to the web app, for example, when interacting with the UI. (We are actively developing support for non-blocking sessions in Windows platforms).
+
+```{r, eval=TRUE}
+mgr$service()
+```
+----
+
 ### Adding block region devices
 
 Once the browser is open we can visualize the `colon_blocks` object containing blocks of methylation modifications in colon cancer.
@@ -72,9 +80,10 @@ blocks_dev <- mgr$addDevice(colon_blocks, "450k colon_blocks")
 ```
 
 ----
-*Windows users:* In Windows platforms we need to use the `service` function to let the interactive `R` session serve data requests from the browser client. We then escape (using `ctl-c` or `esc` depending on your environment) to continue with the interactive `R` session. This is required anytime you want `epivizr` to serve data to the web app, for example, when interacting with the UI. (We are actively developing support for non-blocking sessions in Windows platforms).
+*Windows users:* We need the `service` function to let the interactive `R` session serve data requests from the browser client as you interact with the UI. 
+Escape (using `ctl-c` or `esc` depending on your environment) to continue with the interactive `R` session.
 
-```{r, eval=TRUE}
+```{r,eval=TRUE}
 mgr$service()
 ```
 ----
@@ -211,6 +220,44 @@ To close the connection to `Epiviz` and remove all tracks added during the inter
 ```{r}
 mgr$stopServer()
 ```
+
+### Standalone version and browsing arbitrary genomes
+
+The `epivizr` package contains all files required to run the web app UI locally. This feature
+can be used to browse any genome of interest. For example, to browse the mouse genome
+we would do the following.
+
+```{r,eval=FALSE,echo=TRUE}
+library(Mus.musculus)
+mgr <- epivizr::startStandalone(Mus.musculus, geneInfoName="mm10",
+    keepSeqlevels=paste0("chr",c(1:19,"X","Y")))	
+```
+
+```{r,eval=TRUE,echo=FALSE}
+library(Mus.musculus)
+mgr <- epivizr::startStandalone(Mus.musculus, geneInfoName="mm10",
+    keepSeqlevels=paste0("chr",c(1:19,"X","Y")),start.args=list(debug=TRUE,
+openBrowser=FALSE,nonInteractive=TRUE,tryPorts=TRUE))
+mgr$startServer()	
+```
+
+Now the web app UI serves as a mouse genome browser.
+
+```{r}
+mgr$stopServer()
+```
+
+Note that this feature is available outside the standalone version as well. For instance,
+
+```{r,eval=FALSE,echo=TRUE}
+mgr <- startEpiviz()
+dev <- mgr$addDevice(Mus.musculus, "mm10", keepSeqlevels=paste0("chr",c(1:19,"X","Y")))
+mgr$stopServer()
+```
+
+can be used to browse the mouse genome using the official web UI. See the documentation
+for `?startStandalone` to see features not available in the standalone version, for instance,
+workspaces and gist plugins are not available in the standalone version.
 
 ### SessionInfo
 
