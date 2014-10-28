@@ -336,15 +336,23 @@ EpivizDeviceMgr$methods(list(
     return(NULL)
   },
   getRows=function(chr, start, end, metadata, datasource) {
+    if (is.null(chr) || is.null(start) || is.null(end)) {
+      query <- NULL
+    } else {
      query <- GRanges(chr, ranges=IRanges(start, end))
-     obj <- .findDatasource(datasource)
-     if (is.null(obj)) {
+    } 
+    obj <- .findDatasource(datasource)
+    if (is.null(obj)) {
        stop("cannot find datasource", datasource)
-     }
-     obj$getRows(query, metadata)
+    }
+    obj$getRows(query, metadata)
   },
   getValues=function(chr, start, end, datasource, measurement) {
-    query <- GRanges(chr,ranges=IRanges(start,end))
+    if (is.null(chr) || is.null(start) || is.null(end)) {
+      query <- NULL
+    } else {
+      query <- GRanges(chr,ranges=IRanges(start,end))
+    }
     obj <- .findDatasource(datasource)
     if (is.null(obj)) {
       stop("cannot find datasource", datasource)
