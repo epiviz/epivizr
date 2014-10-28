@@ -80,3 +80,28 @@ test_that("addDevice feature works", {
     expect_equal(connected, sendRequest)
   }, finally=mgr$stopServer())
 })
+
+test_that("gene track device works", {
+  sendRequest=sendRequest
+  gr <- makeGeneInfo()
+  mgr <- .startMGR(openBrowser=sendRequest)
+  
+  tryCatch({
+    if (sendRequest) wait_until(mgr$server$socketConnected)
+    devObj <- mgr$addDevice(gr, "hg19", type="geneInfo", sendRequest=sendRequest)
+    expect_is(devObj, "EpivizDevice")
+    
+    msId <- devObj$getMsId()
+    chartId <- devObj$getChartId()
+    chartObj <- devObj$getChartObject()
+    
+    ms <- devObj$msObject$getMeasurements()
+    expect_equal(chartObj$measurements, ms)
+    expect_equal(chartObj$type, "epiviz.plugins.charts.GenesTrack")
+    expect_false(is.null(mgr$chartList[[chartId]]))
+    
+    if (sendRequest) wait_until(!mgr$server$requestWaiting)
+    connected <- !is.null(mgr$chartIdMap[[chartId]])
+    expect_equal(connected, sendRequest)
+  }, finally=mgr$stopServer())
+})
