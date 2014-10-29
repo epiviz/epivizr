@@ -83,6 +83,7 @@ EpivizData <- setRefClass("EpivizData",
         object <<- object[-naIndex,]
       }
       
+      if (sendRequest && !is.null(mgr))
       if (sendRequest && !mgr$isClosed())
         mgr$.clearDatasourceGroupCache(.self, sendRequest=sendRequest)
 
@@ -177,7 +178,16 @@ EpivizData$methods(
     }
     invisible()
   },
-  getRows=function(query, metadata, useOffset=FALSE) {
+  getRows=function(query, metadata) {
+    if (is.null(query)) {
+      out <- list(globalStartIndex=NULL, useOffset=FALSE,
+                  values=list(id=list(),
+                              start=list(),
+                              end=list(),
+                              metadata=.self$.getMetadata(integer(), metadata)))
+      return(out)
+    }
+    
     getHits(query)
     if (length(curHits) == 0) {
       out <- list(globalStartIndex=NULL, useOffset=FALSE,
@@ -223,7 +233,12 @@ EpivizData$methods(
   .getValues=function(curHits, measurement) {
     numeric()
   },
-  getValues=function(query, measurement, round=FALSE) {
+  getValues=function(query, measurement) {
+    if (is.null(query)) {
+      out <- list(globalstartIndex=NULL, values=list())
+      return(out)
+    }
+    
     getHits(query)
     if (length(curHits) == 0) {
       out <- list(globalStartIndex=NULL, values=list())

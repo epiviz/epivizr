@@ -48,7 +48,7 @@ test_that("device data fetch works on bp data", {
               values=list(id=list(2),
                 start=list(6),
                 end=list(6),
-                metadata=list(NULL)))
+                metadata=NULL))
 
   expect_equal(res, out)
   #print(res);print(out)
@@ -121,8 +121,34 @@ test_that("feature data fetch works", {
   res <- msObj$getValues(query, "SAMP_1")
   out <- list(globalStartIndex=min(hits),
               values=unname(mat[,"SAMP_1"]))
-  print(res);print(out)
+  #print(res);print(out)
   expect_equal(res,out)
+})
+
+test_that("geneinfo fetch works", {
+  sendRequest <- sendRequest
+  gr <- makeGeneInfo()
+  msmt <- epivizr::register(gr, type="geneInfo")
+  query <- GRanges("chr11", IRanges(start=102500000, end=103000000))
+  res <- msmt$getRows(query, c("gene", "exon_starts", "exon_ends"))
+  
+  msGR <- msmt$object
+  olaps <- findOverlaps(query, msGR)
+  hits <- subjectHits(olaps)
+  tmp <- msGR[hits,]
+  
+  out <- list(globalStartIndex=hits[1],
+              useOffset=FALSE,
+              values=list(
+                id=hits,
+                start=start(tmp),
+                end=end(tmp),
+                metadata=list(gene=unname(as.character(tmp$Gene)),
+                              exon_starts=unname(lapply(start(tmp$Exons),paste,collapse=",")),
+                              exon_ends=unname(lapply(end(tmp$Exons), paste, collapse=","))),
+                strand=unname(as.character(strand(tmp)))))
+  #print(res); print(out)
+  expect_equal(res, out)
 })
 
 test_that("mgr fetch works", {
@@ -190,7 +216,7 @@ test_that("mgr fetch works", {
                   id=seq(len=length(seq(1,100,by=5))),
                   start=30000000+seq(1,100,by=5),
                   end=30000000+seq(1,100,by=5),
-                  metadata=list(NULL)))
+                  metadata=NULL))
     expect_equal(res,out)
 
     res <- mgr$getValues(seqnames(query),start(query),end(query),devId3,"score1")

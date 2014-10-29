@@ -1,6 +1,7 @@
 context("manage charts")
 
 sendRequest = getOption("epivizrTestSendRequest")
+standalone <- getOption("epivizrTestStandalone")
 
 test_that("rmChart works", {
   sendRequest=sendRequest
@@ -15,6 +16,15 @@ test_that("rmChart works", {
     msId <- msObj$getId()
 
     if (sendRequest) wait_until(!mgr$server$requestWaiting)
+    if (standalone) {
+      mgr$addSeqinfo(seqinfo(gr))
+      if (sendRequest) wait_until(!mgr$server$requestWaiting)
+      
+      navigate_range <- gr[1,] + 2000
+      mgr$navigate(as.character(seqnames(navigate_range)), start(navigate_range), end(navigate_range))
+      if (sendRequest) wait_until(!mgr$server$requestWaiting)
+    }
+    
     chartObj <- msObj$plot(sendRequest=sendRequest)
     chartId <- chartObj$getId()
 
@@ -50,6 +60,15 @@ test_that("listCharts works", {
     dev4 <- mgr$addMeasurements(eset, "dev4", sendRequest = sendRequest, columns=c("SAMP_1", "SAMP_2")); devId4=dev4$getId()
 
     if (sendRequest) wait_until(!mgr$server$requestWaiting)
+    if (standalone) {
+      mgr$addSeqinfo(merge(seqinfo(gr1), seqinfo(gr2)))
+      if (sendRequest) wait_until(!mgr$server$requestWaiting)
+      
+      navigate_range <- gr[1,] + 2000
+      mgr$navigate(as.character(seqnames(navigate_range)), start(navigate_range), end(navigate_range))
+      if (sendRequest) wait_until(!mgr$server$requestWaiting)
+    }
+    
     chart1 <- dev1$plot(sendRequest=sendRequest)
     chart2 <- dev2$plot(sendRequest=sendRequest)
     chart3 <- dev3$plot(sendRequest=sendRequest)
@@ -103,6 +122,14 @@ test_that("rmAllCharts works", {
     dev4 <- mgr$addMeasurements(eset, "dev4", sendRequest = sendRequest, columns=c("SAMP_1", "SAMP_2")); devId4=dev4$getId()
 
     if (sendRequest) wait_until(!mgr$server$requestWaiting)
+    if (standalone) {
+      mgr$addSeqinfo(merge(seqinfo(gr1), seqinfo(gr2)))
+      if (sendRequest) wait_until(!mgr$server$requestWaiting)
+      
+      navigate_range <- gr[1,] + 2000
+      mgr$navigate(as.character(seqnames(navigate_range)), start(navigate_range), end(navigate_range))
+      if (sendRequest) wait_until(!mgr$server$requestWaiting)
+    }
     chart1 <- dev1$plot(sendRequest=sendRequest)
     chart2 <- dev2$plot(sendRequest=sendRequest)
     chart3 <- dev3$plot(sendRequest=sendRequest)
