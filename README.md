@@ -24,11 +24,6 @@ browseVignettes("epivizr")
 
 You can get a quick tour of epiviz here: [http://youtu.be/099c4wUxozA](http://youtu.be/099c4wUxozA)
 
-## Development version
-
-This github repository contains the release version of `epivizr`. To keep track of the latest and greatest version of `epivizr` see [this repository](http://github.com/epiviz/epivizr) which is tracked by the devel version in Bioconductor (see
-[http://bioconductor.org/developers/how-to/useDevel/](http://bioconductor.org/developers/how-to/useDevel/) for more info. 
-
 ## Non-blocking
 
 As of version 1.3, Epivizr supports a non-blocking workflow on both UNIX-like and Windows systems where data is served to the webapp without blocking
