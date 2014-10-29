@@ -116,7 +116,6 @@ test_that("lineChart works", {
 })
 
 test_that("plot bp works", {
-  skip("one at a time")
 	sendRequest=sendRequest
   gr <- GRanges(seqnames="chr1", ranges=IRanges(start=seq(1,100,by=25), width=1), 
     score1=rnorm(length(seq(1,100,by=25))),score2=rnorm(length(seq(1,100,by=25))))
@@ -153,7 +152,6 @@ test_that("plot bp works", {
 })
 
 test_that("scatterChart works", {
-  skip("one at a time")
 	sendRequest=sendRequest
   sset <- makeSExp()
   mgr <- .startMGR(openBrowser=sendRequest)
@@ -191,7 +189,6 @@ test_that("scatterChart works", {
 })
 
 test_that("plot feature works", {
-  skip("one at a time")
 	sendRequest=sendRequest
   sset <- makeSExp()
   mgr <- .startMGR(openBrowser=sendRequest)
@@ -228,7 +225,6 @@ test_that("plot feature works", {
 })
 
 test_that("plot gene track works", {
-  skip("one at a time")
   sendRequest=sendRequest
   gr <- makeGeneInfo()
   mgr <- .startMGR(openBrowser=sendRequest)
