@@ -19,4 +19,4 @@ exportClasses(EpivizDeviceMgr,
 
 export(startEpiviz)
 export(startStandalone)
-
+export(makeGeneTrackAnnotation)
