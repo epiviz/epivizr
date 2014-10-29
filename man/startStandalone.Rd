@@ -9,7 +9,7 @@ Create an epiviz session manager for the epiviz web application served
 from the localhost.
 }
 \usage{
-startStandalone(geneInfo = NULL, geneInfoName = "", seqinfo = NULL, chr = "", start = 1, end = 1, start.args = list(), ...)
+startStandalone(geneInfo = NULL, geneInfoName = "", seqinfo = NULL, chr = NULL, start = NULL, end = NULL, start.args = list(), ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -24,13 +24,13 @@ An object containing gene annotation information. See \code{\link{register-metho
 Ignored if \code{geneInfo} is not NULL.
 }
   \item{chr}{
-Sequence name to load the UI.
+Sequence name to load the UI. If NULL, taken from \code{seqinfo(geneInfo)} or \code{seqinfo} in order.
 }
   \item{start}{
-Starting genomic position when loading UI.
+Starting genomic position when loading UI. If NULL, taken from \code{seqinfo(geneInfo)} or \code{seqinfo} in order.
 }
   \item{end}{
-Ending genomic position when loading UI.
+Ending genomic position when loading UI. If NULL, taken from \code{seqinfo(geneInfo)} or \code{seqinfo} in order.
 }
   \item{start.args}{
 List containing other arguments to pass \code{\link{startEpiviz}}.
@@ -39,6 +39,10 @@ List containing other arguments to pass \code{\link{startEpiviz}}.
 Arguments passed to \code{addDevice} method of \code{\link{EpivizDeviceMgr}} when
 adding gene annotation. For instance, \code{keepSeqlevels}.
 }
+}
+
+\details{
+One of \code{geneInfo} or \code{seqinfo} must be non-NULL. Otherwise an error is raised.
 }
 \value{
 An object of class \linkS4class{EpivizDeviceMgr}.	

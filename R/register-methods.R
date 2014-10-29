@@ -124,32 +124,11 @@ setMethod("register", "ExpressionSet",
 		register(sumexp, columns=columns, assay=1,metadata=c("PROBEID","SYMBOL"))
 })
 
-.makeGeneAnnotation <- function(object, kind=c("gene","tx"), keepSeqlevels=NULL, ...)
-{
-  kind <- match.arg(kind)
-  gr <- genes(object, columns=c("GENEID", "SYMBOL"))
-  exons <- exonsBy(object, by=kind)
-  
-  ids <- as.character(gr$GENEID)
-  exons <- reduce(ranges(exons)[ids])
-  gr$Exons <- exons
-  
-  if (!is.null(keepSeqlevels)) {
-    gr <- keepSeqlevels(gr, keepSeqlevels)
-  }
-  
-  nms <- names(mcols(gr))
-  geneNameIdx <- match("SYMBOL", nms)
-  nms[geneNameIdx] <- "Gene"
-  names(mcols(gr)) <- nms
-  gr
-}
-
 setMethod("register", "OrganismDb",
           function(object, kind=c("gene","tx"), keepSeqlevels=NULL, ...) {
             epivizrMsg("creating gene annotation:")
             kind <- match.arg(kind)
-            gr <- .makeGeneAnnotation(object, kind, keepSeqlevels)
+            gr <- makeGeneAnnotation(object, kind, keepSeqlevels)
             args <- list(...)
             if (!is.null(args$type)) {
               register(gr, ...)
