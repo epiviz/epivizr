@@ -183,7 +183,7 @@ EpivizData$methods(
                   values=list(id=list(),
                               start=list(),
                               end=list(),
-                              metadata=.self$.getMetadata(curHits, metadata)))
+                              metadata=.self$.getMetadata(integer(), metadata)))
       return(out)
     }
     
