@@ -1,6 +1,7 @@
 context("manage devices")
 
 sendRequest = getOption("epivizrTestSendRequest")
+standalone <- getOption("epivizrTestStandalone")
 
 test_that("rmDevice works", {
   sendRequest=sendRequest
@@ -11,6 +12,15 @@ test_that("rmDevice works", {
   
   tryCatch({
     if (sendRequest) wait_until(mgr$server$socketConnected)
+    if (standalone) {
+      mgr$addSeqinfo(seqinfo(gr))
+      if (sendRequest) wait_until(!mgr$server$requestWaiting)
+      
+      navigate_range <- gr[1,] + 2000
+      mgr$navigate(as.character(seqnames(navigate_range)), start(navigate_range), end(navigate_range))
+      if (sendRequest) wait_until(!mgr$server$requestWaiting)
+    }
+    
     devObj <- mgr$addDevice(gr, "dev1", sendRequest=sendRequest, type="bp")
     devId <- devObj$getId()
 
@@ -55,6 +65,15 @@ test_that("listDevices works", {
   mgr <- .startMGR(openBrowser=sendRequest)
   tryCatch({
     if (sendRequest) wait_until(mgr$server$socketConnected)
+    if (standalone) {
+      mgr$addSeqinfo(merge(seqinfo(gr1), seqinfo(gr2)))
+      if (sendRequest) wait_until(!mgr$server$requestWaiting)
+      
+      navigate_range <- gr[1,] + 2000
+      mgr$navigate(as.character(seqnames(navigate_range)), start(navigate_range), end(navigate_range))
+      if (sendRequest) wait_until(!mgr$server$requestWaiting)
+    }
+    
     msObj1 <- mgr$addMeasurements(gr1, "dev1", sendRequest=sendRequest); msId1 <- msObj1$getId()
     msObj2 <- mgr$addMeasurements(gr2, "dev2", sendRequest=sendRequest); msId2 <- msObj2$getId()
 
@@ -100,6 +119,15 @@ test_that("rmAllDevices works", {
   mgr <- .startMGR(openBrowser=sendRequest)
   tryCatch({
     if (sendRequest) wait_until(mgr$server$socketConnected)
+    if (standalone) {
+      mgr$addSeqinfo(merge(seqinfo(gr1), seqinfo(gr2)))
+      if (sendRequest) wait_until(!mgr$server$requestWaiting)
+      
+      navigate_range <- gr[1,] + 2000
+      mgr$navigate(as.character(seqnames(navigate_range)), start(navigate_range), end(navigate_range))
+      if (sendRequest) wait_until(!mgr$server$requestWaiting)
+    }
+    
     msObj1 <- mgr$addMeasurements(gr1, "dev1", sendRequest=sendRequest); msId1 <- msObj1$getId()
     msObj2 <- mgr$addMeasurements(gr2, "dev2", sendRequest=sendRequest); msId2 <- msObj2$getId()
 

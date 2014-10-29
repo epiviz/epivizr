@@ -1,6 +1,7 @@
 context("add device")
 
 sendRequest=getOption("epivizrTestSendRequest")
+standalone <- getOption("epivizrTestStandalone")
 
 test_that("addDevice block works", {
 	sendRequest=sendRequest
@@ -9,6 +10,15 @@ test_that("addDevice block works", {
 
   tryCatch({
     if (sendRequest) wait_until(mgr$server$socketConnected)
+    if (standalone) {
+      mgr$addSeqinfo(seqinfo(gr))
+      if (sendRequest) wait_until(!mgr$server$requestWaiting)
+      
+      navigate_range <- gr[1,] + 2000
+      mgr$navigate(as.character(seqnames(navigate_range)), start(navigate_range), end(navigate_range))
+      if (sendRequest) wait_until(!mgr$server$requestWaiting)
+    }
+    
   	devObj <- mgr$addDevice(gr, "ms1", sendRequest=sendRequest)
   	expect_is(devObj, "EpivizDevice")
 
@@ -36,6 +46,15 @@ test_that("addDevice bp works", {
 
   tryCatch({
     if (sendRequest) wait_until(mgr$server$socketConnected)
+    if (standalone) {
+      mgr$addSeqinfo(seqinfo(gr))
+      if (sendRequest) wait_until(!mgr$server$requestWaiting)
+      
+      navigate_range <- gr[1,] + 2000      
+      mgr$navigate(as.character(seqnames(navigate_range)), start(navigate_range), end(navigate_range))
+      if (sendRequest) wait_until(!mgr$server$requestWaiting)
+    }
+    
   	devObj <- mgr$addDevice(gr, "ms1", sendRequest=sendRequest, type="bp")
   	expect_is(devObj, "EpivizDevice")
 
@@ -62,6 +81,15 @@ test_that("addDevice feature works", {
 
   tryCatch({
     if (sendRequest) wait_until(mgr$server$socketConnected)
+    if (standalone) {
+      mgr$addSeqinfo(seqinfo(sset))
+      if (sendRequest) wait_until(!mgr$server$requestWaiting)
+      
+      navigate_range <- rowData(sset)[1,] + 2000
+      mgr$navigate(as.character(seqnames(navigate_range)), start(navigate_range), end(navigate_range))
+      if (sendRequest) wait_until(!mgr$server$requestWaiting)
+    }
+    
   	devObj <- mgr$addDevice(sset, "ms1", sendRequest=sendRequest, columns=c("A","B"), assay="counts2")
 	expect_is(devObj, "EpivizDevice")
 
@@ -88,6 +116,16 @@ test_that("gene track device works", {
   
   tryCatch({
     if (sendRequest) wait_until(mgr$server$socketConnected)
+    if (standalone) {
+      mgr$addSeqinfo(seqinfo(gr))
+      if (sendRequest) wait_until(!mgr$server$requestWaiting)
+      
+      navigate_range <- gr[1,] + 2000
+      mgr$navigate(as.character(seqnames(navigate_range)), start(navigate_range), end(navigate_range))
+      if (sendRequest) wait_until(!mgr$server$requestWaiting)
+    }
+    
+    
     devObj <- mgr$addDevice(gr, "hg19", type="geneInfo", sendRequest=sendRequest)
     expect_is(devObj, "EpivizDevice")
     
