@@ -21,7 +21,7 @@ Suggests: testthat, roxygen2, knitr, antiProfilesData, hgu133plus2.db, knitrBoot
 Collate: 'utils.r' 'middleware-plus-supporting.R' 'EpivizServer-class.R' 'EpivizDeviceMgr-class.R'
         'startEpiviz.R' 'startStandalone.R' 'EpivizData-class.R' 'EpivizTrackData-class.R'
         'EpivizFeatureData-class.R' 'EpivizBlockData-class.R'
-        'EpivizBpData-class.R' 'EpivizGeneInfoData-class.R' 'makeGeneTrackAnnotation.R' 'register-methods.R'
+        'EpivizBpData-class.R' 'EpivizGeneInfoData-class.R' 'makeGeneTrackAnnotation.R' 
         'EpivizDataCache-class.R' 'EpivizWigCache-class.R'
 	      'EpivizWigData-class.R' 'register-methods.R'
         'EpivizChart-class.R' 'EpivizDevice-class.R' 'zzz.R'
