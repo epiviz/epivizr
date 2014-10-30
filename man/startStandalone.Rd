@@ -9,7 +9,8 @@ Create an epiviz session manager for the epiviz web application served
 from the localhost.
 }
 \usage{
-startStandalone(geneInfo = NULL, geneInfoName = "", seqinfo = NULL, chr = NULL, start = NULL, end = NULL, start.args = list(), ...)
+startStandalone(geneInfo = NULL, geneInfoName = "", seqinfo = NULL, 
+  chr = NULL, start = NULL, end = NULL, start.args = list(), ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
