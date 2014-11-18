@@ -1,5 +1,9 @@
-\name{EpivizWigCache}
-\alias{EpivizWigCache}
+\name{EpivizWigCache-class}
+\docType{class}
+
+\alias{class:EpivizWigCache}
+\alias{EpivizWigCache-class}
+
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Cache for BigWig files
@@ -7,50 +11,9 @@ Cache for BigWig files
 \description{
 Manages a data cache for external BigWig files.
 }
-\usage{
-EpivizWigCache(...)
-}
-%- maybe also 'usage' for other objects documented here.
-\arguments{
-  \item{\dots}{
-%%     ~~Describe \code{\dots} here~~
-}
-}
 \details{
-%%  ~~ If necessary, more details than the description above ~~
-}
-\value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
-}
-\references{
-%% ~put references to the literature/web site here ~
+Manages a data cache for external BigWig files.
 }
 \author{
-%%  ~~who you are~~
+Hector Corrada Bravo <hcorrada@gmail.com>
 }
-\note{
-%%  ~~further notes~~
-}
-
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
-\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-}
-\examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
-
-## The function is currently defined as
-structure(function (...) 
-new("EpivizWigCache", ...), className = structure("EpivizWigCache", package = "epivizr"), package = "epivizr", generator = <S4 object of class structure("refGeneratorSlot", package = "methods")>, class = structure("refObjectGenerator", package = "methods"))
-}
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
