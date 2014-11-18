@@ -175,3 +175,15 @@ setMethod("register", "OrganismDb",
               register(gr, type="geneInfo", ...)
             }
 })            
+setMethod("register", "OrganismDb",
+          function(object, kind=c("gene","tx"), keepSeqlevels=NULL, ...) {
+            epivizrMsg("creating gene annotation:")
+            kind <- match.arg(kind)
+            gr <- makeGeneAnnotation(object, kind, keepSeqlevels)
+            args <- list(...)
+            if (!is.null(args$type)) {
+              register(gr, ...)
+            } else {
+              register(gr, type="geneInfo", ...)
+            }
+})            

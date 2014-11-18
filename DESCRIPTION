@@ -2,7 +2,7 @@ Package: epivizr
 Maintainer: Hector Corrada Bravo <hcorrada@gmail.com>
 Author: Hector Corrada Bravo, Florin Chelaru, Llewellyn Smith, Naomi
         Goldstein
-Version: 1.5.1
+Version: 1.5.2
 License: Artistic-2.0
 Title: R Interface to epiviz web app
 Description: This package provides Websocket communication to the
@@ -16,17 +16,14 @@ Description: This package provides Websocket communication to the
         (using d3.js) can be easily added to the web app as well.
 VignetteBuilder: knitr
 Depends: R (>= 3.0.1), methods, Biobase, GenomicRanges (>= 1.13.47), rtracklayer
-Imports: S4Vectors, httpuv (>= 1.3.0), rjson 
-Suggests: testthat, roxygen2, knitr, antiProfilesData, hgu133plus2.db
-Depends: R (>= 3.0.1), methods, Biobase, GenomicRanges (>= 1.13.47)
-Imports: S4Vectors, httpuv (>= 1.3.0), rjson, OrganismDbi, R6 (>= 2.0.0), mime (>= 0.2)
+Imports: S4Vectors, httpuv (>= 1.3.0), rjson, OrganismDbi, R6 (>= 2.0.0), mime (>= 0.2), GenomeInfoDb, GenomicFeatures
 Suggests: testthat, roxygen2, knitr, antiProfilesData, hgu133plus2.db, knitrBootstrap, Mus.musculus
 Collate: 'utils.r' 'middleware-plus-supporting.R' 'EpivizServer-class.R' 'EpivizDeviceMgr-class.R'
         'startEpiviz.R' 'startStandalone.R' 'EpivizData-class.R' 'EpivizTrackData-class.R'
         'EpivizFeatureData-class.R' 'EpivizBlockData-class.R'
-        'EpivizBpData-class.R' 'EpivizDataCache-class.R' 'EpivizWigCache-class.R'
-	'EpivizWigData-class.R' 'register-methods.R'
-        'EpivizBpData-class.R' 'EpivizGeneInfoData-class.R' 'register-methods.R'
+        'EpivizBpData-class.R' 'EpivizGeneInfoData-class.R' 'makeGeneTrackAnnotation.R' 
+        'EpivizDataCache-class.R' 'EpivizWigCache-class.R'
+	      'EpivizWigData-class.R' 'register-methods.R'
         'EpivizChart-class.R' 'EpivizDevice-class.R' 'zzz.R'
 biocViews: Visualization, Infrastructure, GUI
 Video: https://www.youtube.com/watch?v=099c4wUxozA

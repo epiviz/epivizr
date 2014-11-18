@@ -7,7 +7,9 @@ import(httpuv)
 import(R6)
 import(mime)
 import(rjson)
-importClassesFrom(OrganismDbi, OrganismDb)
+import(OrganismDbi)
+import(GenomeInfoDb)
+import(GenomicFeatures)
 
 exportClasses(EpivizDeviceMgr,
               EpivizData,
@@ -23,4 +25,4 @@ exportClasses(EpivizDeviceMgr,
 
 export(startEpiviz)
 export(startStandalone)
-
+export(makeGeneTrackAnnotation)

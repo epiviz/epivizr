@@ -68,6 +68,7 @@ EpivizGeneInfoData$methods(
   .getMetadata=function(curHits, curMetadata) {
     if (length(curHits) == 0) {
       out <- lapply(curMetadata, function(x) list())
+      names(out) <- curMetadata
       return(out)
     }
     out <- vector("list", length(curMetadata))

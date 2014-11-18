@@ -128,6 +128,7 @@ EpivizFeatureData$methods(
 
       if (length(curHits) == 0) {
         out <- lapply(curMetadata, function (x) list())
+        names(out) <- curMetadata
         return(out)
       }
       out <- as.list(mcols(rowData(object))[curHits,curMetadata])
