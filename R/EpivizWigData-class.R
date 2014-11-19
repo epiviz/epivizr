@@ -39,6 +39,8 @@ EpivizWigData <- setRefClass("EpivizWigData",
     },
     cache=function() caches[[currentCache]],
     switchCache=function(newCache) {
+        if (mgr$verbose)
+          epivizrMsg(id, "switching cache:", currentCache, "->", newCache)
         stashObjects[[currentCache]] <<- list(obj=object, indexOffset=indexOffset)
         tmp <- stashObjects[[newCache]]
         currentCache <<- newCache
