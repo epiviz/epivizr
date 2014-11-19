@@ -178,7 +178,7 @@ EpivizData$methods(
     }
     invisible()
   },
-  getRows=function(query, metadata) {
+  getRows=function(query, metadata, useOffset=FALSE) {
     if (is.null(query)) {
       out <- list(globalStartIndex=NULL, useOffset=FALSE,
                   values=list(id=list(),
@@ -230,10 +230,10 @@ EpivizData$methods(
     }
     return(out)
   },
-  .getValues=function(curHits, measurement) {
+  .getValues=function(curHits, measurement, round) {
     numeric()
   },
-  getValues=function(query, measurement) {
+  getValues=function(query, measurement, round=TRUE) {
     if (is.null(query)) {
       out <- list(globalstartIndex=NULL, values=list())
       return(out)
