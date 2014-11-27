@@ -648,6 +648,13 @@ EpivizDeviceMgr$methods(list(
                            range=rjson::toJSON(list(seqName=chr,start=start,end=end))))
     server$sendRequest(request)
   },
+  getCurrentLocation=function(callback) {
+    requestId <- callbackArray$append(callback)
+    request <- list(type="request",
+                    requestId=requestId,
+                    data=list(action="getCurrentLocation"))
+    server$sendRequest(request)
+  },  
   slideshow=function(granges, n=length(granges)) {
     'navidate to successive positions'
     if (!is(granges, "GenomicRanges"))
