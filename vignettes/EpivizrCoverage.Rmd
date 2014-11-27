@@ -1,0 +1,60 @@
+<!--
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{Visualizing coverage with epivizr}
+-->
+
+Interactive and exploratory visualization of sequencing coverage using epivizr
+===================================================================
+
+[`Epiviz`](http://epiviz.cbcb.umd.edu) is an interactive visualization tool for functional genomics data. It supports genome navigation like other genome browsers, but allows multiple visualizations of data within genomic regions using scatterplots, heatmaps and other user-supplied visualizations. It also includes data from the [Gene Expression Barcode project](http://barcode.luhs.org/) for transcriptome visualization. It has a flexible plugin framework so users can add [d3](http://d3js.org/) visualizations. You can find more information about Epiviz at [http://epiviz.cbcb.umd.edu/help](http://epiviz.cbcb.umd.edu/help) and see a video tour [here](http://youtu.be/099c4wUxozA).
+
+<iframe width="480" height="360" src="http://www.youtube.com/embed/099c4wUxozA" frameborder="1" allowfullscreen></iframe>
+
+The `epivizr` package implements two-way communication between the `R/Bioconductor` computational genomics environment and `Epiviz`. Objects in an `R` session can be displayed as tracks or plots on Epiviz. Epivizr uses Websockets for communication between the browser Javascript client and the R environmen, the same technology underlying the popular [Shiny](http://www.rstudio.com/shiny/) system for authoring interactive web-based reports in R.
+
+The [Introduction to epivizr vignette] contains a general introduction to interactive visualization with epivizr. This vignette concentrates on visualizing coverage
+from aligned data of high-throughput sequencing experiments.
+
+### Starting Epiviz
+
+First, we start an Epiviz session to visualize data on the human genome build `hg19`:
+
+```{r, eval=FALSE, echo=TRUE}
+library(epivizr)
+library(Homo.sapiens)
+
+mgr <- epivizr::startStandalone(Homo.sapiens, geneInfoName="hg19", keepSeqlevels=paste0("chr", c(1:22,c("X","Y"))),chr="chr21",start=38529060,end=38582299)
+```
+```{r,eval=TRUE,echo=FALSE}
+library(epivizr)
+library(Homo.sapiens)
+mgr <- epivizr::startStandalone(Homo.sapiens, geneInfoName="hg19", keepSeqlevels=paste0("chr", c(1:22,c("X","Y")))),
+  start.args=list(debug=TRUE, openBrowser=FALSE,nonInteractive=TRUE,tryPorts=TRUE))
+mgr$startServer()  
+```
+
+
+### Coverage in BigWig files
+
+We visualize coverage for a sample of RNA-seq data available as a WIG file from the *BrainSpan Atlas of the Human Brain*. This is the same data used in the
+`derfinderPlot` vignette, and available in the `derfinderData` 
+
+```{r, eval=FALSE, echo=TRUE}
+library(derfinderData)
+wigfiles <- list.files(system.file('extdata','A1C',package='derfinderData'), pattern="bw", full=TRUE)
+
+names(wigfiles) <- gsub("\\.bw", "" , basename(wigfiles))
+bwfile <- BigWigFile(wigfiles[1])
+wigdev <- mgr$addDevice(bwfile, names(wigfiles)[1])
+```
+
+Now, we add the 
+
+### SessionInfo
+
+```{r session-info, cache=FALSE}
+mgr$stopServer()
+sessionInfo()
+```
+
+
