@@ -778,7 +778,7 @@ EpivizDeviceMgr$methods(list(
         req <- list(type="request",
                     requestId=reqId,
                     data=list(action="setChartSettings", chartId=chartId,
-                        settings=rjson::toJSON(newValues), colorMap=rjson::toJSON(colorMap)))
+                        settings=rjson::toJSON(newValues), colorMap=rjson::toJSON(newColorMap)))
         server$sendRequest(req)
     }
 ))

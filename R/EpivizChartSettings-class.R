@@ -1,11 +1,11 @@
-.colorMapListToVector(colorList) {
+.colorMapListToVector <- function(colorList) {
     colorMap <- sapply(colorList, "[[", "color")
     names(colorMap) <- sapply(colorList,"[[","name")
     return(colorMap)
 }
 
-.colorMapVectorToList(colorVector) {
-    lapply(seq(along=colorVector), list(name=names(colorVector)[i], color=colorVector[i]))
+.colorMapVectorToList <- function(colorVector) {
+    lapply(seq(along=colorVector), function(i) list(name=names(colorVector)[i], color=unname(colorVector[i])))
 }
 
 EpivizChartSettings <- setRefClass("EpivizChartSettings",
@@ -30,7 +30,7 @@ EpivizChartSettings <- setRefClass("EpivizChartSettings",
                                                        defaultValue=getcol("defaultValue"),
                                                        label=getcol("label"))
                                       posVals <- sapply(response$defs, function(x) {
-                                          paste(x$possibleValues,"",collapse=",")
+                                          paste0(x$possibleValues,"",collapse=", ")
                                       })
                                       df$possibleValues <- posVals
                                       defs <<- df
@@ -42,18 +42,22 @@ EpivizChartSettings <- setRefClass("EpivizChartSettings",
                                       initialized <<- TRUE
                                   },
                                        set=function(newVals) {
-                                           if (colorMap %in% names(newVals)) {
+                                           if ("colorMap" %in% names(newVals)) {
                                                oldColorMap <- values$colorMap
                                                colorMap <- newVals$colorMap
 
                                                names <- names(colorMap)
                                                allnames <- names(oldColorMap)
                                                extraNames <- setdiff(names, allnames)
-                                               colorMap[extraNames] <- NULL
+                                               if (length(extraNames) > 0) {
+                                                   colorMap[extraNames] <- NULL
+                                               }
 
                                                if (length(colorMap) > 0) {
                                                    missingNames <- setdiff(allnames, names(colorMap))
-                                                   colorMap[missingNames] <- oldColorMap[missingNames]
+                                                   if (length(missingNames) > 0) {
+                                                       colorMap[missingNames] <- oldColorMap[missingNames]
+                                                   }
                                                }
 
                                                colorMap <- .colorMapVectorToList(colorMap)
@@ -66,17 +70,19 @@ EpivizChartSettings <- setRefClass("EpivizChartSettings",
                                            allIds <- defs$id
 
                                            extraIds <- setdiff(ids, allIds)
-                                           newVals[extraIds] <- NULL
+                                           if (length(extraIds) > 0) {
+                                               newVals[extraIds] <- NULL
+                                           }
 
                                            if (length(newVals) > 0) {
                                                missingIds <- setdiff(allIds, names(newVals))
                                                newVals[missingIds] <- values[missingIds]
                                            }
 
-                                           if (length(newVales) == 0 && length(colorMap) == 0) {
+                                           if (length(newVals) == 0 && length(colorMap) == 0) {
                                                return(NULL)
                                            }
 
-                                           out <- list(settings=newVals, colors=colorMap)
+                                           out <- list(settings=newVals, colorMap=colorMap)
                                            return(out)
                                   }))
