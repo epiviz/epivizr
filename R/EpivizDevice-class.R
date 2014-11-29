@@ -13,6 +13,7 @@ EpivizDevice <- setRefClass("EpivizDevice",
 		getId=function() {id},
 		update=function(newObject, sendRequest=TRUE) {
 			msObject$update(newObject, sendRequest=sendRequest)
-		}
+                    },
+            set=function(...) {chartObject$set(...)}
 	)
 )

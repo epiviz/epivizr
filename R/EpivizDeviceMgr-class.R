@@ -735,7 +735,52 @@ EpivizDeviceMgr$methods(list(
                   type="epiviz.plugins.charts.GenesTrack")
     addChart(chartObj, ...)
     chartObj
-  }
+},
+
+    getChartSettings=function(chartObjId) {
+        if (!exists(chartObjId, chartList, inherits=FALSE)) {
+            return(NULL)
+        }
+        chartObj <- get(chartObjId, env=chartList, inherits=FALSE)
+        chartId <- chartIdMap[[chartObjId]]
+        if (is.null(chartId)) {
+            return(NULL)
+        }
+        callback <- function(res) {
+            if (res$success) {
+                chartObj$settings$updateFromResponse(res$value)
+            } 
+        }
+        
+        reqId <- callbackArray$append(callback)
+        req <- list(type="request",
+                    requestId=reqId,
+                    data=list(action="getChartSettings", chartId=chartId))
+        server$sendRequest(req)
+        waitToClearRequests()
+        return(chartObj$settings)
+    },
+    setChartSettings=function(chartObjId, newValues, newColorMap) {
+        if (!exists(chartObjId, chartList, inherits=FALSE)) {
+            return(NULL)
+        }
+        chartObj <- get(chartObjId, env=chartList, inherits=FALSE)
+        chartId <- chartIdMap[[chartObjId]]
+        if (is.null(chartId)) {
+            return(NULL)
+        }
+        callback <- function(res) {
+            if (res$success) {
+                chartObj$settings$updateValues(newValues, newColorMap)
+            }
+        }
+        reqId <- callbackArray$append(callback)
+        req <- list(type="request",
+                    requestId=reqId,
+                    data=list(action="setChartSettings", chartId=chartId,
+                        settings=rjson::toJSON(newValues), colorMap=rjson::toJSON(colorMap)))
+        server$sendRequest(req)
+    }
 ))
 
 # seqinfos and genes

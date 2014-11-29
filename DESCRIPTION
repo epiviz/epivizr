@@ -24,6 +24,6 @@ Collate: 'utils.r' 'middleware-plus-supporting.R' 'EpivizServer-class.R' 'Epiviz
         'EpivizBpData-class.R' 'EpivizGeneInfoData-class.R' 'makeGeneTrackAnnotation.R' 
         'EpivizDataCache-class.R' 'EpivizWigCache-class.R'
 	      'EpivizWigData-class.R' 'register-methods.R'
-        'EpivizChart-class.R' 'EpivizDevice-class.R' 'zzz.R'
+        'EpivizChartSettings-class.R' 'EpivizChart-class.R' 'EpivizDevice-class.R' 'zzz.R'
 biocViews: Visualization, Infrastructure, GUI
 Video: https://www.youtube.com/watch?v=099c4wUxozA
