@@ -123,6 +123,10 @@ EpivizFeatureData$methods(
       column
     },
     .getMetadata=function(curHits, curMetadata) {
+      if (length(metadata) < 1) {
+          return(NULL)
+      }
+        
       if(any(!curMetadata %in% metadata))
         stop("error getting metadata")
 
