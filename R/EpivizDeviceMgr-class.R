@@ -104,7 +104,6 @@ EpivizDeviceMgr$methods(list(
                          description="Gene annotation data",
                          input_class="GRanges"))
                  
-
 EpivizDeviceMgr$methods(list(
    addMeasurements=function(obj, msName, sendRequest=!nonInteractive, ...) {
     'add measurements to epiviz session'
@@ -783,4 +782,24 @@ EpivizDeviceMgr$methods(
   }
 )
 
+
+ # action handler
+EpivizDeviceMgr$methods(list(
+    handle=function(action, msgData) {
+        out = switch(action,
+             getMeasurements=getMeasurements(),
+             getRows=getRows(msgData$seqName,
+               msgData$start,
+               msgData$end,
+               msgData$metadata,
+               msgData$datasource),
+             getValues=getValues(msgData$seqName,
+               msgData$start,
+               msgData$end,
+               msgData$datasource,
+               msgData$measurement),
+            getSeqInfos=getSeqInfos())
+        return(out)
+    }
+))
 
