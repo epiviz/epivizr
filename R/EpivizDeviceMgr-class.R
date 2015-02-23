@@ -65,19 +65,11 @@ EpivizDeviceMgr <- setRefClass("EpivizDeviceMgr",
 #      listTypes()
    },
     registerType=function(name, typeDescriptor) {
-      localTypeMap = typeMap
-      localTypeMap[[name]] = typeDescriptor
-
-      localMsList = msList
-      localMsList[[name]] = new.env()
-
-      typeMap <<- localTypeMap
-      msList <<- localMsList
+      typeMap[[name]] <<- typeDescriptor
+      msList[[name]] <<- new.env()
     },
     registerAction=function(action, callback) {
-      localActionMap = actionMap
-      localActionMap[[action]] = callback
-      actionMap <<- localActionMap
+      actionMap[[action]] <<- callback
     }
   )
 )
