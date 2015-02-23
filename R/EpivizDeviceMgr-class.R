@@ -13,7 +13,8 @@ EpivizDeviceMgr <- setRefClass("EpivizDeviceMgr",
     server="EpivizServer",
     verbose="logical",
     nonInteractive="logical",
-    callbackArray="IndexedArray"),
+    callbackArray="IndexedArray",
+    actionMap="list"),
   methods=list(
     initialize=function(...) {
      msIdCounter <<- 0L
@@ -23,11 +24,17 @@ EpivizDeviceMgr <- setRefClass("EpivizDeviceMgr",
      chartIdMap <<- list()
      typeMap <<- .typeMap
 #     msList <<- list()
-     msList <<- structure(lapply(seq_along(.typeMap), function(x) new.env()),names=names(.typeMap))
+     msList <<- structure(lapply(seq_along(typeMap), function(x) new.env()),names=names(typeMap))
      chartList <<- new.env()
      deviceList <<- new.env()
      verbose <<- FALSE
      nonInteractive <<- FALSE
+     actionMap <<- list(
+       getMeasurements=function(mgr, msgData, ...) { mgr$getMeasurements() },
+       getRows=function(mgr, msgData, ...) { mgr$getRows(msgData$seqName, msgData$start, msgData$end, msgData$metadata, msgData$datasource) },
+       getValues=function(mgr, msgData, ...) { mgr$getValues(msgData$seqName, msgData$start, msgData$end, msgData$datasource, msgData$measurement) },
+       getSeqInfos=function(mgr, msgData, ...) { mgr$getSeqInfos() }
+     )
      callSuper(...)
    },
 #   finalize=function() {
@@ -56,7 +63,22 @@ EpivizDeviceMgr <- setRefClass("EpivizDeviceMgr",
         print(.self$listDevices()); cat("\n")
       }
 #      listTypes()
-   }
+   },
+    registerType=function(name, typeDescriptor) {
+      localTypeMap = typeMap
+      localTypeMap[[name]] = typeDescriptor
+
+      localMsList = msList
+      localMsList[[name]] = new.env()
+
+      typeMap <<- localTypeMap
+      msList <<- localMsList
+    },
+    registerAction=function(action, callback) {
+      localActionMap = actionMap
+      localActionMap[[action]] = callback
+      actionMap <<- localActionMap
+    }
   )
 )
 
@@ -276,8 +298,8 @@ EpivizDeviceMgr$methods(list(
                  maxValue=numeric(),
                  metadata=list()
                  )
-     for (i in seq_along(.typeMap)) {
-       curType <- names(.typeMap)[i]
+     for (i in seq_along(typeMap)) {
+       curType <- names(typeMap)[i]
        nm <- paste0(curType,"Measurements")
        measurements <- list()
        
@@ -786,20 +808,9 @@ EpivizDeviceMgr$methods(
  # action handler
 EpivizDeviceMgr$methods(list(
     handle=function(action, msgData) {
-        out = switch(action,
-             getMeasurements=getMeasurements(),
-             getRows=getRows(msgData$seqName,
-               msgData$start,
-               msgData$end,
-               msgData$metadata,
-               msgData$datasource),
-             getValues=getValues(msgData$seqName,
-               msgData$start,
-               msgData$end,
-               msgData$datasource,
-               msgData$measurement),
-            getSeqInfos=getSeqInfos())
-        return(out)
+      callback = actionMap[[action]]
+      out = callback(.self, msgData)
+      return(out)
     }
 ))
 
