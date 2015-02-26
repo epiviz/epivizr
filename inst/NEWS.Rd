@@ -3,6 +3,12 @@
 
 \encoding{UTF-8}
 
+\section{Version 1.4.6}{
+  \itemize{
+    \item Switch default URL to still use epiviz version 2
+  }
+}
+
 \section{Version 1.3.20}{
   \itemize{
     \item Standalone mode introduced, a version of epiviz with reduced capabilities

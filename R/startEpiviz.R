@@ -4,7 +4,7 @@
   {
   if (missing(localURL) || is.null(localURL)) {
     url <- ifelse(useDevel,"epiviz-dev", "epiviz")
-    url <- sprintf("http://%s.cbcb.umd.edu/index.php", url)
+    url <- sprintf("http://%s.cbcb.umd.edu/2/index.php", url)
   } else {
     url <- localURL
   }
