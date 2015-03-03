@@ -25,7 +25,7 @@ setMethod("reorderIfNeeded", "GenomicRanges",
 
 setMethod("reorderIfNeeded", "SummarizedExperiment",
           function(object, ...) {
-            gr <- rowData(object)
+            gr <- rowRanges(object)
             stranded <- any(strand(gr) != "*")
             if (stranded) {
               ogr <- gr
@@ -57,10 +57,10 @@ setMethod("register", "SummarizedExperiment",
 	function(object, columns=NULL, assay=1, metadata=NULL) {
           object <- reorderIfNeeded(object)
 		
-          if (!is(rowData(object), "GIntervalTree")) {
-            rowData(object) <- as(rowData(object), "GIntervalTree")
+          if (!is(rowRanges(object), "GIntervalTree")) {
+            rowRanges(object) <- as(rowRanges(object), "GIntervalTree")
           }
-          mcolNames <- names(mcols(rowData(object)))
+          mcolNames <- names(mcols(rowRanges(object)))
           if (is.null(metadata) && !is.null(mcolNames)) {
             metadata <- mcolNames
           }
