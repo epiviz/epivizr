@@ -216,7 +216,6 @@ EpivizDeviceMgr$methods(list(
     }
 
     if (!is(msObj, "EpivizData")) {
-      browser()
       stop("'msObj' must be an 'EpivizData' object")
     }
 
