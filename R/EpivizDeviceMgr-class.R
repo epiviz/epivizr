@@ -727,11 +727,10 @@ EpivizDeviceMgr$methods(list(
     chartObj
   },
   blockChart=function(ms, ...) {
-#    if (!.self$.checkMeasurements(msType="block", ms=ms, ...))
- #     stop("invalid measurements")
-
     chartObj <- EpivizChart$new(
       measurements=ms,
+      datasource=NULL,
+      datasourceGroup=NULL,
       mgr=.self,
       type="epiviz.plugins.charts.BlocksTrack")
     addChart(chartObj, ...)
@@ -739,11 +738,10 @@ EpivizDeviceMgr$methods(list(
   },
 
   lineChart=function(ms, ...) {
-#    if (!.self$.checkMeasurements(msType="bp", ms=ms, ...))
- #     stop("invalid measurements")
-
     chartObj <- EpivizChart$new(
       measurements=ms,
+      datasource=NULL,
+      datasourceGroup=NULL,
       mgr=.self,
       type="epiviz.plugins.charts.LineTrack")
     addChart(chartObj, ...)
@@ -752,12 +750,10 @@ EpivizDeviceMgr$methods(list(
 
   scatterChart=function(x, y, ...) {
     ms <- list(x,y)
-
-#    if(!.self$.checkMeasurements(msType="gene", ms=ms, ...))
- #     stop("invalid measurements")
-
     chartObj <- EpivizChart$new(
       measurements=ms,
+      datasource=NULL,
+      datasourceGroup=NULL,
       mgr=.self,
       type="epiviz.plugins.charts.ScatterPlot")
     addChart(chartObj, ...)
@@ -767,6 +763,8 @@ EpivizDeviceMgr$methods(list(
   heatmapChart=function(ms, ...) {
     chartObj <- EpivizChart$new(
                   measurements=ms,
+                  datasource=NULL,
+                  datasourceGroup=NULL,
                   mgr=.self,
                   type="epiviz.plugins.charts.HeatmapPlot")
     addChart(chartObj, ...)
@@ -776,6 +774,8 @@ EpivizDeviceMgr$methods(list(
   genesChart=function(ms, ...) {
     chartObj <- EpivizChart$new(
                   measurements=ms,
+                  datasource=NULL,
+                  datasourceGroup=NULL,
                   mgr=.self,
                   type="epiviz.plugins.charts.GenesTrack")
     addChart(chartObj, ...)
