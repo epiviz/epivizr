@@ -4,6 +4,9 @@ setGeneric("register", signature=c("object"),
 setGeneric("reorderIfNeeded", signature=c("object"),
            function(object, ...) standardGeneric("reorderIfNeeded"))
 
+setGeneric("coerceIfNeeded", signature=c("object"), 
+           function(object, ...) standardGeneric("coerceIfNeeded"))
+
 # TODO: add a sort check
 setMethod("reorderIfNeeded", "GenomicRanges",
           function(object, ...) {
@@ -23,6 +26,16 @@ setMethod("reorderIfNeeded", "GenomicRanges",
             return(object)
 })
 
+setMethod("coerceIfNeeded", "GenomicRanges", 
+          function(object, ...) {
+            if (!is(object, "GNCList")) {
+              newobject <- as(object, "GNCList")
+              mcols(newobject) <- mcols(object)
+              object <- newobject
+            }
+            object
+          })
+
 setMethod("reorderIfNeeded", "SummarizedExperiment",
           function(object, ...) {
             gr <- rowRanges(object)
@@ -41,11 +54,9 @@ setMethod("reorderIfNeeded", "SummarizedExperiment",
 setMethod("register", "GenomicRanges",
 	function(object, columns, type=c("block","bp","geneInfo"), ...) {
 		type <- match.arg(type)
-                object <- reorderIfNeeded(object)
-
-		if (!is(object, "GNCList")) {
-			object <- as(object, "GNCList")
-		}
+    object <- reorderIfNeeded(object)
+    object <- coerceIfNeeded(object)
+    
 		dev <- switch(type,
 					  block=EpivizBlockData$new(object=object, ...),
 					  bp=EpivizBpData$new(object=object, columns=columns, ...),
@@ -56,10 +67,8 @@ setMethod("register", "GenomicRanges",
 setMethod("register", "SummarizedExperiment",
 	function(object, columns=NULL, assay=1, metadata=NULL) {
           object <- reorderIfNeeded(object)
-		
-          if (!is(rowRanges(object), "GNCList")) {
-            rowRanges(object) <- as(rowRanges(object), "GNCList")
-          }
+		      rowRanges(object) <- coerceIfNeeded(rowRanges(object))
+          
           mcolNames <- names(mcols(rowRanges(object)))
           if (is.null(metadata) && !is.null(mcolNames)) {
             metadata <- mcolNames
