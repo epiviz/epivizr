@@ -43,13 +43,13 @@ setMethod("register", "GenomicRanges",
 		type <- match.arg(type)
                 object <- reorderIfNeeded(object)
 
-		if (!is(object, "GIntervalTree")) {
-			object <- as(object, "GIntervalTree")
+		if (!is(object, "GNCList")) {
+			object <- as(object, "GNCList")
 		}
 		dev <- switch(type,
 					  block=EpivizBlockData$new(object=object, ...),
 					  bp=EpivizBpData$new(object=object, columns=columns, ...),
-                                          geneInfo=EpivizGeneInfoData$new(object=object, ...))
+            geneInfo=EpivizGeneInfoData$new(object=object, ...))
 		return(dev)
 })
 
@@ -57,8 +57,8 @@ setMethod("register", "SummarizedExperiment",
 	function(object, columns=NULL, assay=1, metadata=NULL) {
           object <- reorderIfNeeded(object)
 		
-          if (!is(rowRanges(object), "GIntervalTree")) {
-            rowRanges(object) <- as(rowRanges(object), "GIntervalTree")
+          if (!is(rowRanges(object), "GNCList")) {
+            rowRanges(object) <- as(rowRanges(object), "GNCList")
           }
           mcolNames <- names(mcols(rowRanges(object)))
           if (is.null(metadata) && !is.null(mcolNames)) {

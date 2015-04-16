@@ -14,8 +14,8 @@ EpivizFeatureData <- setRefClass("EpivizFeatureData",
 
       newObject <- reorderIfNecessary(newObject)
       
-      if(!is(rowRanges(newObject), "GIntervalTree"))
-        rowRanges(newObject) <- as(rowRanges(newObject), "GIntervalTree")
+      if(!is(rowRanges(newObject), "GNCList"))
+        rowRanges(newObject) <- as(rowRanges(newObject), "GNCList")
       callSuper(newObject, ...)
     },
     .checkColumns=function(columns) {

@@ -1,7 +1,7 @@
 EpivizTrackData <- setRefClass("EpivizTrackData",
   contains="EpivizData",
   methods=list(
-  	initialize=function(object=GIntervalTree(GRanges()), ...) {
+  	initialize=function(object=GNCList(GRanges()), ...) {
 	  	callSuper(object=object, ...)
 	  },
 	update=function(newObject, ...) {
@@ -10,15 +10,15 @@ EpivizTrackData <- setRefClass("EpivizTrackData",
 
                 newObject <- reorderIfNeeded(newObject)
                 
-		if(!is(newObject, "GIntervalTree"))
-			newObject <- as(newObject, "GIntervalTree")
+		if(!is(newObject, "GNCList"))
+			newObject <- as(newObject, "GNCList")
 		callSuper(newObject, ...)
 	}
   ))
 
 .valid.EpivizTrackData.object <- function(x) {
-	if(!is(x$object, "GIntervalTree"))
-		return("'object' is not a 'GIntervalTree' object")
+	if(!is(x$object, "GNCList"))
+		return("'object' is not a 'GNCList' object")
 	NULL
 }
 

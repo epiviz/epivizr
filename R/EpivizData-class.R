@@ -12,7 +12,7 @@ EpivizData <- setRefClass("EpivizData",
     curHits="ANY"
   ),
   methods=list(
-    initialize=function(object=GIntervalTree(GRanges()), columns=NULL, ylim=NULL, ...) {
+    initialize=function(object=GNCList(GRanges()), columns=NULL, ylim=NULL, ...) {
       object <<- object
       columns <<- columns
 
@@ -164,7 +164,7 @@ EpivizData$methods(
 
     if (is.null(curQuery) || !identical(unname(query), unname(curQuery))) {
       curQuery <<- query
-      olaps <- GenomicRanges::findOverlaps(query, object, select="all")
+      olaps <- suppressWarnings(GenomicRanges::findOverlaps(query, object, select="all"))
       curHits <<- subjectHits(olaps)
 
       if (length(curHits) == 0) {
