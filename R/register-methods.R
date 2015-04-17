@@ -127,7 +127,7 @@ setMethod("register", "ExpressionSet",
       pd <- pData(object)[columns,]
     }
 		sumexp <- SummarizedExperiment(assays=SimpleList(mat),
-									  rowData=gr,
+									  rowRanges=gr,
 									  colData=DataFrame(pd))
 
 		register(sumexp, columns=columns, assay=1,metadata=c("PROBEID","SYMBOL"))
