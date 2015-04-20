@@ -25,7 +25,7 @@ setMethod("reorderIfNeeded", "GenomicRanges",
 
 setMethod("reorderIfNeeded", "SummarizedExperiment",
           function(object, ...) {
-            gr <- rowData(object)
+            gr <- rowRanges(object)
             stranded <- any(strand(gr) != "*")
             if (stranded) {
               ogr <- gr
@@ -57,10 +57,10 @@ setMethod("register", "SummarizedExperiment",
 	function(object, columns=NULL, assay=1, metadata=NULL) {
           object <- reorderIfNeeded(object)
 		
-          if (!is(rowData(object), "GIntervalTree")) {
-            rowData(object) <- as(rowData(object), "GIntervalTree")
+          if (!is(rowRanges(object), "GIntervalTree")) {
+            rowRanges(object) <- as(rowRanges(object), "GIntervalTree")
           }
-          mcolNames <- names(mcols(rowData(object)))
+          mcolNames <- names(mcols(rowRanges(object)))
           if (is.null(metadata) && !is.null(mcolNames)) {
             metadata <- mcolNames
           }
@@ -124,6 +124,57 @@ setMethod("register", "ExpressionSet",
 		register(sumexp, columns=columns, assay=1,metadata=c("PROBEID","SYMBOL"))
 })
 
+
+setMethod("register", "BigWigFile",
+          function(object, ...) {
+            dev <- EpivizWigData$new(file=object, ...)
+            return(dev)
+})
+          
+setMethod("register", "GAlignments",
+          function(object, coverage.only=TRUE, ...) {
+            if (!coverage.only) {
+              stop("'coverage.only' must be 'TRUE'. Only coverage supported for GAlignments for now.")
+            }
+            cov <- coverage(object)
+            register(as(cov,"GRanges"), columns="score", type="bp", ...)
+})
+
+setMethod("register", "BamFile",
+          function(object, coverage.only=TRUE, ...) {
+            if (!coverage.only) {
+              stop("'coverage.only' muse be 'TRUE'. Only coverage supported for BamFiles for now.")
+            }
+            cov <- coverage(object)
+            register(as(cov,"GRanges"), columns="score", type="bp", ...)
+})
+setMethod("register", "OrganismDb",
+          function(object, kind=c("gene","tx"), keepSeqlevels=NULL, ...) {
+            epivizrMsg("creating gene annotation")
+            kind <- match.arg(kind)
+            gr <- genes(object, columns=c("GENEID", "SYMBOL"))
+            exons <- exonsBy(object, by=kind)
+            
+            ids <- as.character(gr$GENEID)
+            exons <- reduce(ranges(exons)[ids])
+            gr$Exons <- exons
+            
+            if (!is.null(keepSeqlevels)) {
+              gr <- keepSeqlevels(gr, keepSeqlevels)
+            }
+            
+            nms <- names(mcols(gr))
+            geneNameIdx <- match("SYMBOL", nms)
+            nms[geneNameIdx] <- "Gene"
+            names(mcols(gr)) <- nms
+
+            args <- list(...)
+            if (!is.null(args$type)) {
+              register(gr, ...)
+            } else {
+              register(gr, type="geneInfo", ...)
+            }
+})            
 setMethod("register", "OrganismDb",
           function(object, kind=c("gene","tx"), keepSeqlevels=NULL, ...) {
             epivizrMsg("creating gene annotation:")

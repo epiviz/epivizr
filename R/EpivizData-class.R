@@ -84,6 +84,7 @@ EpivizData <- setRefClass("EpivizData",
       }
       
       if (sendRequest && !is.null(mgr))
+      if (sendRequest && !mgr$isClosed())
         mgr$.clearDatasourceGroupCache(.self, sendRequest=sendRequest)
 
       invisible()
@@ -177,7 +178,7 @@ EpivizData$methods(
     }
     invisible()
   },
-  getRows=function(query, metadata) {
+  getRows=function(query, metadata, useOffset=FALSE) {
     if (is.null(query)) {
       out <- list(globalStartIndex=NULL, useOffset=FALSE,
                   values=list(id=list(),
@@ -195,7 +196,8 @@ EpivizData$methods(
                     end=list(),
                     metadata=.self$.getMetadata(curHits, metadata)))
     } else {
-      out <- list(globalStartIndex=curHits[1],
+      if (!useOffset) {
+        out <- list(globalStartIndex=curHits[1],
                   useOffset=FALSE,
                   values=list(
                     id=curHits,
@@ -203,6 +205,21 @@ EpivizData$methods(
                     end=end(object)[curHits],
                     metadata=.self$.getMetadata(curHits, metadata)
                    ))
+      } else {
+        st <- start(object)[curHits]
+        stDiff <- diff(st)
+        end <- end(object)[curHits]
+        endDiff <- diff(end)
+        
+        out <- list(globalStartIndex=curHits[1],
+                    useOffset=TRUE,
+                    values=list(
+                      id=curHits,
+                      start=c(st[1], stDiff),
+                      end=c(end[1],endDiff),
+                      metadata=.self$.getMetadata(curHits, metadata)
+                     ))
+        }
     }
     if (length(out$values)>0 && length(out$values$id) == 1) {
       for (slotName in names(out$values)) {
@@ -213,10 +230,10 @@ EpivizData$methods(
     }
     return(out)
   },
-  .getValues=function(curHits, measurement) {
+  .getValues=function(curHits, measurement, round) {
     numeric()
   },
-  getValues=function(query, measurement) {
+  getValues=function(query, measurement, round=TRUE) {
     if (is.null(query)) {
       out <- list(globalstartIndex=NULL, values=list())
       return(out)
@@ -227,7 +244,7 @@ EpivizData$methods(
       out <- list(globalStartIndex=NULL, values=list())
     } else {
       out <- list(globalStartIndex=curHits[1],
-                  values=.self$.getValues(curHits, measurement))
+                  values=.self$.getValues(curHits, measurement, round=round))
       if (length(out$values) ==1) {
         out$values <- list(out$values)
       }

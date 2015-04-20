@@ -213,20 +213,12 @@ EpivizServer <- setRefClass("EpivizServer",
           # request handling
 # defined here: http://epiviz.github.io/dataprovider-plugins.html
 
-          out$data=switch(action,
-             getMeasurements=mgr$getMeasurements(),
-             getRows=mgr$getRows(msgData$seqName,
-               msgData$start,
-               msgData$end,
-               msgData$metadata,
-               msgData$datasource),
-             getValues=mgr$getValues(msgData$seqName,
-               msgData$start,
-               msgData$end,
-               msgData$datasource,
-               msgData$measurement),
-             getSeqInfos=mgr$getSeqInfos(),
-             getAllData=list(msg=msgData$chr))
+          out$data=NULL
+          if (action == "getAllData") {
+              out$data <- list(msg=msgData$chr) 
+          } else {
+              out$data <- mgr$handle(action, msgData)
+          }
           response=rjson::toJSON(out)
           if (verbose) {
             epivizrMsg("SEND: ", response)

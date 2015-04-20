@@ -11,6 +11,11 @@ source("http://bioconductor.org/biocLite.R")
 biocLite("epivizr")
 ```
 
+## Development version
+
+This github repository contains the latest and greatest version of `epivizr` and is tracked by the devel version in Bioconductor (see
+[http://bioconductor.org/developers/how-to/useDevel/](http://bioconductor.org/developers/how-to/useDevel/) for more info. 
+
 ## Try it out
 
 The easiest way to try `epivizr` out is to follow the package vignette:

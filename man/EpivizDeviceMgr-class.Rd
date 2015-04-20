@@ -115,14 +115,7 @@
     \item{}{
       \code{navigate(chr, start, end)}: Navigate in web app to give genomic region
     }
-
-    \item{}{
-      \code{getCurrentLocation(callback)}: get current genomic location displayed in the UI. \code{callback} should be a function
-      called on the response received from UI. The response is a list with a \code{value} component that contains the location in
-      in a list with components \code{seqName}, \code{start} and \code{end}. For example, the following snippet would save
-      the current location as a \code{GRanges} object in variable \code{currentLoc} in the global environment:
-      \code{mgr$getCurrentLocation(function(x) {currentLoc <<- GRanges(x$value$seqName, IRanges(x$value$start, x$value$end))})}
-    }
+    
     \item{}{
       \code{slideshow(granges, n=length(granges))}: Navigate in web app to the first \code{n} regions in \code{\link{GenomicRanges-class}} object \code{granges} in succession.
     }

@@ -14,8 +14,8 @@ EpivizFeatureData <- setRefClass("EpivizFeatureData",
 
       newObject <- reorderIfNecessary(newObject)
       
-      if(!is(rowData(newObject), "GIntervalTree"))
-        rowData(newObject) <- as(rowData(newObject), "GIntervalTree")
+      if(!is(rowRanges(newObject), "GIntervalTree"))
+        rowRanges(newObject) <- as(rowRanges(newObject), "GIntervalTree")
       callSuper(newObject, ...)
     },
     .checkColumns=function(columns) {
@@ -126,7 +126,7 @@ EpivizFeatureData$methods(
       if (length(metadata) < 1) {
           return(NULL)
       }
-        
+      
       if(any(!curMetadata %in% metadata))
         stop("error getting metadata")
 
@@ -139,7 +139,7 @@ EpivizFeatureData$methods(
       names(out) <- curMetadata
       out
     },
-  .getValues=function(curHits, measurement) {
+  .getValues=function(curHits, measurement, round=FALSE) {
     if (!measurement %in% columns) {
       stop("could not find measurement", measurement)
     }
