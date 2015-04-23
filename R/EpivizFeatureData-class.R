@@ -2,7 +2,7 @@ EpivizFeatureData <- setRefClass("EpivizFeatureData",
   contains="EpivizData",
   fields=list(assay="ANY",metadata="ANY"),
   methods=list(
-    initialize=function(object=SummarizedExperiment(matrix(nr=0,nc=0),rowData=GRanges()),
+    initialize=function(object=SummarizedExperiment(matrix(nr=0,nc=0),rowRanges=GRanges()),
                         assay=1, ...) {
       assay <<- assay
       
@@ -14,8 +14,8 @@ EpivizFeatureData <- setRefClass("EpivizFeatureData",
 
       newObject <- reorderIfNecessary(newObject)
       
-      if(!is(rowRanges(newObject), "GIntervalTree"))
-        rowRanges(newObject) <- as(rowRanges(newObject), "GIntervalTree")
+      if(!is(rowRanges(newObject), "GNCList"))
+        rowRanges(newObject) <- as(rowRanges(newObject), "GNCList")
       callSuper(newObject, ...)
     },
     .checkColumns=function(columns) {
@@ -59,8 +59,8 @@ EpivizFeatureData <- setRefClass("EpivizFeatureData",
 .valid.EpivizFeatureData.object <- function(x) {
   if(!is(x$object, "SummarizedExperiment"))
     return("'object' must be of class 'SummarizedExperiment'")
-  if(!is(rowData(x$object), "GIntervalTree"))
-    return("'rowData(object)' must be of class 'GIntervalTree'")
+  if(!is(rowRanges(x$object), "GNCList"))
+    return("'rowRanges(object)' must be of class 'GNCList'")
   NULL
 }
 
