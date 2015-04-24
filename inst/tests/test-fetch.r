@@ -135,6 +135,7 @@ test_that("geneinfo fetch works", {
   msGR <- msmt$object
   olaps <- findOverlaps(query, msGR)
   hits <- subjectHits(olaps)
+  hits <- seq(min(hits), max(hits))
   tmp <- msGR[hits,]
   
   out <- list(globalStartIndex=hits[1],

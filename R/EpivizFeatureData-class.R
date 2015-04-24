@@ -135,7 +135,7 @@ EpivizFeatureData$methods(
         names(out) <- curMetadata
         return(out)
       }
-      out <- as.list(mcols(rowData(object))[curHits,curMetadata])
+      out <- as.list(mcols(rowRanges(object))[curHits,curMetadata])
       names(out) <- curMetadata
       out
     },
