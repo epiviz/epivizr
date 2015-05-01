@@ -8,9 +8,11 @@ test_that("register measurement works for block", {
   expect_true(validObject(dev))
 
   expect_is(dev, "EpivizBlockData")
-  expect_is(dev$object, "GIntervalTree")
+  expect_is(dev$object, "GNCList")
 
-  expect_equal(as(dev$object, "GRanges"), gr)
+  newgr <- as(dev$object, "GRanges")
+  mcols(newgr) <- mcols(dev$object)
+  expect_equal(newgr, gr)
 
   expect_true(is.null(dev$columns))
 })
@@ -21,9 +23,12 @@ test_that("register works for bp data", {
   expect_true(validObject(dev))
 
   expect_is(dev, "EpivizBpData")
-  expect_is(dev$object, "GIntervalTree")
+  expect_is(dev$object, "GNCList")
   
-  expect_equal(as(dev$object, "GRanges"), unname(gr))
+  newgr <- as(dev$object, "GRanges")
+  mcols(newgr) <- mcols(dev$object)
+  
+  expect_equal(newgr, unname(gr))
   expect_equal(dev$columns, "score") 
   rng=range(pretty(range(gr$score)))
   expect_equal(dev$ylim, unname(cbind(rng)))
@@ -34,19 +39,22 @@ test_that("register works for SummarizedExperiment", {
   dev <- epivizr::register(sset, columns=c("A","B"), assay="counts2")
   expect_true(validObject(dev))
 
-  order <- order(start(rowData(sset)))
+  order <- order(start(rowRanges(sset)))
   sset <- sset[order,]
   
   expect_is(dev, "EpivizFeatureData")
   expect_is(dev$object, "SummarizedExperiment")
-  gr <- as(rowData(dev$object), "GRanges")
+  
+  gr <- as(rowRanges(dev$object), "GRanges")
+  mcols(gr) <- mcols(rowRanges(dev$object))
+  
   expect_false(is.null(gr$probeid))
 
-  tmp <- rowData(sset)
+  tmp <- rowRanges(sset)
   strand(tmp) <- "*"
   o <- order(tmp)
   
-  expect_identical(gr, rowData(sset)[o,])
+  expect_identical(gr, rowRanges(sset)[o,])
   
 #  expect_identical(assays(dev$object), assays(sset)[o,])
   expect_identical(colData(dev$object), colData(sset))
@@ -70,7 +78,7 @@ test_that("register works for ExpressionSet", {
   expect_is(dev$object, "SummarizedExperiment")
 
   obj <- dev$object
-  gr <- rowData(obj)
+  gr <- rowRanges(obj)
 
   m <- match(gr$PROBEID, featureNames(eset))
   mat <- assay(obj)
@@ -88,7 +96,7 @@ test_that("register works for gene info granges", {
   expect_true(validObject(dev))
 
   expect_is(dev, "EpivizGeneInfoData")
-  expect_is(dev$object, "GIntervalTree")
+  expect_is(dev$object, "GNCList")
   expect_true(is.null(dev$columns))
 })
 
@@ -98,6 +106,6 @@ test_that("register works for OrganismDb object", {
   expect_true(validObject(dev))
 
   expect_is(dev, "EpivizGeneInfoData")
-  expect_is(dev$object, "GIntervalTree")
+  expect_is(dev$object, "GNCList")
   expect_true(is.null(dev$columns))
 }) 

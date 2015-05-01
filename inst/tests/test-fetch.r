@@ -101,7 +101,7 @@ test_that("feature data fetch works", {
   hits <- seq(min(hits),max(hits))
   tmp <- msObj$object[hits,]
 
-  m <- match(rowData(tmp)$PROBEID, featureNames(eset))
+  m <- match(rowRanges(tmp)$PROBEID, featureNames(eset))
   mat <- exprs(eset)[m, c("SAMP_1", "SAMP_2")]
 
   res <- msObj$getRows(query, c("PROBEID","SYMBOL"))
@@ -112,8 +112,8 @@ test_that("feature data fetch works", {
                 id=hits,
                 start=start(tmp),
                 end=end(tmp),
-                metadata=list(PROBEID=rowData(tmp)$PROBEID,
-                  SYMBOL=rowData(tmp)$SYMBOL)
+                metadata=list(PROBEID=rowRanges(tmp)$PROBEID,
+                  SYMBOL=rowRanges(tmp)$SYMBOL)
                 ))
   expect_equal(res, out)
   #print(res); print(out)
@@ -135,6 +135,7 @@ test_that("geneinfo fetch works", {
   msGR <- msmt$object
   olaps <- findOverlaps(query, msGR)
   hits <- subjectHits(olaps)
+  hits <- seq(min(hits), max(hits))
   tmp <- msGR[hits,]
   
   out <- list(globalStartIndex=hits[1],
@@ -170,7 +171,7 @@ test_that("mgr fetch works", {
     dev3 <- mgr$addMeasurements(gr3, "dev3", sendRequest=sendRequest, type="bp"); devId3=dev3$getId()
     dev4 <- mgr$addMeasurements(eset, "dev4", sendRequest=sendRequest, columns=c("SAMP_1", "SAMP_2")); devId4=dev4$getId()
 
-    m <- match(rowData(dev4$object)$PROBEID, featureNames(eset))
+    m <- match(rowRanges(dev4$object)$PROBEID, featureNames(eset))
     mat <- exprs(eset)[m,c("SAMP_1","SAMP_2")]
     lims <- unname(apply(mat, 2, function(x) range(pretty(range(x)))))
 
@@ -180,7 +181,7 @@ test_that("mgr fetch works", {
     hits <- seq(min(hits), max(hits))
     tmp <- dev4$object[hits,]
     
-    m <- match(rowData(tmp)$PROBEID, featureNames(eset))
+    m <- match(rowRanges(tmp)$PROBEID, featureNames(eset))
     mat <- exprs(eset)[m,c("SAMP_1","SAMP_2")]
     
     if (sendRequest) { 
@@ -236,8 +237,8 @@ test_that("mgr fetch works", {
                 values=list(id=hits,
                   start=start(tmp),
                   end=end(tmp),
-                  metadata=list(PROBEID=rowData(tmp)$PROBEID,
-                    SYMBOL=rowData(tmp)$SYMBOL)))
+                  metadata=list(PROBEID=rowRanges(tmp)$PROBEID,
+                    SYMBOL=rowRanges(tmp)$SYMBOL)))
     expect_equal(res,out)
 
     res <- mgr$getValues(seqnames(query),start(query),end(query),devId4,"SAMP_1")

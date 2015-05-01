@@ -17,10 +17,10 @@ makeSExp <- function() {
 	counts1=matrix(runif(nranges*nsamples,1,1e4), nranges)
 	counts2=matrix(runif(nranges*nsamples,1,1e2), nranges)
 
-	rowData=sort(GRanges(rep(c("chr1","chr2"), c(50,150)),
+	rowRanges=sort(GRanges(rep(c("chr1","chr2"), c(50,150)),
 		IRanges(floor(runif(200,1e5,1e6)),width=100),
 		strand=sample(c("+","-"),200,TRUE),
                 probeid=paste0("sid_",1:200)))
 	colData=DataFrame(Treatment=rep(c("ChIP","Input"),3),row.names=LETTERS[1:6])
-	SummarizedExperiment(assays=SimpleList(counts1=counts1,counts2=counts2),rowData=rowData,colData=colData)
+	SummarizedExperiment(assays=SimpleList(counts1=counts1,counts2=counts2),rowRanges=rowRanges,colData=colData)
 }
