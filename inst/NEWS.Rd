@@ -3,6 +3,11 @@
 
 \encoding{UTF-8}
 
+\section{Version 1.6.1}{
+  \itemize{
+    \item Transition cached ranges for querying to 'GNCLists' from 'GIntervalTree'
+  }
+}
 \section{Version 1.3.20}{
   \itemize{
     \item Standalone mode introduced, a version of epiviz with reduced capabilities

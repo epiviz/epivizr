@@ -184,10 +184,10 @@ means <- sapply(index, function(ind) rowMeans(logCounts[, ind]))
 mat <- cbind(cancer = means[, "Primary Tumor"], normal = means[, "Solid Tissue Normal"])
 ```
 
-Now, create a new `SummarizedExperiment` object with the two column matrix, and all the information about the features of interest, in this case exons, are stored in the `rowData` slot to be queried by `Epiviz`.
+Now, create a new `SummarizedExperiment` object with the two column matrix, and all the information about the features of interest, in this case exons, are stored in the `rowRanges` slot to be queried by `Epiviz`.
 
 ```{r, eval=TRUE}
-sumexp <- SummarizedExperiment(mat, rowData=rowRanges(colonSE))
+sumexp <- SummarizedExperiment(mat, rowRanges=rowRanges(colonSE))
 se_dev <- mgr$addDevice(sumexp, "Mean by Sample Type", columns=c("normal", "cancer"))
 ```
 Again, the `columns` argument specifies what data will be displayed along which axis.
@@ -209,7 +209,7 @@ foldChange=mat[,"cancer"]-mat[,"normal"]
 ind=order(foldChange,decreasing=TRUE)
 
 # bounding 1Mb around each exon
-slideshowRegions <- rowRanges(sumexp)[ind] + 1000000L
+slideshowRegions <- trim(rowRanges(sumexp)[ind] + 1000000L)
 mgr$slideshow(slideshowRegions, n=5)
 ```
 
