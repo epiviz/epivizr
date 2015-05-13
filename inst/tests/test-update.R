@@ -165,13 +165,13 @@ test_that("update feature works", {
   tryCatch({
     msObj <- mgr$addMeasurements(sset, "ms1", sendRequest=sendRequest, columns=c("A","B"), assay="counts2")
 	msObj$update(sset2, sendRequest=sendRequest)
-	expect_identical(as(rowData(msObj$object), "GRanges"), rowData(sset2))
+	expect_identical(as(rowRanges(msObj$object), "GRanges"), rowRanges(sset2))
 	expect_identical(assays(msObj$object), assays(sset2))
 	expect_identical(colData(msObj$object), colData(sset2))
 
 	msId <- msObj$getId()
 	tmp <- mgr$msList$gene[[msId]]$obj$object
-	expect_identical(as(rowData(tmp), "GRanges"), rowData(sset2))
+	expect_identical(as(rowRanges(tmp), "GRanges"), rowRanges(sset2))
 	expect_identical(colData(tmp), colData(sset2))
 	expect_identical(assays(tmp), assays(sset2))
 
@@ -191,13 +191,13 @@ test_that("update feature works", {
   tryCatch({
     msObj <- mgr$addMeasurements(sset, "ms1", sendRequest=sendRequest, columns=c("A","B"), assay="counts2")
 	msObj$update(sset2, sendRequest=sendRequest)
-	expect_identical(as(rowData(msObj$object), "GRanges"), rowData(sset2))
+	expect_identical(as(rowRanges(msObj$object), "GRanges"), rowRanges(sset2))
 	expect_identical(assays(msObj$object), assays(sset2))
 	expect_identical(colData(msObj$object), colData(sset2))
 
 	msId <- msObj$getId()
 	tmp <- mgr$msList$gene[[msId]]$obj$object
-	expect_identical(as(rowData(tmp), "GRanges"), rowData(sset2))
+	expect_identical(as(rowRanges(tmp), "GRanges"), rowRanges(sset2))
 	expect_identical(colData(tmp), colData(sset2))
 	expect_identical(assays(tmp), assays(sset2))
 
@@ -220,13 +220,13 @@ test_that("update feature works with charts", {
     chartObj2 <- msObj$plot(sendRequest=sendRequest)
 
 	msObj$update(sset2, sendRequest=sendRequest)
-	expect_identical(as(rowData(msObj$object), "GRanges"), rowData(sset2))
+	expect_identical(as(rowRanges(msObj$object), "GRanges"), rowRanges(sset2))
 	expect_identical(assays(msObj$object), assays(sset2))
 	expect_identical(colData(msObj$object), colData(sset2))
 
 	msId <- msObj$getId()
 	tmp <- mgr$msList$gene[[msId]]$obj$object
-	expect_identical(as(rowData(tmp), "GRanges"), rowData(sset2))
+	expect_identical(as(rowRanges(tmp), "GRanges"), rowRanges(sset2))
 	expect_identical(colData(tmp), colData(sset2))
 	expect_identical(assays(tmp), assays(sset2))
 
@@ -247,13 +247,13 @@ test_that("update feature works with device", {
     devObj <- mgr$addDevice(sset, "ms1", sendRequest=sendRequest, columns=c("A","B"), assay="counts2")
 
 	devObj$update(sset2, sendRequest=sendRequest)
-	expect_identical(as(rowData(devObj$getMsObject()$object), "GRanges"), rowData(sset2))
+	expect_identical(as(rowRanges(devObj$getMsObject()$object), "GRanges"), rowRanges(sset2))
 	expect_identical(assays(devObj$getMsObject()$object), assays(sset2))
 	expect_identical(colData(devObj$getMsObject()$object), colData(sset2))
 
 	msId <- devObj$getMsId()
 	tmp <- mgr$msList$gene[[msId]]$obj$object
-	expect_identical(as(rowData(tmp), "GRanges"), rowData(sset2))
+	expect_identical(as(rowRanges(tmp), "GRanges"), rowRanges(sset2))
 	expect_identical(colData(tmp), colData(sset2))
 	expect_identical(assays(tmp), assays(sset2))
 

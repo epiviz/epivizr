@@ -74,8 +74,8 @@ EpivizData <- setRefClass("EpivizData",
       }
 
       
-      #if(is(object,"SummarizedExperiment") && !is(rowData(object),"GIntervalTree")) {
-       # rowData(object) <<- as(rowData(object), "GIntervalTree")
+      #if(is(object,"RangedSummarizedExperiment") && !is(rowRanges(object),"GIntervalTree")) {
+       # rowRanges(object) <<- as(rowRanges(object), "GIntervalTree")
       #}
 
       naIndex <- .self$.getNAs()

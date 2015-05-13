@@ -9,8 +9,8 @@ EpivizFeatureData <- setRefClass("EpivizFeatureData",
       callSuper(object=object, ...)
     },
     update=function(newObject, ...) {
-      if (!is(newObject, "SummarizedExperiment"))
-        stop("'newObject' must be of class 'SummarizedExperiment'")
+      if (!is(newObject, "RangedSummarizedExperiment"))
+        stop("'newObject' must be of class 'RangedSummarizedExperiment'")
 
       newObject <- reorderIfNecessary(newObject)
       
@@ -57,8 +57,8 @@ EpivizFeatureData <- setRefClass("EpivizFeatureData",
 )
 
 .valid.EpivizFeatureData.object <- function(x) {
-  if(!is(x$object, "SummarizedExperiment"))
-    return("'object' must be of class 'SummarizedExperiment'")
+  if(!is(x$object, "RangedSummarizedExperiment"))
+    return("'object' must be of class 'RangedSummarizedExperiment'")
   if(!is(rowRanges(x$object), "GNCList"))
     return("'rowRanges(object)' must be of class 'GNCList'")
   NULL

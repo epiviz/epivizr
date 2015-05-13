@@ -34,7 +34,7 @@ test_that("register works for bp data", {
   expect_equal(dev$ylim, unname(cbind(rng)))
 })
 
-test_that("register works for SummarizedExperiment", {
+test_that("register works for RangedSummarizedExperiment", {
   sset <- makeSExp()
   dev <- epivizr::register(sset, columns=c("A","B"), assay="counts2")
   expect_true(validObject(dev))
@@ -43,7 +43,7 @@ test_that("register works for SummarizedExperiment", {
   sset <- sset[order,]
   
   expect_is(dev, "EpivizFeatureData")
-  expect_is(dev$object, "SummarizedExperiment")
+  expect_is(dev$object, "RangedSummarizedExperiment")
   
   gr <- as(rowRanges(dev$object), "GRanges")
   mcols(gr) <- mcols(rowRanges(dev$object))
@@ -75,7 +75,7 @@ test_that("register works for ExpressionSet", {
   expect_true(validObject(dev))
 
   expect_is(dev, "EpivizFeatureData")
-  expect_is(dev$object, "SummarizedExperiment")
+  expect_is(dev$object, "RangedSummarizedExperiment")
 
   obj <- dev$object
   gr <- rowRanges(obj)

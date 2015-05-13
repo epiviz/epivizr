@@ -155,9 +155,9 @@ eset_dev <- mgr$addDevice(apColonData, "MAPlot", columns=c("colonA","colonM"), a
 In this case, we specify which data is displayed in each axis of the scatter plot using the `columns` argument.
 The `assay` arguments indicates where data is obtained.
 
-### The SummarizedExperiment Object
+### The RangedSummarizedExperiment Object
 
-`Epiviz` is also able to display plots of data in the form of a `SummarizedExperiment` object. After loading the `tcga_colon_expression` dataset in the `epivizrData` package, we can see that the `colonSE` object contains information on 239322 exons in 40 samples.
+`Epiviz` is also able to display plots of data in the form of a `RangedSummarizedExperiment` object. After loading the `tcga_colon_expression` dataset in the `epivizrData` package, we can see that the `colonSE` object contains information on 239322 exons in 40 samples.
 
 ```{r}
 data(tcga_colon_expression)
@@ -184,7 +184,7 @@ means <- sapply(index, function(ind) rowMeans(logCounts[, ind]))
 mat <- cbind(cancer = means[, "Primary Tumor"], normal = means[, "Solid Tissue Normal"])
 ```
 
-Now, create a new `SummarizedExperiment` object with the two column matrix, and all the information about the features of interest, in this case exons, are stored in the `rowRanges` slot to be queried by `Epiviz`.
+Now, create a new `RangedSummarizedExperiment` object with the two column matrix, and all the information about the features of interest, in this case exons, are stored in the `rowRanges` slot to be queried by `Epiviz`.
 
 ```{r, eval=TRUE}
 sumexp <- SummarizedExperiment(mat, rowRanges=rowRanges(colonSE))

@@ -85,7 +85,7 @@ test_that("addDevice feature works", {
       mgr$addSeqinfo(seqinfo(sset))
       if (sendRequest) wait_until(!mgr$server$requestWaiting)
       
-      navigate_range <- rowData(sset)[1,] + 2000
+      navigate_range <- rowRanges(sset)[1,] + 2000
       mgr$navigate(as.character(seqnames(navigate_range)), start(navigate_range), end(navigate_range))
       if (sendRequest) wait_until(!mgr$server$requestWaiting)
     }

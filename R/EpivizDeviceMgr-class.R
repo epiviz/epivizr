@@ -90,7 +90,7 @@ EpivizDeviceMgr$methods(list(
 # measurement management methods
 .typeMap <- list(gene=list(class="EpivizFeatureData",
                            description="Data indexed by feature",
-                           input_class="SummarizedExperiment"),
+                           input_class="RangedSummarizedExperiment"),
                  bp=list(class="EpivizBpData",
                       description="Basepair resolution data",
                       input_class="GRanges"),

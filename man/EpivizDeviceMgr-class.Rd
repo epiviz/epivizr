@@ -24,7 +24,7 @@
   encapsulated by \code{\link{EpivizChart-class}} objects. 
   
   For a user to visualize data stored in an object that can be referenced by genomic location, e.g., a 
-  \code{\link[GenomicRanges]{GRanges}} or \code{\link[GenomicRanges]{SummarizedExperiment}} objects, they must first indicate
+  \code{\link[GenomicRanges]{GRanges}} or \code{\link[SummarizedExperiment]{RangedSummarizedExperiment}} objects, they must first indicate
   to the session manager which \code{measurements} are provided by this object using the \code{addMeasurements} method. This creates
   an object derived from class \code{\link{EpivizData-class}} (using \code{\link{register-methods}}) which wraps the data object 
   so that efficient overlap queries are performed (using \code{\link[GenomicRanges]{GIntervalTree}} objects) and adds the set of 
@@ -231,14 +231,14 @@
     }
     
     \item{}{
-      \code{scatterChart(x, y, ...)}: Used to display genomic feature data in \code{\link[GenomicRanges]{SummarizedExperiment}} objects
+      \code{scatterChart(x, y, ...)}: Used to display genomic feature data in \code{\link[SummarizedExperiment]{RangedSummarizedExperiment}} objects
       as a scatter plot. \code{x} and \code{y} are lists for measurements provided by objects of class \code{\link{EpivizFeatureData-class}}.
       They can be obtained using the \code{getMeasurements} method in the \code{\link{EpivizFeatureData-class}}.
       The \code{plot} method for \code{\link{EpivizFeatureData-class}} calls this method.
     }
 
     \item{}{
-      \code{heatmapChart(ms, ...)}: Used to display genomic feature data in \code{\link[GenomicRanges]{SummarizedExperiment}} objects
+      \code{heatmapChart(ms, ...)}: Used to display genomic feature data in \code{\link[SummarizedExperiment]{RangedSummarizedExperiment}} objects
       as a heatmap. \code{ms} is a list of lists, each component describing a measurement provided by an object of class \code{\link{EpivizFeatureData-class}}.
       They can be obtained using the \code{getMeasurements} method in the \code{\link{EpivizFeatureData-class}}.
     }
