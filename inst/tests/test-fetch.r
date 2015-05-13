@@ -273,7 +273,7 @@ test_that("mgr fetch works", {
 #    dev3 <- mgr$addDevice(gr3, "dev3", sendRequest=sendRequest, type="bp"); devId3=dev3$getMsId()
 #    dev4 <- mgr$addDevice(eset, "dev4", sendRequest=sendRequest, columns=c("SAMP_1", "SAMP_2")); devId4=dev4$getMsId()
 #
-#    m <- match(rowData(dev4$getMsObject()$object)$PROBEID, featureNames(eset))
+#    m <- match(rowRanges(dev4$getMsObject()$object)$PROBEID, featureNames(eset))
 #    mat <- exprs(eset)[m,c("SAMP_1","SAMP_2")]
 #    lims <- unname(apply(mat, 2, function(x) range(pretty(range(x)))))
 #
@@ -281,7 +281,7 @@ test_that("mgr fetch works", {
 #
 #    tmp <- subsetByOverlaps(dev4$getMsObject()$object, query)
 #    o <- order(start(tmp))
-#    m <- match(rowData(tmp)$PROBEID[o], featureNames(eset))
+#    m <- match(rowRanges(tmp)$PROBEID[o], featureNames(eset))
 #    mat <- exprs(eset)[m,c("SAMP_1","SAMP_2")]
 #    
 #    if (sendRequest) { 
@@ -298,10 +298,10 @@ test_that("mgr fetch works", {
 #    out$geneData=list(start=30000000,end=40000000,chr="chr6")
 #    out$geneData$min=structure(lims[1,],names=paste0(devId4,"$","SAMP_",1:2))
 #    out$geneData$max=structure(lims[2,],names=paste0(devId4,"$","SAMP_",1:2))
-#    out$geneData$data=list(gene=rowData(tmp)$SYMBOL[o],
+#    out$geneData$data=list(gene=rowRanges(tmp)$SYMBOL[o],
 #                   start=start(tmp)[o],
 #                   end=end(tmp)[o],
-#                   probe=rowData(tmp)$PROBEID[o],
+#                   probe=rowRanges(tmp)$PROBEID[o],
 #                   unname(mat[,1]),
 #                   unname(mat[,2]))
 #    names(out$geneData$data)[5:6]=paste0(devId4,"$SAMP_",1:2)
