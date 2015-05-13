@@ -36,7 +36,7 @@ setMethod("coerceIfNeeded", "GenomicRanges",
             object
           })
 
-setMethod("reorderIfNeeded", "SummarizedExperiment",
+setMethod("reorderIfNeeded", "RangedSummarizedExperiment",
           function(object, ...) {
             gr <- rowRanges(object)
             stranded <- any(strand(gr) != "*")
@@ -64,7 +64,7 @@ setMethod("register", "GenomicRanges",
 		return(dev)
 })
 
-setMethod("register", "SummarizedExperiment",
+setMethod("register", "RangedSummarizedExperiment",
 	function(object, columns=NULL, assay=1, metadata=NULL) {
           object <- reorderIfNeeded(object)
 		      rowRanges(object) <- coerceIfNeeded(rowRanges(object))

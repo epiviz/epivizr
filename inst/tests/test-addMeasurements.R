@@ -77,7 +77,7 @@ test_that("addMeasurements works for bp", {
   }, finally=mgr$stopServer())
 })
 
-test_that("addMeasurements works for SummarizedExperiment", {
+test_that("addMeasurements works for RangedSummarizedExperiment", {
   sendRequest=sendRequest
   sset <- makeSExp()
   mgr <- .startMGR(openBrowser=sendRequest)

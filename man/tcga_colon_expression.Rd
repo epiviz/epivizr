@@ -6,12 +6,12 @@
 Example exon-level RNAseq data from TCGA project for epivizr.
 }
 \description{
-A \code{\link[GenomicRanges]{SummarizedExperiment}} object containing exon-level
+A \code{\link[SummarizedExperiment]{RangedSummarizedExperiment}} object containing exon-level
 counts from RNAseq data from the TCGA project. Only exons in human chromosome 11 are included.
 }
 \usage{data(tcga_colon_expression)}
 \format{
-  A \code{\link[GenomicRanges]{SummarizedExperiment}} object with 12,800 rows (exons) and 40 samples.
+  A \code{\link[SummarizedExperiment]{RangedSummarizedExperiment}} object with 12,800 rows (exons) and 40 samples.
   \describe{
     \item{assay(colonSE)}{exon-level count matrix}
     \item{colData(colonSE)}{a \code{DataFrame} containing sample information. Normal/Tumor status is given in column \code{sample_type}}

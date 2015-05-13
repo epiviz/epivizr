@@ -8,8 +8,8 @@
 
 \description{Encapsulate data for genomic features}
 
-\details{The \code{object} field is constrained to be \code{\link[GenomicRanges]{SummarizedExperiment}}. Data is obtained from columns of
-a determined \code{assay}. Measurement names are checked against the row names of the \code{colData} slot. The \code{rowData} is assumed
+\details{The \code{object} field is constrained to be \code{\link[SummarizedExperiment]{RangedSummarizedExperiment}}. Data is obtained from columns of
+a determined \code{assay}. Measurement names are checked against the row names of the \code{colData} slot. The \code{rowRanges} is assumed
 to be a \code{\link[GenomicRanges]{GIntervalTree}} object, its \code{mcols} must contain columns \code{PROBEID} and \code{SYMBOL}.}
 
 \section{Fields}{
