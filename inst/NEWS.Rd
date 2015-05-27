@@ -3,6 +3,12 @@
 
 \encoding{UTF-8}
 
+\section{Version 1.6.4}{
+  \itemize{
+    \item Update bundled JS library to epiviz v3
+    \item Changes to support epiviz v3
+  }
+}
 \section{Version 1.6.1}{
   \itemize{
     \item Transition cached ranges for querying to 'GNCLists' from 'GIntervalTree'

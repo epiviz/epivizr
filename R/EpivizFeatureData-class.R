@@ -99,8 +99,8 @@ EpivizFeatureData$methods(
       out <- lapply(columns, function(curCol) {
         m <- match(curCol, columns)
 
-        anno=NULL
-        if (ncol(colData(object)) > 0) { anno = as.list(as.matrix(data.frame(colData(object)))[curCol, ]) }
+        anno <- NULL
+        if (ncol(colData(object)) > 0) { anno <- as.list(colData(object)[curCol, ,drop=FALSE]) }
 
         list(id=curCol,
            name=curCol,

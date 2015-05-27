@@ -30,7 +30,9 @@ test_that("getMeasurements works", {
                datasourceId=c(rep(msId4,2),msId3,msId1,msId2),
                datasourceGroup=c(rep(msId4,2),msId3,msId1,msId2),
                defaultChartType=c(rep("Scatter Plot",2), rep("Line Track",1),rep("Blocks Track",2)),
-               annotation=rep(list(NULL),5),
+               annotation=list(list(a=1,b=10),
+                               list(a=2,b=20),
+                               NULL,NULL,NULL),
                minValue=c(rngs4[1,],rngs3[1],rep(NA,2)),
                maxValue=c(rngs4[2,],rngs3[2],rep(NA,2)),
                metadata=c(lapply(1:2,function(i) c("PROBEID","SYMBOL")),list(NULL),list(NULL),list(NULL))

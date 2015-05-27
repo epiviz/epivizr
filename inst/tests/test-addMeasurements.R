@@ -97,7 +97,7 @@ test_that("addMeasurements works for SummarizedExperiment", {
            datasourceId=msId,
            datasourceGroup=msId,
            defaultChartType="Scatter Plot",
-           annotation=NULL,
+           annotation=list(Treatment=colData(sset)$Treatment[i]),
            minValue=rngs[1,i],
            maxValue=rngs[2,i],
            metadata=c("probeid"))
@@ -134,7 +134,7 @@ test_that("addMeasurements works for ExpressionSet", {
            datasourceId=msId,
            datasourceGroup=msId,
            defaultChartType="Scatter Plot",
-           annotation=NULL,
+           annotation=list(a=pData(eset)$a[i], b=pData(eset)$b[i]),
            minValue=rngs[1,i],
            maxValue=rngs[2,i],
            metadata=c("PROBEID","SYMBOL"))
