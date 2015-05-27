@@ -5,7 +5,7 @@ EpivizFeatureData <- setRefClass("EpivizFeatureData",
     initialize=function(object=SummarizedExperiment(matrix(nr=0,nc=0),rowRanges=GRanges()),
                         assay=1, ...) {
       assay <<- assay
-      
+
       callSuper(object=object, ...)
     },
     update=function(newObject, ...) {
@@ -98,21 +98,22 @@ EpivizFeatureData$methods(
     getMeasurements=function() {
       out <- lapply(columns, function(curCol) {
         m <- match(curCol, columns)
-        
+
+        anno=NULL
+        if (ncol(colData(object)) > 0) { anno = as.list(as.matrix(data.frame(colData(object)))[curCol, ]) }
+
         list(id=curCol,
            name=curCol,
            type="feature",
            datasourceId=id,
            datasourceGroup=id,
            defaultChartType="Scatter Plot",
-           annotation=NULL,
+           annotation=anno,
            minValue=ylim[1,m],
            maxValue=ylim[2,m],
            metadata=metadata)
     })
-#     out <- paste(name, columns, sep="$")
-  #    nms <- paste(id, columns, sep="__")
-    #  names(out) <- nms
+
       out
     },
     parseMeasurement=function(msId) {
@@ -126,7 +127,7 @@ EpivizFeatureData$methods(
       if (length(metadata) < 1) {
           return(NULL)
       }
-      
+
       if(any(!curMetadata %in% metadata))
         stop("error getting metadata")
 

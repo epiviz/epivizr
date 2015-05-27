@@ -1,6 +1,8 @@
 EpivizChart <- setRefClass("EpivizChart",
 	fields=list(
-		measurements="list",
+		measurements="ANY",
+    datasource="ANY",
+    datasourceGroup="ANY",
 		id="character",
 		mgr="EpivizDeviceMgr",
 		inDevice="logical",
