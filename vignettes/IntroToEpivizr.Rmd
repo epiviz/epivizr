@@ -109,6 +109,8 @@ We have a number of available data types in `epivizr`. In the previous section, 
 means_dev <- mgr$addDevice(colon_curves, "450kMeth",type="bp",columns=c("cancerMean","normalMean"))
 ```
 
+NOTE: You can adjust track settings to change how this new track looks like. For instance, to show all points in the window set the `step` parameter to 1, and to see a smooth interpolation of the data set the `interpolation` parameter to `basis`. We will add support to `epivizr` to set these parameters in an upcoming version.
+
 Notice that we added two lines in this plot, one for mean methylation in cancer and another for mean methylation in normal. The `columns` argument specifies which columns in `mcols(colon_curves)` will be displayed. 
 
 We can also add a track containing the smooth methylation difference estimate used to define methylation blocks.
