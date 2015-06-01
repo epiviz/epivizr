@@ -4,7 +4,7 @@
     "ws://",
     ifelse(is.null(req$HTTP_HOST), req$SERVER_NAME, req$HTTP_HOST),
     '"')
-  
+
   list(
     status = 200L,
     headers = list(
@@ -88,7 +88,7 @@ EpivizServer <- setRefClass("EpivizServer",
       startServerFn <<- if (.self$daemonized) httpuv::startDaemonizedServer else httpuv::startServer
       stopServerFn <<- if (.self$daemonized) httpuv::stopDaemonizedServer else httpuv::stopServer
       standalone <<- isTRUE(standalone)
-      staticSitePath <<- staticSitePath 
+      staticSitePath <<- staticSitePath
       verbose <<- verbose
       callSuper(...)
     },
@@ -126,7 +126,7 @@ EpivizServer <- setRefClass("EpivizServer",
         popRequest()
         invisible()
       }
-      
+
       if (standalone) {
         httpHandler <- .standalonePage(staticSitePath)
       } else {
@@ -142,7 +142,7 @@ EpivizServer <- setRefClass("EpivizServer",
       'start the websocket server'
       callbacks <- makeCallbacks()
       tryCatch({
-        server <<- startServerFn("0.0.0.0", port, callbacks)  
+        server <<- startServerFn("0.0.0.0", port, callbacks)
       }, error=function(e) {
         if (!tryPorts)
           stop(sprintf("Error starting epivizServer, likely because port %d is in use.\nTry a different port number or setting tryPorts=TRUE (see ?startEpiviz).",port))
@@ -152,7 +152,7 @@ EpivizServer <- setRefClass("EpivizServer",
     },
     stopServer=function() {
       interrupted <<- TRUE
-      
+
       if (!isClosed()) {
         stopServerFn(server)
       }
@@ -168,7 +168,7 @@ EpivizServer <- setRefClass("EpivizServer",
 
       if (daemonized)
         return(invisible(TRUE))
-      
+
       if (nonInteractive) {
         # run service loop once
         httpuv::service()
@@ -200,11 +200,11 @@ EpivizServer <- setRefClass("EpivizServer",
         if (binary) {
           msg <- rawToChar(msg)
         }
-        
+
         if (verbose) {
           epivizrMsg("RCVD: ", msg)
         }
-        msg = rjson::fromJSON(msg)
+        msg = fromJSON(msg)
         if (msg$type == "request") {
           out=list(type="response",
             requestId=msg$requestId)
@@ -215,11 +215,11 @@ EpivizServer <- setRefClass("EpivizServer",
 
           out$data=NULL
           if (action == "getAllData") {
-              out$data <- list(msg=msgData$chr) 
+              out$data <- list(msg=msgData$chr)
           } else {
               out$data <- mgr$handle(action, msgData)
           }
-          response=rjson::toJSON(out)
+          response=toJSON(out)
           if (verbose) {
             epivizrMsg("SEND: ", response)
           }
@@ -251,7 +251,7 @@ EpivizServer <- setRefClass("EpivizServer",
         stopService()
         return(invisible())
       }
-      request <- rjson::toJSON(request)
+      request <- toJSON(request)
       if (verbose) epivizrMsg("SEND: ", request)
       websocket$send(request)
       requestWaiting <<- TRUE
