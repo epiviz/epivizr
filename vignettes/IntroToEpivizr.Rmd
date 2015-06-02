@@ -53,7 +53,7 @@ Finally, the `apColonData` object is an `ExpressionSet` containing gene expressi
 The connection to `Epiviz` is managed through a session manager object of class `EpivizDeviceMgr`. We can create this object and open `Epiviz` using the `startEpiviz` function.
 
 ```{r, eval=FALSE, echo=TRUE}
-mgr=startEpiviz(workspace="qyOTB6vVnff")
+mgr=startEpiviz(workspace="qyOTB6vVnff", gists="2caf8e891201130c7daa")
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
