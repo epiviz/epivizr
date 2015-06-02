@@ -48,7 +48,7 @@
 
   \item{scripts}{(character vector) URLs for JavaScript plugin scripts to be imported when epiviz is loaded (see \url{http://epiviz.cbcb.umd.edu/help} for details).}
 
-  \item{gists}{(integer vector) Ids for github gists (\url{http://gist.github.com}) containing JavaScript plugin scripts to
+  \item{gists}{(character vector) Ids for github gists (\url{http://gist.github.com}) containing JavaScript plugin scripts to
 be imported when epiviz is loaded (see \url{http://epiviz.cbcb.umd.edu/help} for details).}
   \item{openBrowser}{(logical) browse to the epiviz URL before exiting function}
   
