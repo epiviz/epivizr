@@ -5,7 +5,7 @@
     <meta name="description" content="EpiViz is a scientific information visualization tool for genetic and epigenetic data, used to aid in the exploration and understanding of correlations between various genome features.">
     <title>EpiViz 3</title>
 
-    <link rel="shortcut icon" href="img/epiviz_2_icon.png"/>
+    <link rel="shortcut icon" href="css/epiviz_2_icon.png"/>
 
     <!-- CSS -->
     <link href="epiviz-min.css" rel="stylesheet" type="text/css"/>
@@ -20,7 +20,7 @@
     <script>
         var re = new RegExp("websocket=true")
         if (re.test(location.search)) {
-             epiviz.EpiViz.SETTINGS.dataProviders.push(
+             epiviz.Config.SETTINGS.dataProviders.push(
                 sprintf('epiviz.data.WebsocketDataProvider,%s,%s', 
                    epiviz.data.WebsocketDataProvider.DEFAULT_ID, 
                    sprintf("ws://%s", window.location.host)))
@@ -30,10 +30,11 @@
         epiviz.workspaces.UserManager.USER_STATUS = { loggedIn: false };
     </script>
 
-    <script>
-      // Run main once the page has loaded
-      $(epiviz.main);
-    </script>
+  <script>
+  // Run main once the page has loaded
+  $(epiviz.main);
+  </script>
+
   </head>
   <body>
     <div class="ui-layout-north">
@@ -69,28 +70,24 @@
 
         <span class="separator">|</span>
 
-        <!--<label for="save-workspace-text"></label>-->
-        <!--<input id="save-workspace-text" class="ui-widget-content ui-corner-all" type="text"/>-->
-        <!--<button id="save-workspace-button">Save Workspace</button>-->
-        <!--<button id="delete-workspace-button">Delete Active Workspace</button>-->
+        <label for="save-workspace-text"></label>
+        <input id="save-workspace-text" class="ui-widget-content ui-corner-all" type="text" disabled/>
+        <button id="save-workspace-button" disabled>Save Workspace</button>
+        <button id="revert-workspace-button" disabled>Revert Workspace Changes</button>  
+        <button id="delete-workspace-button" disabled>Delete Active Workspace</button>
 
-        <!--<span class="separator">|</span>-->
+        <span class="separator">|</span>
 
         <button id="help-button">Help</button>
       </div>
     </div>
 
     <div id="pagemain" class="ui-layout-center">
-      <div id="top-accordion">
-        <h3><a href="#"><b><span style="color: #025167">Views by Feature</span></b></a></h3>
-        <div id="chart-container"></div>
-      </div>
-      <div id="bottom-accordion">
-          <h3><a href="#"><b><span style="color: #025167">Views by Location</span></b></a></h3>
-          <div id="track-container"></div>
-      </div>
-    </div>
-
+      <div id="feature-view"></div>    
+      <div id="location-view"></div>       
+      <div id="data-structure-view"></div>    
+    </div>    
+      
     <div id="pagefooter" class="ui-layout-south"></div>
 
     <div id="dialogs">
