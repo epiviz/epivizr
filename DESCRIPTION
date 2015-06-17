@@ -15,7 +15,7 @@ Description: This package provides Websocket communication to the
         mechanism to support other data structures. Visualizations
         (using d3.js) can be easily added to the web app as well.
 VignetteBuilder: knitr
-Depends: R (>= 3.0.1), methods, Biobase, SummarizedExperiment, rtracklayer
+Depends: R (>= 3.0.1), methods, Biobase, SummarizedExperiment (>= 0.2.0), rtracklayer
 Imports: S4Vectors, httpuv (>= 1.3.0), rjson, OrganismDbi, R6 (>= 2.0.0), mime (>= 0.2), GenomeInfoDb, GenomicRanges, GenomicFeatures
 Suggests: testthat, roxygen2, knitr, antiProfilesData, hgu133plus2.db, knitrBootstrap, Mus.musculus
 Collate: 'utils.r' 'middleware-plus-supporting.R' 'EpivizServer-class.R' 'EpivizDeviceMgr-class.R'
