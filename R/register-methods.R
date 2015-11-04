@@ -195,4 +195,10 @@ setMethod("register", "OrganismDb",
             } else {
               register(gr, type="geneInfo", ...)
             }
-})            
+})
+
+setMethod("register", "BEDFile", function(object, ...) {
+  gr <- import.bed(object)
+  register(gr, type="block", ...)
+})
+
