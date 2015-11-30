@@ -2,7 +2,7 @@ Package: epivizr
 Maintainer: Hector Corrada Bravo <hcorrada@gmail.com>
 Author: Hector Corrada Bravo, Florin Chelaru, Llewellyn Smith, Naomi
         Goldstein
-Version: 1.9.1
+Version: 1.9.2
 License: Artistic-2.0
 Title: R Interface to epiviz web app
 Description: This package provides Websocket communication to the
