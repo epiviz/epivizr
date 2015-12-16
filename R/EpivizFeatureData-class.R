@@ -34,7 +34,7 @@ EpivizFeatureData <- setRefClass("EpivizFeatureData",
       TRUE
     },
     .getNAs=function() {
-      mat <- GenomicRanges::assay(object, i=.self$assay)
+      mat <- SummarizedExperiment::assay(object, i=.self$assay)
       colIndex <- match(columns, rownames(colData(object)))
       namat <- is.na(mat[,colIndex])
       if (!is.matrix(namat))
@@ -42,7 +42,7 @@ EpivizFeatureData <- setRefClass("EpivizFeatureData",
       which(rowSums(namat)>0)
     },
     .getLimits=function() {
-      mat <- GenomicRanges::assay(object, i=.self$assay)
+      mat <- SummarizedExperiment::assay(object, i=.self$assay)
       colIndex <- match(columns, rownames(colData(object)))
       unname(sapply(colIndex, function(i) range(pretty(range(mat[,i], na.rm=TRUE)))))
     },
