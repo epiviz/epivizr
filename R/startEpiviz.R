@@ -56,7 +56,7 @@ startEpiviz <- function(port=7312L, localURL=NULL, useDevel=FALSE, standalone=FA
   if (daemonized && !.epivizrCanDaemonize()) {
         warning("You've requested to run non-blocking epivizr, but your version of httpuv does not support it.\n",
                 "You can download an appropriate version of httpuv from github:\n",
-                "require(devtools); install_github('httpuv', username='epiviz')",call.=FALSE)
+                "require(devtools); install_github('epiviz/httpuv')",call.=FALSE)
         daemonized <- FALSE
   }
 
