@@ -1,6 +1,7 @@
 .gitignore
 inst/www/minifier.jar
 inst/www-full
+Dockerfile
 
 ^.*\.Rproj$
 ^\.Rproj\.user$
