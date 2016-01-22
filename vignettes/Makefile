@@ -1,4 +1,4 @@
 all:
-	"$(R_HOME)/bin$(R_ARCH_BIN)/Rscript" -e "library(knitrBootstrap); knit_bootstrap('IntroToEpivizr.Rmd', show_code=TRUE, boot_style='Readable')"
+	"$(R_HOME)/bin$(R_ARCH_BIN)/Rscript" -e "library(knitrBootstrap); library(rmarkdown);render('IntroToEpivizr.Rmd', bootstrap_document(theme='Readable'))"
 clean:
 	rm -f *.md
