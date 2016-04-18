@@ -1,10 +1,13 @@
-<!--
-%\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Introduction to epivizr}
--->
-
-Introduction to epivizr: interactive visualization for functional genomics
-===================================================================
+---
+title: "Introduction to `epivizr`: interactive visualization for genomic data"
+author: "Héctor Corrada Bravo"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{Introduction to epivizr}
+  %\VignetteEncoding{UTF-8}
+---
 
 [`Epiviz`](http://epiviz.cbcb.umd.edu) is an interactive visualization tool for functional genomics data. It supports genome navigation like other genome browsers, but allows multiple visualizations of data within genomic regions using scatterplots, heatmaps and other user-supplied visualizations. It also includes data from the [Gene Expression Barcode project](http://barcode.luhs.org/) for transcriptome visualization. It has a flexible plugin framework so users can add [d3](http://d3js.org/) visualizations. You can find more information about Epiviz at [http://epiviz.cbcb.umd.edu/help](http://epiviz.cbcb.umd.edu/help) and see a video tour [here](http://youtu.be/099c4wUxozA).
 
@@ -48,17 +51,17 @@ This basepair resolution data includes mean methylation levels for normal and ca
 
 Finally, the `apColonData` object is an `ExpressionSet` containing gene expression data for colon normal and tumor samples for genes within regions of methylation loss identified [this paper](http://www.nature.com/ng/journal/v43/n8/full/ng.865.html). Our goal in this vignette is to visualize this data as we browse the genome.
 
-### The epivizr session manager
+### The epivizr app
 
-The connection to `Epiviz` is managed through a session manager object of class `EpivizDeviceMgr`. We can create this object and open `Epiviz` using the `startEpiviz` function.
+The connection to `Epiviz` is managed through a session manager object of class `EpivizApp`. We can create this object and open `Epiviz` using the `startEpiviz` function.
 
 ```{r, eval=FALSE, echo=TRUE}
-mgr <- startEpiviz(workspace="qyOTB6vVnff", gists="2caf8e891201130c7daa")
+app <- startEpiviz(workspace="qyOTB6vVnff", gists="2caf8e891201130c7daa")
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
 mgr <- startEpiviz(debug=TRUE, openBrowser=FALSE, nonInteractive=TRUE, tryPorts=TRUE)
-mgr$startServer()
+app$server$start_server()
 ```
 This opens a websocket connection between the interactive `R` session and the browser client. This will allow us to visualize data stored in the `Epiviz` server along with data in the interactive `R` session.
 
@@ -66,17 +69,17 @@ This opens a websocket connection between the interactive `R` session and the br
 *Windows users:* In Windows platforms we need to use the `service` function to let the interactive `R` session connect to the `epiviz` web app and serve data requests. We then escape (using `ctl-c` or `esc` depending on your environment) to continue with the interactive `R` session. This is required anytime you want `epivizr` to serve data to the web app, for example, when interacting with the UI. (We are actively developing support for non-blocking sessions in Windows platforms).
 
 ```{r, eval=TRUE}
-mgr$service()
+mgr$server$service()
 ```
 ----
 
 ### Adding block region devices
 
 Once the browser is open we can visualize the `colon_blocks` object containing blocks of methylation modifications in colon cancer.
-We use the `addDevice` method to do so. 
+We use the `plot` method to do so. 
 
 ```{r,eval=TRUE}
-blocks_dev <- mgr$addDevice(colon_blocks, "450k colon_blocks")
+blocks_chart <- app$plot(colon_blocks, datasource_name="450k colon_blocks")
 ```
 
 ----
@@ -84,18 +87,21 @@ blocks_dev <- mgr$addDevice(colon_blocks, "450k colon_blocks")
 Escape (using `ctl-c` or `esc` depending on your environment) to continue with the interactive `R` session.
 
 ```{r,eval=TRUE}
-mgr$service()
+app$server$service()
 ```
 ----
 
-You should now see that a new track is added to the `Epiviz` web app. You can think of this track as an interactive display device in `R`. As you navigate on the browser, data is requested from the `R` session through the websocket connection. Remember to escape to continue with your interactive `R` session. The `blocks_dev` object inherits from class `EpivizDevice`, which contains information about the data being displayed and the chart used to display it.  Note that the "brushing" effect we implement in `Epiviz` works for `epivizr` tracks as well.
+You should now see that a new track is added to the `Epiviz` web app. You can think of this track as an interactive display device in `R`. As you navigate on the browser, data is requested from the `R` session through the websocket connection. Remember to escape to continue with your interactive `R` session. The `blocks_chart` object inherits from class `EpivizChart`, which we can use to  get information about the data being displayed and the chart used to display it.  Note that the "brushing" effect we implement in `Epiviz` works for `epivizr` tracks as well.
 
 The point of having interactive data connections to `Epiviz` is that we may want to iteratively compute and visualize our data. For example, we may want to only display methylation blocks inferred at a certain statistical significance level. In this case, we will filter by block size.
 
 ```{r, eval=TRUE}
 # subset to those with length > 250Kbp
 keep <- width(colon_blocks) > 250000
-mgr$updateDevice(blocks_dev, colon_blocks[keep,])
+
+# get the data object for chart
+ms_obj <- app$get_ms_object(blocks_chart)
+app$data_mgr$update(ms_obj, colon_blocks[keep,])
 ```
 
 Now, only this subset of blocks will be displayed in the already existing track.
@@ -106,7 +112,7 @@ We have a number of available data types in `epivizr`. In the previous section, 
 
 ```{r, eval=TRUE}
 # add low-filter smoothed methylation estimates
-means_dev <- mgr$addDevice(colon_curves, "450kMeth",type="bp",columns=c("cancerMean","normalMean"))
+means_track <- app$plot(colon_curves, datasource_name="450kMeth",type="bp",columns=c("cancerMean","normalMean"))
 ```
 
 NOTE: You can adjust track settings to change how this new track looks like. For instance, to show all points in the window set the `step` parameter to 1, and to see a smooth interpolation of the data set the `interpolation` parameter to `basis`. We will add support to `epivizr` to set these parameters in an upcoming version.
@@ -116,19 +122,19 @@ Notice that we added two lines in this plot, one for mean methylation in cancer 
 We can also add a track containing the smooth methylation difference estimate used to define methylation blocks.
 
 ```{r, eval=TRUE}
-diff_dev <- mgr$addDevice(colon_curves,"450kMethDiff",type="bp",columns=c("smooth"),ylim=matrix(c(-.5,.5),nc=1))
+diff_chart <- app$plot(colon_curves,"450kMethDiff",type="bp",columns=c("smooth"),ylim=matrix(c(-.5,.5),nc=1))
 ```
 
-We pass limits for the y axis in this case. To see other arguments supported, you can use the help framework in R `?"EpivizDeviceMgr-class"`.
+We pass limits for the y axis in this case. To see other arguments supported, you can use the help framework in R `?"EpivizApp"`.
 
-### The session manager again
+### The app connection again
 
-We can use the session manager to list devices we have added so far, or to remove devices.
+We can use the session manager to list charts we have added so far, or to remove charts.
 
 ```{r, eval=TRUE}
-mgr$listDevices()
-mgr$rmDevice(means_dev)
-mgr$listDevices()
+app$chart_mgr$list_charts()
+app$chart_mgr$rm_chart(means_chart)
+app$chart_mgr$list_charts()
 ```
 
 ### Adding a scatterplot
@@ -151,11 +157,10 @@ show(apColonData)
 `epivizr` will use the `annotation(apColonData)` annotation to determine genomic locations using the `AnnotationDbi` package so that only probesets inside the current browser window are displayed. 
 
 ```{r, eval=TRUE}
-eset_dev <- mgr$addDevice(apColonData, "MAPlot", columns=c("colonA","colonM"), assay="MA")
+eset_chart <- app$plot(apColonData, datasource_name="MAPlot", columns=c("colonA","colonM"), assay="MA")
 ```
 
-In this case, we specify which data is displayed in each axis of the scatter plot using the `columns` argument.
-The `assay` arguments indicates where data is obtained.
+In this case, we specify which data is displayed in each axis of the scatter plot using the `columns` argument. The `assay` arguments indicates where data is obtained.
 
 ### The RangedSummarizedExperiment Object
 
@@ -190,16 +195,16 @@ Now, create a new `RangedSummarizedExperiment` object with the two column matrix
 
 ```{r, eval=TRUE}
 sumexp <- SummarizedExperiment(mat, rowRanges=rowRanges(colonSE))
-se_dev <- mgr$addDevice(sumexp, "Mean by Sample Type", columns=c("normal", "cancer"))
+se_chart <- mgr$plot(sumexp, datasource_name="Mean by Sample Type", columns=c("normal", "cancer"))
 ```
 Again, the `columns` argument specifies what data will be displayed along which axis.
 
 ### Slideshow
 
-We can navigate to a location on the genome using the `navigate` method of the session manager:
+We can navigate to a location on the genome using the `navigate` method of the app object:
 
 ```{r, eval=TRUE}
-mgr$navigate("chr11", 110000000, 120000000)
+app$navigate("chr11", 110000000, 120000000)
 ```
 
 There is a convenience function to quickly navigate to a series of locations in succession.
@@ -207,59 +212,26 @@ We can use that to browse the genome along a ranked list of regions. Let's navig
 5 most up-regulated exons in the colon exon expression data.
 
 ```{r, eval=TRUE}
-foldChange=mat[,"cancer"]-mat[,"normal"]
-ind=order(foldChange,decreasing=TRUE)
+foldChange <- mat[,"cancer"]-mat[,"normal"]
+ind <- order(foldChange,decreasing=TRUE)
 
 # bounding 1Mb around each exon
 slideshowRegions <- trim(rowRanges(sumexp)[ind] + 1000000L)
-mgr$slideshow(slideshowRegions, n=5)
+app$slideshow(slideshowRegions, n=5)
 ```
 
 ### Closing the session
 
-To close the connection to `Epiviz` and remove all tracks added during the interactive session, we use the `stopServer` function.
+To close the connection to `Epiviz` and remove all tracks added during the interactive session, we use the `stop_server` function.
 
 ```{r}
-mgr$stopServer()
+app$stop_server()
 ```
 
 ### Standalone version and browsing arbitrary genomes
 
-The `epivizr` package contains all files required to run the web app UI locally. This feature
-can be used to browse any genome of interest. For example, to browse the mouse genome
-we would do the following.
-
-```{r,eval=FALSE,echo=TRUE}
-library(Mus.musculus)
-mgr <- epivizr::startStandalone(Mus.musculus, geneInfoName="mm10",
-    keepSeqlevels=paste0("chr",c(1:19,"X","Y")))	
-```
-
-```{r,eval=TRUE,echo=FALSE}
-library(Mus.musculus)
-mgr <- epivizr::startStandalone(Mus.musculus, geneInfoName="mm10",
-    keepSeqlevels=paste0("chr",c(1:19,"X","Y")),start.args=list(debug=TRUE,
-openBrowser=FALSE,nonInteractive=TRUE,tryPorts=TRUE))
-mgr$startServer()	
-```
-
-Now the web app UI serves as a mouse genome browser.
-
-```{r}
-mgr$stopServer()
-```
-
-Note that this feature is available outside the standalone version as well. For instance,
-
-```{r,eval=FALSE,echo=TRUE}
-mgr <- startEpiviz()
-dev <- mgr$addDevice(Mus.musculus, "mm10", keepSeqlevels=paste0("chr",c(1:19,"X","Y")))
-mgr$stopServer()
-```
-
-can be used to browse the mouse genome using the official web UI. See the documentation
-for `?startStandalone` to see features not available in the standalone version, for instance,
-workspaces and gist plugins are not available in the standalone version.
+The `epivizrStandalone` all files required to run the web app UI locally. This feature
+can be used to browse any genome of interest. See that packages vignette for more information.
 
 ### SessionInfo
 
