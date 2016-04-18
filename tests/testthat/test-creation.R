@@ -1,14 +1,27 @@
 context("object creation")
 
 test_that("EpivizChartMgr creates a proper object", {
-  skip("for now")
   server <- epivizrServer::createServer()
-  mgr <- EpivizChartMgr::new(server)
+  mgr <- EpivizChartMgr$new(server)
   
   expect_is(mgr, "EpivizChartMgr")
   
+  expect_is(mgr$.chart_list, "environment")
+  expect_equal(mgr$num_charts(), 0)
+  expect_equal(mgr$.chart_idCounter, 0)
+  expect_is(mgr$.server, "EpivizServer")
+  expect_true(mgr$is_server_closed())
 })
 
+test_that("server opening works as expected", {
+  server <- epivizrServer::createServer()
+  mgr <- EpivizChartMgr$new(server)
+  expect_true(mgr$is_server_closed())
+  
+  server$start_server()
+  on.exit(server$stop_server())
+  expect_false(mgr$is_server_closed())
+})
 test_that("stop shuts down the server connection", {
   skip("for now")
   mgr=.startMGR(openBrowser=openBrowser)

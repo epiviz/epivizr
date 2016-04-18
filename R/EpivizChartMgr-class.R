@@ -1,5 +1,3 @@
-setClassUnion("EpivizServerOrNULL", c("EpivizServer", "NULL"))
-
 #' Class providing chart manager for epiviz app
 #' 
 #' @docType class
@@ -9,10 +7,10 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
   fields=list(
     .chart_list = "environment",
     .chart_idCounter = "integer",
-    .server = "EpivizServerOrNULL"
+    .server = "EpivizServer"
   ),
   methods=list(
-    initialize = function(server=NULL, ...) {
+    initialize = function(server=epivizrServer::createServer(), ...) {
       .self$.server <- server
       .self$.chart_list <- new.env(parent=emptyenv())
       .self$.chart_idCounter <- 0L
@@ -28,6 +26,10 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
 #        cat("Charts:\n")
 #        print(st); cat("\n")
 #      }      
+    },
+    is_server_closed = function() { 
+      "Check if underlying server is closed, <logical>"
+      is.null(.self$.server) || .self$.server$is_closed()
     },
     add_chart = function(chart_object, send_request=TRUE) {},
     rm_chart = function(chart_object_or_id) {},
