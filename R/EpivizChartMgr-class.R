@@ -139,14 +139,13 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
       rownames(out) <- NULL
       out
     },
-    register_chart_type = function(chart_type, js_chart_type) {
+    register_chart_type = function(chart_type, js_chart_type=paste0("epiviz.plugins.charts.", chart_type)) {
       "Register a chart type name to a JavaScript chart type in the epiviz app.
       \\describe{
         \\item{chart_type}{the name to use for chart type in R (e.g., 'BlocksTrack')}
         \\item{js_chart_type}{the full JavaScript class name of the corresponding chart type 
-          (e.g. 'epiviz.plugins.charts.BlocksTrack)'}
+          (e.g. 'epiviz.plugins.charts.BlocksTrack'). If missing it is taken from the \\code{chart_type} argument}
       }"
-      # TODO: infer JS chart type from chart_type argument
       .self$.chart_type_map[[chart_type]] <- js_chart_type
     },
     visualize = function(chart_type, measurements = NULL, datasource = NULL, ...) {
@@ -197,6 +196,19 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
       }
       chart_type <- measurement_object$get_default_chart_type()
       .self$visualize(chart_type, datasource=measurement_object)
+    },
+    .redraw = function(send_request = TRUE) {
+      send_request <- !.self$is_server_closed() && isTRUE(send_request)      
+      if (send_request) {
+        callback <- function(response_data) {
+          if (.self$.server$.verbose) {
+            cat("charts redraw\n")            
+          }
+        }
+        request_data <- list(action="redraw")
+        .self$.server$send_request(request_data, callback)
+      }
+      invisible()
     }
   )
 )                              

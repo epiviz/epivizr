@@ -49,7 +49,38 @@
   }
 
 .register_all_the_epiviz_things <- function(app) {
-  invisible()
+  # register actions requested from epiviz app
+  app$server$register_action("getMeasurements", function(request_data) {
+    list(measurements=epivizrServer::json_writer(app$data_mgr$get_measurements()))
+  })
+  
+  app$server$register_action("getRows", function(request_data) {
+    app$data_mgr$get_rows(request_data$seqName,
+      request_data$start,
+      request_data$end,
+      request_data$metadata, 
+      request_data$datasource)
+  })
+  
+  app$server$register_action("getValues", function(request_data) {
+    app$data_mgr$get_values(request_data$seqName, 
+      request_data$start, 
+      request_data$end,
+      request_data$datasource, 
+      request_data$measurement)
+  })
+  
+  ## TODO: register actions 'getSeqInfos' and 'search'
+  
+  # register chart types
+  app$chart_mgr$register_chart_type("BlocksTrack")
+  app$chart_mgr$register_chart_type("LineTrack")
+  app$chart_mgr$register_chart_type("GenesTrack")
+  app$chart_mgr$register_chart_type("HeatmapPlot")
+  app$chart_mgr$register_chart_type("LinePlot")
+  app$chart_mgr$register_chart_type("ScatterPlot")
+  app$chart_mgr$register_chart_type("StackedLinePlot")
+  app$chart_mgr$register_chart_type("StackedLineTrack")
 }
 
 #' Start epiviz app and create \code{\link{EpivizApp}} object to manage connection.

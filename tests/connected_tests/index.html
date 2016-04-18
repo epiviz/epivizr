@@ -240,6 +240,11 @@
     return response_data;
   }
   
+  function _redraw(message_data) {
+    document.getElementById("redraw_output").innerHTML = "redraw called";
+    return {message: "This is a response from redraw."}
+  }
+  
   ws.onmessage = function(msg) {
     var message = JSON.parse(msg.data);
     console.dir(message);
@@ -276,12 +281,15 @@
         case "navigate":
           response_data = _navigate(message_data, "navigate_output");
           break;
+        case "redraw":
+          response_data = _redraw(message_data);
+          break;
       }
-      
+
+      response_data.success = true;      
       response = {
         type: "response", 
         requestId: requestId, 
-        success: true, 
         data: response_data
       };
       ws.send(JSON.stringify(response));
@@ -324,6 +332,9 @@
   
   <h3>Navigate</h3>
   <div id="navigate_output"></div>
+  
+  <h3>Redraw</h3>
+  <div id="redraw_output"></div>
 </body>
 </html>
 
