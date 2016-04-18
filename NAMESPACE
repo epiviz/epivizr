@@ -3,7 +3,8 @@ import(Biobase)
 import(epivizrServer)
 import(epivizrData)
 
-exportClasses(EpivizDeviceMgr,
+exportClasses(EpivizApp,
+              EpivizChartMgr,
               EpivizChart)
 
 export(startEpiviz)

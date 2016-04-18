@@ -26,6 +26,14 @@ EpivizApp <- setRefClass("EpivizApp",
   )
 )
 
+# general plot method
+EpivizApp$methods(
+  plot = function(data_object, ...) {
+    ms_obj <- .self$data_mgr$add_measurements(data_object, ...)
+    .self$plot(ms_obj)
+  }
+)
+
 # # session management methods
 # EpivizDeviceMgr$methods(list(
 #   bindToServer=function() {

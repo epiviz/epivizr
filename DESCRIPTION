@@ -30,7 +30,6 @@ Suggests: testthat,
           Mus.musculus
 Collate:  'EpivizChartMgr-class.R'
           'EpivizChart-class.R' 
-          'EpivizDevice-class.R' 
           'EpivizApp-class.R'
           'startEpiviz.R' 
 biocViews: Visualization, Infrastructure, GUI
