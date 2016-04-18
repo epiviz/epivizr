@@ -1,29 +1,9 @@
 import(methods)
 import(Biobase)
-import(S4Vectors)
-import(GenomicRanges)
-import(SummarizedExperiment)
-import(rtracklayer)
-import(httpuv)
-import(R6)
-import(mime)
-import(rjson)
-import(OrganismDbi)
-import(GenomeInfoDb)
-import(GenomicFeatures)
+import(epivizrServer)
+import(epivizrData)
 
 exportClasses(EpivizDeviceMgr,
-              EpivizData,
-              EpivizTrackData,
-              EpivizFeatureData,
-              EpivizBlockData,
-              EpivizBpData,
-              EpivizDataCache,
-              EpivizWigCache,
-              EpivizWigData,
-              EpivizGeneInfoData,
               EpivizChart)
 
 export(startEpiviz)
-export(startStandalone)
-export(makeGeneTrackAnnotation)
