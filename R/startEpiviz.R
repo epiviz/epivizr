@@ -46,6 +46,28 @@
   url
   }
 
+#' Start epiviz app and create \code{\class{EpivizApp}} object to manage connection
+#' 
+#' @param port <integer> The port to open server to
+#' @param localURL <character> URL to open
+#' @param useDevel <logical> Use the epiviz-dev app
+#' @param standalone <logical> Is it running standalone through R
+#' @param staticSitePath <character> Directory to serve standalone application
+#' @param chr <character> Chromosome to load at epiviz app start
+#' @param start <integer> Starting location to load at epiviz app start
+#' @param end <integer> Ending location to load at epiviz app start
+#' @param debug <logical> Use debug user for epiviz app workspace storage
+#' @param workspace <character> Id of workspace to load on epiviz app start
+#' @param scripts <character> Path to JS scripts to include on epiviz app start
+#' @param gists <character> Vector of github gist ids with JS code to include on epiviz app start
+#' @param openBrowser <logical> Open browser at URL through this function call
+#' @param daemonized <logical> Run app in non-blocking mode
+#' @param verbose <logical> Print verbose information
+#' @param nonInteractive <logical> Only used internally
+#' @param tryPorts <logical> Try multiple ports until finding an open port when opening WebSocket connection
+#' 
+#' @return An object of class \code{\link{EpivizApp}}
+#' @export
 startEpiviz <- function(port=7312L, localURL=NULL, useDevel=FALSE, standalone=FALSE, staticSitePath = "", 
                         chr="chr11", start=99800000, end=103383180, 
                         debug=FALSE, workspace=NULL, scripts=NULL, gists=NULL,
