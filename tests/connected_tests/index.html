@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>EpivizServer Test Page</title>
+
+<style type="text/css">
+  body { font-family: Helvetica; }
+  pre { margin: 0 }
+</style>
+
+<script>
+  
+  var ws = new WebSocket("ws://" + window.location.host);
+  var _measurements = {};
+  var _callbacks = [];
+  var _charts = {};
+  var _last_chart_id = 0;
+  
+  function _send_request(request_data, callback) {
+    var requestId = _callbacks.push(callback);
+    
+    request = {
+      type: "request",
+      requestId: requestId - 1,
+      data: request_data
+    }
+    console.log("sending request\n");
+    console.dir(request);
+    ws.send(JSON.stringify(request))
+  }
+  
+  function _handle_response(requestId, response_data) {
+    callback = _callbacks[requestId]
+    callback(response_data)
+  }
+  
+  function _update_msDiv(div_id) {
+    var out = new Array();
+    for (ms_id in _measurements) {
+      if (!_measurements.hasOwnProperty(ms_id)) {
+        continue;
+      }
+      var ms = _measurements[ms_id];
+      out.push(ms.datasourceId + ":" + ms.id);
+    }
+    document.getElementById(div_id).innerHTML = out.toString();
+  }
+  
+  function _update_chartDiv(div_id) {
+    var out = new Array();
+    for (chart_id in _charts) {
+      if (!_charts.hasOwnProperty(chart_id)) {
+        continue;
+      }
+      
+      var chart_desc = _charts[chart_id];
+      
+      var ms_out = new Array();
+      var measurements = chart_desc.measurements;
+      for (var i=0; i < measurements.length; ++i) {
+        ms = measurements[i];
+        ms_out.push(ms.datasourceId + ":" + ms.id);
+      }
+      var ms_out_str = ms_out.toString();
+      out.push(chart_desc.type + ":" + chart_desc.id + "[" + ms_out_str + "]");
+    }
+    document.getElementById(div_id).innerHTML = out.toString();
+  }
+  
+  function _addChart(message_data, div_id) {
+    _last_chart_id = _last_chart_id + 1;
+    var chart_id = "chart_" + _last_chart_id.toString();
+   
+    measurements = JSON.parse(message_data.measurements);
+    for (var i=0; i < measurements.length; ++i) {
+      var ms = measurements[i],
+          ms_id = ms.datasourceId + ":" + ms.id;
+      if (!_measurements.hasOwnProperty(ms_id)) {
+        return {};
+      }
+    }
+    
+    var chart_desc = {
+      id: chart_id,
+      type: message_data.type,
+      measurements: JSON.parse(message_data.measurements),
+    };
+   
+   
+    _charts[chart_desc.id] = chart_desc;
+    _update_chartDiv(div_id);   
+    
+    response_data = {
+      value: {id: chart_id},
+    }
+    return response_data;
+  }
+  
+  function _rmChart(message_data, div_id) {
+    var chart_id = message_data.chartId;
+    delete _charts[chart_id];
+    _update_chartDiv(div_id);
+    response_data = {
+      message: "This is a response from removeChart",
+    }
+    return response_data;
+  }
+  
+  function _addMeasurements(message_data, div_id) {
+    var measurements = JSON.parse(message_data.measurements);
+
+    for (var i = 0; i < measurements.length; i++) {
+      var ms = measurements[i];
+      ms_id = ms.datasourceId + ":" + ms.id;
+      _measurements[ms_id] = ms;  
+    }
+    
+    _update_msDiv(div_id);
+    
+    response_data = {
+      message: "This is a response from addMeasurements",
+    }
+    return response_data;
+  }
+  
+  function _rmMeasurements(message_data, div_id) {
+    var measurements = JSON.parse(message_data.measurements);
+    for (var i = 0; i < measurements.length; i++) {
+      var ms = measurements[i];
+      ms_id = ms.datasourceId + ":" + ms.id;
+      delete _measurements[ms_id];
+    }
+    
+    _update_msDiv(div_id);
+    
+    response_data = {
+      message: "This is a response from removeMeasurements",
+    }
+    
+    return response_data;
+  }
+  
+  function _getMeasurements() {
+    var request_data = {action: "getMeasurements"};
+    _send_request(request_data, function(response_data) {
+      _addMeasurements(response_data, "get_measurements_output");
+    });
+  }
+  
+  function _parseLocation(location_string) {
+    var location_array = /(\w+):(\d+)-(\d+)/.exec(location_string);
+    return {
+          seqName: location_array[1],
+          start: parseInt(location_array[2]),
+          end: parseInt(location_array[3])
+    };
+  } 
+  
+  function _getRows() {
+    var location_string = document.getElementById("_rows_input_location").value,
+        location = _parseLocation(location_string);
+        
+    var metadata = document.getElementById("_rows_input_metadata").value,
+        datasource = document.getElementById("_rows_input_datasource").value;
+        
+    request_data = {
+      action: "getRows",
+      seqName: location.seqName,
+      start: location.start,
+      end: location.end,
+      metadata: metadata.split(","),
+      datasource: datasource,
+    }
+    
+    _send_request(request_data, function(response_data) {
+      var metadata = response_data.values.metadata,
+          out_metadata = {};
+          
+      for (var record in metadata) {
+        if (!metadata.hasOwnProperty(record)) {
+          continue;
+        }
+        out_metadata[record] = metadata[record].length;
+      }
+      
+      out = {
+        globalStartIndex: response_data.globalStartIndex,
+        useOffset: response_data.useOffset,
+        nhits: response_data.values.id.length,
+        metadata: out_metadata,
+      }
+      document.getElementById("get_rows_output").innerHTML = JSON.stringify(out);
+    });
+  }
+  
+  function _getValues() {
+    var location_string = document.getElementById("_values_input_location").value,
+        location = _parseLocation(location_string);
+
+    var measurement = document.getElementById("_values_input_measurement").value,
+        datasource = document.getElementById("_values_input_datasource").value;
+        
+    request_data = {
+      action: "getValues",
+      seqName: location.seqName,
+      start: location.start,
+      end: location.end,
+      measurement: measurement,
+      datasource: datasource,
+    }
+    
+    _send_request(request_data, function(response_data) {
+      out = {
+        globalStartIndex: response_data.globalStartIndex,
+        nvalues: response_data.values.length,
+      }
+      
+      document.getElementById("get_values_output").innerHTML = JSON.stringify(out);
+    });
+  }
+  
+  function _clearCache(request_data) {
+    var datasource_id = request_data.datasourceGroup;
+    document.getElementById("clear_cache_output").innerHTML = datasource_id + " cache cleared."
+    response_data = {
+      message: "This is a response from clearCache",
+    }
+    return response_data;
+  }
+  
+  function _navigate(message_data, div_id) {
+    var range = JSON.parse(message_data.range),
+        location = range.seqName + ":" + range.start.toString() + "-" + range.end.toString();
+    document.getElementById(div_id).innerHTML = location;
+    
+    response_data = {
+      message: "This is a response from navigate",
+    }
+    return response_data;
+  }
+  
+  ws.onmessage = function(msg) {
+    var message = JSON.parse(msg.data);
+    console.dir(message);
+    var type = message.type;
+    var requestId = message.requestId;
+    var message_data = message.data;
+    
+    if (type == "response") {
+      var success = message.success;
+      if (success) {
+        _handle_response(requestId, message_data)
+      }
+      else { console.log("response returned with success=false");}
+    } else if (type == "request") {
+      var action = message_data.action;
+
+      var response_data; 
+      switch(action) {
+        case "addMeasurements":
+          response_data = _addMeasurements(message_data, "add_measurements_output");
+          break;
+        case "removeMeasurements":
+          response_data = _rmMeasurements(message_data, "add_measurements_output");
+          break;
+        case "clearDatasourceGroupCache":
+          response_data = _clearCache(message_data);
+          break;
+        case "addChart":
+          response_data = _addChart(message_data, "add_chart_output");
+          break;
+        case "removeChart":
+          response_data = _rmChart(message_data, "add_chart_output");
+          break;
+        case "navigate":
+          response_data = _navigate(message_data, "navigate_output");
+          break;
+      }
+      
+      response = {
+        type: "response", 
+        requestId: requestId, 
+        success: true, 
+        data: response_data
+      };
+      ws.send(JSON.stringify(response));
+    }
+  }
+</script>
+</head>
+
+<body>
+  <h3>Add Measurements</h3>
+  <div id="add_measurements_output"></div>
+
+  <h3>Get Measurements</h3>
+  <button onclick="_getMeasurements()" id="get_measurements_btn">Get Measurements  </button>
+  <div id="get_measurements_output"></div>
+
+  <h3>Clear Cache</h3>
+  <div id="clear_cache_output"></div>
+  
+  <h3>Get Rows</h3>
+  <form action="" id="_rows_input_form" onsubmit="_getRows(); return false">
+    <input type="text" id="_rows_input_location"/>
+    <input type="text" id="_rows_input_metadata"/>
+    <input type="text" id="_rows_input_datasource"/>
+    <input type="submit" form="_rows_input_form" value="Submit" id="_rows_input_btn"/>
+  </form>
+  <div id="get_rows_output"></div>
+  
+  <h3>Get Values</h3>
+  <form action="" id="_values_input_form" onsubmit="_getValues(); return false">
+    <input type="text" id="_values_input_location"/>
+    <input type="text" id="_values_input_measurement"/>
+    <input type="text" id="_values_input_datasource"/>
+    <input type="submit" value="Submit" id="_values_input_btn"/>
+  </form>
+  <div id="get_values_output"></div>
+  
+  <h3>Add Charts</h3>
+  <div id="add_chart_output"></div>
+  
+  <h3>Navigate</h3>
+  <div id="navigate_output"></div>
+</body>
+</html>
+

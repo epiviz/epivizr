@@ -11,7 +11,6 @@
 EpivizApp <- setRefClass("EpivizApp",
   fields=list(
     .url="character",
-    .non_interactive="logical",
     server="EpivizServer",
     data_mgr="EpivizDataMgr",
     chart_mgr="EpivizChartMgr"
@@ -34,6 +33,10 @@ EpivizApp <- setRefClass("EpivizApp",
         cat("Measurements:\n")
         print(st); cat("\n")
       }
+   },
+   is_server_closed=function() {
+     "Check if underlying server connection is closed."
+     is.null(.self$server) || .self$server$is_closed()
    }
   )
 )
@@ -73,6 +76,7 @@ EpivizApp$methods(
         \\code{\\link[epivizrData]{EpivizData}}}
     }"
     ms_obj <- .self$data_mgr$add_measurements(data_object, ...)
+    .self$server$wait_to_clear_requests()
     .self$chart_mgr$plot(ms_obj)
   }
 )
@@ -81,6 +85,10 @@ EpivizApp$methods(
 EpivizApp$methods(
   navigate=function(chr, start, end) {
     'Navigate to given position on the epiviz app.'
+    if (.self$is_server_closed()) {
+      return(invisible())
+    }
+    
     callback <- function(response_data) {
       invisible()
     }
@@ -101,13 +109,14 @@ EpivizApp$methods(
     request_data=list(action="getCurrentLocation")
     .self$server$send_request(request, callback)
   },
-  slideshow=function(granges, n=length(granges)) {
+  slideshow=function(granges, n=length(granges), .callback=NULL) {
     'Navigate on epiviz app successively to given positions.
     
     \\describe{
       \\item{granges}{An object of class \\code{\\link{GenomicRanges}} indicating
         set of genomic regions to navigate in epiviz app.}
       \\item{n}{(integer) The number of regions in \\code{granges} to navigate to.}
+      \\item{.callback}{(function) function to call after navigating to each region. Used for testing purposes.}
     }'
     if (!is(granges, "GenomicRanges"))
       stop(("'granges' must be a 'GenomicRanges' object"))
@@ -118,94 +127,85 @@ EpivizApp$methods(
     start <- start(granges)[ind]
     end <- end(granges)[ind]
     for (i in ind) {
-      cat("Region", i, "of", n, ". Press key to continue (ESC to stop)...\n")
-      if (!.self$.non_interactive)
-        readLines(n=1)
       .self$navigate(chr=chr[i], start=start[i], end=end[i])
-      tryCatch(.self$server$service(.self$.non_interactive), interrupt=function(int) invisible())
+      if (!is.null(.callback) && is.function(.callback)) {
+        .callback(chr[i], start[i], end[i])
+      } else {
+        if (.self$server$is_interactive()) {
+          cat("Region", i, "of", n, ". Press key to continue (ESC to stop)...\n")
+          readLines(n=1)
+        }
+      }
+      tryCatch(.self$server$service(), interrupt=function(int) invisible())
     }
     invisible()
   }
 )
 
 
-# # session management methods
-# EpivizDeviceMgr$methods(list(
-#   bindToServer=function() {
-#     server$bindManager(.self)
-#   },
-#   isClosed=function() {
-#     'check if connection is closed'
-#     server$isClosed()
-#   },
-#   openBrowser=function(url=NULL) {
-#     closeOnError <- FALSE
-#     if (server$isClosed()) {
-#       closeOnError <- TRUE
-#       if (verbose) {
-#         epivizrMsg("Starting epiviz websocket connection")
-#       }
-#       tryCatch(server$startServer(),
-#                error=function(e) stop(e))
-#     }
-# 
-#     if (nonInteractive) {
-#       return(invisible())
-#     }
-# 
-#     if (verbose) {
-#       epivizrMsg("Opening browser")
-#     }
-# 
-#     tryCatch({
-#       if (missing(url) || is.null(url)) {
-#         browseURL(.self$url)
-#       } else {
-#         browseURL(url)
-#       }
-# 
-#       if (daemonized())
-#         return(invisible())
-# 
-#       if (verbose) {
-#         epivizrMsg("Servicing websocket until connected")
-#       }
-# 
-#       ptm <- proc.time()
-#       while(!server$socketConnected && (proc.time()-ptm)[2] * 1000 <= 30) {
-#         service(verbose=FALSE)
-#       }
-#       if (!server$socketConnected) {
-#         stop("[epivizr] Error opening connection. UI unable to connect to websocket server.")
-#       }
-#     }, error=function(e) {
-#       if (closeOnError) server$stopServer()
-#       stop(e)
-#     })
-#   },
-#   service=function(verbose=TRUE) {
-#     if (verbose && !(nonInteractive || daemonized())) {
-#       epivizrMsg("Serving Epiviz, escape to continue interactive session...")
-#     }
-# 
-#     server$service(nonInteractive)
-#   },
-#   stopService=function() {
-#     server$stopService()
-#   },
-#   startServer=function() {
-#     epivizrMsg("Starting websocket server...")
-#     server$startServer()
-#   },
-#   stopServer=function() {
-#     'stop epiviz connection'
-#     .self$rmAllCharts(which="all")
-#     .self$waitToClearRequests()
-#     .self$rmAllMeasurements(which="all")
-#     .self$waitToClearRequests()
-#     .self$clearDeviceList()
-#     server$stopServer()
-#     invisible()
-#   })
-# )
-# 
+# session management methods
+EpivizApp$methods(
+  .open_browser=function() {
+    close_on_error <- FALSE
+    if (.self$is_server_closed()) {
+      close_on_error <- TRUE
+      if (.self$server$.verbose) {
+        cat("Starting epiviz websocket connection\n")
+      }
+      tryCatch(.self$server$start_server(),
+               error=function(e) stop(e))
+    }
+
+    if (!.self$server$is_interactive()) {
+      return(invisible())
+    }
+
+    if (.self$server$.verbose) {
+      cat("Opening browser\n")
+    }
+
+    tryCatch({
+      browseURL(.self$.url)
+      
+      if (.self$server$is_daemonized()) {
+        return(invisible())
+      }
+
+      if (.self$server$.verbose) {
+        cat("Servicing websocket until connected\n")
+      }
+
+      ptm <- proc.time()
+      while(!.self$server$is_socket_connected() && (proc.time()-ptm)[2] * 1000 <= 30) {
+        .self$service(verbose=FALSE)
+      }
+      if (!.self$server$is_socket_connected()) {
+        stop("[epivizr] Error opening connection. UI unable to connect to websocket server.")
+      }
+    }, error=function(e) {
+      if (closeOnError) .self$server$stop_server()
+      stop(e)
+    })
+  },
+  service=function(verbose=TRUE) {
+    "Block interactive R session to service websocket requests."
+    if (verbose && .self$server$is_interactive() && !.self$server$is_daemonized()) {
+      cat("Serving Epiviz, escape to continue interactive session...\n")
+    }
+
+    .self$server$service()
+  },
+  .stop_service=function() {
+    .self$server$stop_service()
+  },
+  stop_app=function() {
+    'stop and clean connection to epiviz app.'
+    .self$chart_mgr$rm_all_charts()
+    .self$server$wait_to_clear_requests()
+    .self$data_mgr$rm_all_measurements()
+    .self$server$wait_to_clear_requests()
+    .self$server$stop_server()
+    invisible()
+  }
+)
+

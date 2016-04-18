@@ -63,19 +63,19 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
       if (send_request) {
         callback <- function(response_data) {
           app_chart_id <- response_data$value$id
-          chart_obj$set_app_id(app_chart_id)
-          cat("Chart ", chart_id, " added to browser and connected\n")
+          chart_object$set_app_id(app_chart_id)
+          cat("Chart ", chart_id, " added to browser and connected to id ", app_chart_id, "\n")
         }
         measurements <- NULL
-        if (!is.null(chart_object$measurements)) { 
-          measurements = rjson::json_writer(chart_object$measurements) 
+        if (!is.null(chart_object$.measurements)) { 
+          measurements = epivizrServer::json_writer(lapply(chart_object$.measurements, epivizrData::as.list)) 
         }
         
         request_data=list(action="addChart",
-          type=chartObject$type,
+          type=chart_object$.type,
           measurements=measurements,
-          datasource=chartObject$datasource,
-          datasourceGroup=chartObject$datasourceGroup
+          datasource=chart_object$.datasource,
+          datasourceGroup=chart_object$.datasourceGroup
         )
         .self$.server$send_request(request_data, callback)
       }
@@ -98,15 +98,14 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
       }
       rm(list=chart_id, envir=.self$.chart_list)
 
-      chart_app_id <- chart_object$get_app_id()
-      if(isTRUE(!is.null(chart_app_id) && (chart_app_id != character()))) {
+      if (chart_object$is_connected()) {
         callback <- function(response) {
           cat("chart ", chart_id, " removed and disconnected\n")
         }
         
         request_data <- list(action = "removeChart",
-          chartId = chart_app_id)
-        .self$.server$send_request(request_data)
+          chartId = chart_object$.app_id)
+        .self$.server$send_request(request_data, callback)
       }
       invisible()
     },

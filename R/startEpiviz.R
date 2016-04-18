@@ -1,53 +1,62 @@
-.constructURL <- function(port=7312L, localURL=NULL, useDevel=FALSE, standalone=FALSE,
+.constructURL <- function(host=NULL, http_port=NULL, path = NULL, ws_port=7123L,
+                          use_devel=FALSE, debug=FALSE, 
                           chr="chr11", start=99800000, end=103383180,
-                          debug=FALSE, workspace=NULL, scripts=NULL, gists=NULL, useCookie=FALSE)
+                          workspace=NULL, scripts=NULL, gists=NULL, use_cookie=FALSE)
   {
-  if (missing(localURL) || is.null(localURL)) {
-    url <- ifelse(useDevel,"epiviz-dev", "epiviz")
-    url <- sprintf("http://%s.cbcb.umd.edu/index.php", url)
+  if (is.null(host)) {
+    host <- ifelse(use_devel,"epiviz-dev", "epiviz")
+    host <- sprintf("http://%s.cbcb.umd.edu", host)
+  }
+
+  if (!is.null(http_port)) {
+    port <- sprintf(":%d", port)
   } else {
-    url <- localURL
-  }
-
-  if (isTRUE(standalone)) {
-    url <- sprintf("http://localhost:%d/index-standalone.html?websocket=true", port)
-  }
-
-  if (!isTRUE(standalone)) {
-    controllerHost <- sprintf("ws://localhost:%d", port)  
-    url <- sprintf("%s?websocket-host[]=%s&", url, controllerHost)
-
-    url <- paste0(url, sprintf("debug=%s&", ifelse(debug, "true", "false")))
-  
-    if (!is.null(workspace)) {
-      url <- paste0(url,"ws=",workspace,"&")
-    } else {
-      url <- paste0(url,
-                    sprintf("seqName=%s&start=%d&end=%d&",
-                            chr,
-                            as.integer(start),
-                            as.integer(end)))
-    }
-
-    if (!is.null(scripts)) {
-      scriptString = paste(sprintf("script[]=%s&", scripts),collapse="")
-      url <- paste0(url,scriptString)
-    }
-    
-    if (!is.null(gists)) {
-      gistString <- paste(sprintf("gist[]=%s&", gists), collapse="")
-      url <- paste0(url,gistString)
-    }
-    
-    cookieString = sprintf("useCookie=%s&", ifelse(useCookie, "true", "false"))
-    url <- paste0(url, cookieString)
+    port <- ""
   }
   
+  if (is.null(path)) {
+    path <- "/index.php"
+  }
+  
+  url <- paste0(host,port,path)
+  controllerHost <- sprintf("ws://localhost:%d", ws_port)  
+  url <- sprintf("%s?websocket-host[]=%s&", url, controllerHost)
+  url <- paste0(url, sprintf("debug=%s&", ifelse(debug, "true", "false")))
+  
+  if (!is.null(workspace)) {
+    url <- paste0(url,"ws=",workspace,"&")
+  } else {
+    url <- paste0(url,
+                  sprintf("seqName=%s&start=%d&end=%d&",
+                          chr,
+                          as.integer(start),
+                          as.integer(end)))
+  }
+
+  if (!is.null(scripts)) {
+    script_string <- paste(sprintf("script[]=%s&", scripts),collapse="")
+    url <- paste0(url, script_string)
+  }
+    
+  if (!is.null(gists)) {
+    gist_string <- paste(sprintf("gist[]=%s&", gists), collapse="")
+    url <- paste0(url, gist_string)
+  }
+    
+  cookie_string <- sprintf("useCookie=%s&", ifelse(use_cookie, "true", "false"))
+  url <- paste0(url, cookie_string)
   url
   }
 
-#' Start epiviz app and create \code{\link{EpivizApp}} object to manage connection
+.register_all_the_epiviz_things <- function(app) {
+  invisible()
+}
+
+#' Start epiviz app and create \code{\link{EpivizApp}} object to manage connection.
 #' 
+#' @param host (character) use a host for the epiviz app other than the cbcb.umd.edu hosts.
+#' @param http_port (integer) port at host serving the epiviz app.
+#' @param path (character) path at host where epiviz app is located.
 #' @param use_devel (logical) use the devel epiviz application server (http://epiviz-dev.cbcb.umd.edu).
 #' @param chr (character) chromosome to browse to on app startup.
 #' @param start (integer) start location to browse to on app startup.
@@ -57,72 +66,70 @@
 #' @param scripts (character) URLs for JavaScript plugin scripts to be imported when epiviz is loaded (see \url{http://epiviz.cbcb.umd.edu/help} for details).
 #' @param gists (character) Ids for github gists (\url{http://gist.github.com}) containing JavaScript plugin scripts to
 #'  be imported when epiviz is loaded (see \url{http://epiviz.cbcb.umd.edu/help} for details).
+#' @param use_cookie (logical) use cookies within the epiviz app.
+#' @param register_function (function) function used to register actions and charts on the epiviz app.
 #' @param open_browser (logical) browse to the epiviz URL before exiting function.
-#' @param non_interactive <logical> run in non-interactive mode, for development purposes only.
 #' @param ... additional parameters passed to \code{\link[epivizrServer]{createServer}}.
 #' 
 #' @return An object of class \code{\link{EpivizApp}}
 #' @export
-startEpiviz <- function(use_devel=FALSE, chr="chr11", start=99800000, end=103383180, 
-                        debug=FALSE, workspace=NULL, scripts=NULL, gists=NULL,
-                        open_browser=TRUE, non_interactive=FALSE, ...) {
+startEpiviz <- function(host=NULL, http_port=NULL, path=NULL, use_devel=FALSE, 
+                        chr="chr11", start=99800000, end=103383180, 
+                        debug=FALSE, workspace=NULL, scripts=NULL, gists=NULL, use_cookie=TRUE,
+                        register_function=.register_all_the_epiviz_things,
+                        open_browser=TRUE, ...) {
 
   server <- epivizrServer::createServer(...)
   data_mgr <- epivizrData::createMgr(server)
   chart_mgr <- EpivizChartMgr$new(server)
-  app <- EpivizApp$new(server=server,
+  
+  url <- .constructURL(host=host,
+    http_port=http_port,
+    path=path,
+    ws_port=server$.port,
+    use_devel=use_devel,
+    debug=debug,
+    chr=chr,
+    start=start,
+    end=end,
+    workspace=workspace,
+    scripts=scripts,
+    gists=gists,
+    use_cookie=use_cookie)
+  
+  app <- EpivizApp$new(.url=url,
+                       server=server,
                        data_mgr=data_mgr,
-                       chart_mgr=chart_mgr,
-                       .non_interactive=non_interactive)
-  return(app)
+                       chart_mgr=chart_mgr)
   
-  if (verbose) {
-    epivizrMsg("Starting Epivizr!")
+  if (app$server$.verbose) {
+    cat("Starting Epivizr!\n")
   }
   
-  if (daemonized && !.epivizrCanDaemonize()) {
-        warning("You've requested to run non-blocking epivizr, but your version of httpuv does not support it.\n",
-                "You can download an appropriate version of httpuv from github:\n",
-                "require(devtools); install_github('httpuv', username='epiviz')",call.=FALSE)
-        daemonized <- FALSE
-  }
-
-  server <- EpivizServer$new(port=port, tryPorts=tryPorts,
-                           daemonized=daemonized, standalone=standalone, staticSitePath = staticSitePath, verbose=verbose)
-
-  url <- .constructURL(port=server$port,
-                       localURL=localURL,
-                       useDevel=useDevel,
-                       standalone=standalone,
-                       chr=chr,
-                       start=start,
-                       end=end,
-                       debug=debug,
-                       workspace=workspace,
-                       scripts=scripts,
-                       gists=gists)
+  register_function(app)
   
-  if (verbose) {
-    epivizrMsg("Initializing session manager...")
+  if (!app$server$is_interactive()) {
+    return(app)
+  }
+  
+  if (app$server$.verbose) {
+    cat("Initializing session manager...\n")
   }
   tryCatch({
-    mgr <- EpivizDeviceMgr$new(server=server, url=url, verbose=verbose, nonInteractive=nonInteractive)
-    mgr$bindToServer()
-
-    if (verbose) {
-      epivizrMsg("Opening connections...")
+    if (app$server$.verbose) {
+      cat("Opening connections...\n")
     }
     
-    if (openBrowser) {
-      mgr$openBrowser(url)
+    if (open_browser) {
+      app$.open_browser()
     }
 
-    if (verbose) {
-      epivizrMsg("Done starting Epivizr!")
+    if (app$server$.verbose) {
+      cat("Done starting Epivizr!\n")
     }
-    return(mgr)
+    app
   }, error=function(e) {
-    server$stopServer()
+    app$stop_app()
     stop("Error starting Epiviz: ", e)
-  }, interrrupt=function(e) {NULL})  
+  }, interrupt=function(e) {NULL})  
 }

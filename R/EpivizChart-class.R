@@ -30,13 +30,13 @@ EpivizChart <- setRefClass("EpivizChart",
 		},
 		is_connected = function() { 
 		  "Returns \\code{TRUE} if chart is connected to a chart on epiviz app."
-		  isTRUE(.self$.app_id != character()) 
+		  isTRUE(length(.self$.app_id) > 0) 
 		},
 		show = function() {
 		  "Print information about chart."
-			cat("EpivizChart object: ", .self$get_id(), "\n")
+			cat("EpivizChart object ", .self$get_id(), ":\n")
 			cat("type: ", .self$.type, "\n")
-      nms <- sapply(.self$.measurements, function(x) paste0(x$datasourceId, ":", x$id))
+      nms <- sapply(.self$.measurements, function(x) paste0(x@datasourceId, ":", x@id))
 			cat("measurements: ", paste0(nms, collapse=","), "\n")
 		}
 	)
