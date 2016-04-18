@@ -1,6 +1,6 @@
 context("add charts")
 
-test_that("adding a block chart works using visualize", {
+test_that("adding a block chart works using visualize with just measurement", {
   server <- epivizrServer::createServer()
   data_mgr <- epivizrData::createMgr(server)
   chart_mgr <- EpivizChartMgr$new(server)
@@ -11,9 +11,7 @@ test_that("adding a block chart works using visualize", {
   ms <- ms_obj$get_measurements()
 
   chart_mgr$register_chart_type("BlockChart", "epiviz.plugins.charts.BlocksTrack")
-  
-  # check using just measurement
-  chart_obj <- chart_mgr$visualize("BlockChart", ms)
+  chart_obj <- chart_mgr$visualize("BlockChart", measurements=ms)
   chart_id <- chart_obj$get_id()
   
   expect_is(chart_obj, "EpivizChart")
@@ -21,19 +19,20 @@ test_that("adding a block chart works using visualize", {
   expect_equal(chart_obj$.type, "epiviz.plugins.charts.BlocksTrack")
   expect_true(exists(chart_id, env=chart_mgr$.chart_list))
   expect_true(is.null(chart_mgr$.chart_id_map[[chart_id]]))
+})
+
+test_that("adding a block chart works using visualize with just datasource", {
+  server <- epivizrServer::createServer()
+  data_mgr <- epivizrData::createMgr(server)
+  chart_mgr <- EpivizChartMgr$new(server)
   
-  # check using just datasource
+  gr <- GenomicRanges::GRanges(seqnames="chr1", ranges=IRanges::IRanges(start=1:10, width=1))
+  ms_obj <- data_mgr$add_measurements(gr, "ms1", send_request=FALSE)
+  ms_id <- ms_obj$get_id()
+  ms <- ms_obj$get_measurements()
+  
+  chart_mgr$register_chart_type("BlockChart", "epiviz.plugins.charts.BlocksTrack")
   chart_obj <- chart_mgr$visualize("BlockChart", datasource=ms_obj)
-  chart_id <- chart_obj$get_id()
-  
-  expect_is(chart_obj, "EpivizChart")
-  expect_equal(chart_obj$.measurements, ms)
-  expect_equal(chart_obj$.type, "epiviz.plugins.charts.BlocksTrack")
-  expect_true(exists(chart_id, env=chart_mgr$.chart_list))
-  expect_true(is.null(chart_mgr$.chart_id_map[[chart_id]]))
-  
-  # check using both
-  chart_obj <- chart_mgr$visualize("BlockChart", measurements=ms, datasource=ms_obj)
   chart_id <- chart_obj$get_id()
   
   expect_is(chart_obj, "EpivizChart")
@@ -44,6 +43,30 @@ test_that("adding a block chart works using visualize", {
   
 })
 
+test_that("adding a block chart works using visualize with both arguments", {
+  server <- epivizrServer::createServer()
+  data_mgr <- epivizrData::createMgr(server)
+  chart_mgr <- EpivizChartMgr$new(server)
+  
+  gr <- GenomicRanges::GRanges(seqnames="chr1", ranges=IRanges::IRanges(start=1:10, width=1))
+  ms_obj <- data_mgr$add_measurements(gr, "ms1", send_request=FALSE)
+  ms_id <- ms_obj$get_id()
+  ms <- ms_obj$get_measurements()
+  
+  chart_mgr$register_chart_type("BlockChart", "epiviz.plugins.charts.BlocksTrack")
+  chart_obj <- chart_mgr$visualize("BlockChart", datasource=ms_obj)
+  chart_id <- chart_obj$get_id()
+
+  chart_obj <- chart_mgr$visualize("BlockChart", measurements=ms, datasource=ms_obj)
+  chart_id <- chart_obj$get_id()
+  
+  expect_is(chart_obj, "EpivizChart")
+  expect_equal(chart_obj$.measurements, ms)
+  expect_equal(chart_obj$.type, "epiviz.plugins.charts.BlocksTrack")
+  expect_true(exists(chart_id, env=chart_mgr$.chart_list))
+  expect_true(is.null(chart_mgr$.chart_id_map[[chart_id]]))
+  
+})
 
 test_that("lineChart works", {
   skip("for now")
