@@ -113,7 +113,7 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
       type <- sapply(ids, function(x) .self$.chart_list[[x]]$.type)
       ms <- sapply(ids,
                    function(x) {
-                     tmp <- sapply(.self$.chart_list[[x]]$.measurements, function(y) paste0(y$datasourceId,":",y$name))
+                     tmp <- sapply(.self$.chart_list[[x]]$.measurements, function(y) paste0(y@datasourceId,":",y@name))
                      paste0(tmp, collapse=",")
                    })
       connected <- ifelse(sapply(ids, function(x) .self$.chart_list[[x]]$is_connected()), "*", "")
