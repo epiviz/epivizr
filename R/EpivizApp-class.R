@@ -1,3 +1,8 @@
+#' Class managing connection to epiviz application
+#' 
+#' @importClassesFrom epivizrServer EpivizServer
+#' @importClassesFrom epivizrData EpivizDataMgr EpivizMeasurement EpivizData
+#' @include EpivizChartMgr-class.R
 EpivizApp <- setRefClass("EpivizApp",
   fields=list(
     .url="character",
