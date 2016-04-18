@@ -53,11 +53,11 @@ Finally, the `apColonData` object is an `ExpressionSet` containing gene expressi
 The connection to `Epiviz` is managed through a session manager object of class `EpivizDeviceMgr`. We can create this object and open `Epiviz` using the `startEpiviz` function.
 
 ```{r, eval=FALSE, echo=TRUE}
-mgr=startEpiviz(workspace="qyOTB6vVnff", gists="2caf8e891201130c7daa")
+mgr <- startEpiviz(workspace="qyOTB6vVnff", gists="2caf8e891201130c7daa")
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
-mgr=startEpiviz(debug=TRUE, openBrowser=FALSE, nonInteractive=TRUE, tryPorts=TRUE)
+mgr <- startEpiviz(debug=TRUE, openBrowser=FALSE, nonInteractive=TRUE, tryPorts=TRUE)
 mgr$startServer()
 ```
 This opens a websocket connection between the interactive `R` session and the browser client. This will allow us to visualize data stored in the `Epiviz` server along with data in the interactive `R` session.
