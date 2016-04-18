@@ -26,9 +26,10 @@ Suggests: testthat,
           hgu133plus2.db, 
           knitrBootstrap, 
           Mus.musculus
-Collate:  'EpivizDeviceMgr-class.R'
-          'startEpiviz.R' 
+Collate:  'EpivizChartMgr-class.R'
           'EpivizChart-class.R' 
           'EpivizDevice-class.R' 
+          'EpivizApp-class.R'
+          'startEpiviz.R' 
 biocViews: Visualization, Infrastructure, GUI
 Video: https://www.youtube.com/watch?v=099c4wUxozA
