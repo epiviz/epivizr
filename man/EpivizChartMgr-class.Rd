@@ -11,6 +11,52 @@ Class providing chart manager for epiviz app
 \section{Methods}{
 
 \describe{
-\item{\code{is_server_closed()}}{Check if underlying server is closed, <logical>}
+\item{\code{add_chart(chart_object, send_request = TRUE)}}{Add a chart to the chart manager.
+ \describe{
+  \item{chart_object}{an object of class \code{\link{EpivizChart}}}
+  \item{send_request}{send request to app through websocket}
+}}
+
+\item{\code{is_server_closed()}}{Returns \code{TRUE} if underlying server is closed.
+See \code{is_closed} method in class \code{\link[epivizrServer]{EpivizServer}}.}
+
+\item{\code{list_charts()}}{Return \code{data.frame} describing charts loaded by chart manager}
+
+\item{\code{num_charts()}}{Return the number of charts currently loaded through manager.}
+
+\item{\code{plot(measurement_object)}}{Visualize data in an \code{\link[epivizrData]{EpivizData}} object using its default chart type.
+      The method \code{get_default_chart_type} in class \code{\link[epivizrData]{EpivizData}} is used
+      to determine which chart type is used.
+
+      \describe{
+        \item{measurement_object}{an object of class \code{\link[epivizrData]{EpivizData}}}
+      }}
+
+\item{\code{register_chart_type(chart_type, js_chart_type)}}{Register a chart type name to a JavaScript chart type in the epiviz app.
+\describe{
+  \item{chart_type}{the name to use for chart type in R (e.g., 'BlocksTrack')}
+  \item{js_chart_type}{the full JavaScript class name of the corresponding chart type 
+    (e.g. 'epiviz.plugins.charts.BlocksTrack)'}
+}}
+
+\item{\code{rm_all_charts()}}{Remove all charts loaded by chart manager.}
+
+\item{\code{rm_chart(chart_object_or_id)}}{Remove chart from chart manager.
+\describe{
+ \item{chart_object_or_id}{An object of class \code{\link{EpivizChart}} or a 
+   string indicating the chart's id assigned by chart manager}
+}}
+
+\item{\code{visualize(chart_type, measurements = NULL, datasource = NULL, ...)}}{Visualize data use the given chart type. One of arguments \code{measurements} or \code{datasource} must be non-\code{NULL}. If \code{measurements}
+is \code{NULL}, the \code{get_measurements} method in class \code{\link[epivizrData]{EpivizData}}
+is used to decide which measurements are used in the chart
+
+\describe{
+  \item{chart_type}{a chart type registered using the \code{register_chart_type} method}
+  \item{measurements}{a list of \code{\link[epivizrData]{EpivizMeasurements}} objects
+    describing measurements to include in the chart}
+  \item{datasource}{an object of class \code{\link[epivizrData]{EpivizData}}, all available
+    measurements from datasource are used as appropriate}
+}}
 }}
 

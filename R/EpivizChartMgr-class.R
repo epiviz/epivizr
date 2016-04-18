@@ -1,8 +1,7 @@
 #' Class providing chart manager for epiviz app
 #' 
-#' @docType class
 #' @import methods
-#' @importClassFrom epivizrServer EpivizServer
+#' @importClassesFrom epivizrServer EpivizServer
 EpivizChartMgr <- setRefClass("EpivizChartMgr",
   fields=list(
     .chart_list = "environment",
@@ -16,9 +15,12 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
       .self$.chart_list <- new.env(parent=emptyenv())
       .self$.chart_id_counter <- 0L
     },
-    num_charts= function() { length (ls(.self$.chart_list)) },
+    num_charts= function() { 
+      "Return the number of charts currently loaded through manager."
+      length(ls(.self$.chart_list)) 
+    },
     show = function() {
-      "Print manager information to screen"
+      "Print manager information to screen."
       cat("Epiviz chart manager object:\n")
       cat("Server: ")
       .self$.server$show(); cat("\n")
@@ -29,7 +31,8 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
 #      }      
     },
     is_server_closed = function() { 
-      "Check if underlying server is closed, <logical>"
+      "Returns \\code{TRUE} if underlying server is closed.
+      See \\code{is_closed} method in class \\code{\\link[epivizrServer]{EpivizServer}}."
       is.null(.self$.server) || .self$.server$is_closed()
     },
     .get_chart_object = function(chart_object_or_id) {
@@ -46,6 +49,11 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
       chart_obj
     },
     add_chart = function(chart_object, send_request=TRUE) {
+      "Add a chart to the chart manager.
+       \\describe{
+        \\item{chart_object}{an object of class \\code{\\link{EpivizChart}}}
+        \\item{send_request}{send request to app through websocket}
+      }"
       .self$.chart_id_counter <- .self$.chart_id_counter + 1L
       chart_id <- sprintf("epivizChart_%d", .self$.chart_id_counter)
       chart_object$set_id(chart_id)
@@ -74,6 +82,11 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
       invisible()
     },
     rm_chart = function(chart_object_or_id) {
+      "Remove chart from chart manager.
+       \\describe{
+        \\item{chart_object_or_id}{An object of class \\code{\\link{EpivizChart}} or a 
+          string indicating the chart's id assigned by chart manager}
+       }"
       chart_object <- .self$.get_chart_object(chart_object_or_id)
 
       if (!is(chart_object, "EpivizChart"))
@@ -98,6 +111,7 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
       invisible()
     },
     rm_all_charts = function() {
+      "Remove all charts loaded by chart manager."
       ids <- ls(.self$.chart_list)
       for (id in ids) {
           .self$rm_chart(id)
@@ -105,6 +119,7 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
       invisible()
     },
     list_charts = function() {
+      "Return \\code{data.frame} describing charts loaded by chart manager"
       ids <- ls(.self$.chart_list)
       if (length(ids) == 0) {
         return(NULL)
@@ -126,9 +141,27 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
       out
     },
     register_chart_type = function(chart_type, js_chart_type) {
+      "Register a chart type name to a JavaScript chart type in the epiviz app.
+      \\describe{
+        \\item{chart_type}{the name to use for chart type in R (e.g., 'BlocksTrack')}
+        \\item{js_chart_type}{the full JavaScript class name of the corresponding chart type 
+          (e.g. 'epiviz.plugins.charts.BlocksTrack)'}
+      }"
+      # TODO: infer JS chart type from chart_type argument
       .self$.chart_type_map[[chart_type]] <- js_chart_type
     },
     visualize = function(chart_type, measurements = NULL, datasource = NULL, ...) {
+      "Visualize data use the given chart type. One of arguments \\code{measurements} or \\code{datasource} must be non-\\code{NULL}. If \\code{measurements}
+      is \\code{NULL}, the \\code{get_measurements} method in class \\code{\\link[epivizrData]{EpivizData}}
+      is used to decide which measurements are used in the chart
+      
+      \\describe{
+        \\item{chart_type}{a chart type registered using the \\code{register_chart_type} method}
+        \\item{measurements}{a list of \\code{\\link[epivizrData]{EpivizMeasurements}} objects
+          describing measurements to include in the chart}
+        \\item{datasource}{an object of class \\code{\\link[epivizrData]{EpivizData}}, all available
+          measurements from datasource are used as appropriate}
+      }"
       js_chart_type <- .self$.chart_type_map[[chart_type]]
       if (is.null(js_chart_type)) {
         stop("Can't visualize ", chart_type, ", it is not registered")
@@ -153,6 +186,13 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
       chart_obj
     },
     plot = function(measurement_object) {
+      "Visualize data in an \\code{\\link[epivizrData]{EpivizData}} object using its default chart type.
+      The method \\code{get_default_chart_type} in class \\code{\\link[epivizrData]{EpivizData}} is used
+      to determine which chart type is used.
+
+      \\describe{
+        \\item{measurement_object}{an object of class \\code{\\link[epivizrData]{EpivizData}}}
+      }"
       if (!is(measurement_object, "EpivizData")) {
         stop("'measurement_object' must be of class 'EpivizData'")
       }
