@@ -1,4 +1,4 @@
-context("plot methods")
+context("app plot methods")
 
 test_that("plot block works", {
   server <- epivizrServer::createServer()
