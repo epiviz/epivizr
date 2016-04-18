@@ -46,9 +46,9 @@
   url
   }
 
-#' Start epiviz app and create \code{\class{EpivizApp}} object to manage connection
+#' Start epiviz app and create \code{\link{EpivizApp}} object to manage connection
 #' 
-#' @param useDevel (logical) use the devel epiviz application server (http://epiviz-dev.cbcb.umd.edu).
+#' @param use_devel (logical) use the devel epiviz application server (http://epiviz-dev.cbcb.umd.edu).
 #' @param chr (character) chromosome to browse to on app startup.
 #' @param start (integer) start location to browse to on app startup.
 #' @param end (integer) end location to browse to on app startup.
@@ -57,22 +57,23 @@
 #' @param scripts (character) URLs for JavaScript plugin scripts to be imported when epiviz is loaded (see \url{http://epiviz.cbcb.umd.edu/help} for details).
 #' @param gists (character) Ids for github gists (\url{http://gist.github.com}) containing JavaScript plugin scripts to
 #'  be imported when epiviz is loaded (see \url{http://epiviz.cbcb.umd.edu/help} for details).
-#' @param openBrowser (logical) browse to the epiviz URL before exiting function.
-#' @param nonInteractive <logical> run in non-interactive mode, for development purposes only.
+#' @param open_browser (logical) browse to the epiviz URL before exiting function.
+#' @param non_interactive <logical> run in non-interactive mode, for development purposes only.
 #' @param ... additional parameters passed to \code{\link[epivizrServer]{createServer}}.
 #' 
 #' @return An object of class \code{\link{EpivizApp}}
 #' @export
-startEpiviz <- function(useDevel=FALSE, chr="chr11", start=99800000, end=103383180, 
+startEpiviz <- function(use_devel=FALSE, chr="chr11", start=99800000, end=103383180, 
                         debug=FALSE, workspace=NULL, scripts=NULL, gists=NULL,
-                        openBrowser=TRUE, nonInteractive=FALSE, ...) {
+                        open_browser=TRUE, non_interactive=FALSE, ...) {
 
   server <- epivizrServer::createServer(...)
   data_mgr <- epivizrData::createMgr(server)
   chart_mgr <- EpivizChartMgr$new(server)
   app <- EpivizApp$new(server=server,
                        data_mgr=data_mgr,
-                       chart_mgr=chart_mgr)
+                       chart_mgr=chart_mgr,
+                       .non_interactive=non_interactive)
   return(app)
   
   if (verbose) {

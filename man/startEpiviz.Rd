@@ -2,14 +2,14 @@
 % Please edit documentation in R/startEpiviz.R
 \name{startEpiviz}
 \alias{startEpiviz}
-\title{Start epiviz app and create \code{\class{EpivizApp}} object to manage connection}
+\title{Start epiviz app and create \code{\link{EpivizApp}} object to manage connection}
 \usage{
-startEpiviz(useDevel = FALSE, chr = "chr11", start = 99800000,
+startEpiviz(use_devel = FALSE, chr = "chr11", start = 99800000,
   end = 103383180, debug = FALSE, workspace = NULL, scripts = NULL,
-  gists = NULL, openBrowser = TRUE, nonInteractive = FALSE, ...)
+  gists = NULL, open_browser = TRUE, non_interactive = FALSE, ...)
 }
 \arguments{
-\item{useDevel}{(logical) use the devel epiviz application server (http://epiviz-dev.cbcb.umd.edu).}
+\item{use_devel}{(logical) use the devel epiviz application server (http://epiviz-dev.cbcb.umd.edu).}
 
 \item{chr}{(character) chromosome to browse to on app startup.}
 
@@ -26,9 +26,9 @@ startEpiviz(useDevel = FALSE, chr = "chr11", start = 99800000,
 \item{gists}{(character) Ids for github gists (\url{http://gist.github.com}) containing JavaScript plugin scripts to
 be imported when epiviz is loaded (see \url{http://epiviz.cbcb.umd.edu/help} for details).}
 
-\item{openBrowser}{(logical) browse to the epiviz URL before exiting function.}
+\item{open_browser}{(logical) browse to the epiviz URL before exiting function.}
 
-\item{nonInteractive}{<logical> run in non-interactive mode, for development purposes only.}
+\item{non_interactive}{<logical> run in non-interactive mode, for development purposes only.}
 
 \item{...}{additional parameters passed to \code{\link[epivizrServer]{createServer}}.}
 }
@@ -36,6 +36,6 @@ be imported when epiviz is loaded (see \url{http://epiviz.cbcb.umd.edu/help} for
 An object of class \code{\link{EpivizApp}}
 }
 \description{
-Start epiviz app and create \code{\class{EpivizApp}} object to manage connection
+Start epiviz app and create \code{\link{EpivizApp}} object to manage connection
 }
 
