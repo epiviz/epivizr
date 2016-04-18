@@ -30,7 +30,6 @@ Suggests:
     S4Vectors,
     antiProfilesData,
     hgu133plus2.db,
-    knitrBootstrap,
     Mus.musculus
 Collate:
     'EpivizChartMgr-class.R'

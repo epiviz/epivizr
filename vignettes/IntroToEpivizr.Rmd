@@ -60,17 +60,19 @@ app <- startEpiviz(workspace="qyOTB6vVnff", gists="2caf8e891201130c7daa")
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
-app <- startEpiviz(debug=TRUE, openBrowser=FALSE, nonInteractive=TRUE, try_ports=TRUE)
+app <- startEpiviz(debug=TRUE, open_browser=FALSE, non_interactive=TRUE, try_ports=TRUE)
 app$server$start_server()
 ```
 This opens a websocket connection between the interactive `R` session and the browser client. This will allow us to visualize data stored in the `Epiviz` server along with data in the interactive `R` session.
 
 ----
+
 *Windows users:* In Windows platforms we need to use the `service` function to let the interactive `R` session connect to the `epiviz` web app and serve data requests. We then escape (using `ctl-c` or `esc` depending on your environment) to continue with the interactive `R` session. This is required anytime you want `epivizr` to serve data to the web app, for example, when interacting with the UI. (We are actively developing support for non-blocking sessions in Windows platforms).
 
 ```{r, eval=TRUE}
 app$server$service()
 ```
+
 ----
 
 ### Adding block region devices
@@ -83,12 +85,14 @@ blocks_chart <- app$plot(colon_blocks, datasource_name="450k colon_blocks")
 ```
 
 ----
+
 *Windows users:* We need the `service` function to let the interactive `R` session serve data requests from the browser client as you interact with the UI. 
 Escape (using `ctl-c` or `esc` depending on your environment) to continue with the interactive `R` session.
 
 ```{r,eval=TRUE}
 app$server$service()
 ```
+
 ----
 
 You should now see that a new track is added to the `Epiviz` web app. You can think of this track as an interactive display device in `R`. As you navigate on the browser, data is requested from the `R` session through the websocket connection. Remember to escape to continue with your interactive `R` session. The `blocks_chart` object inherits from class `EpivizChart`, which we can use to  get information about the data being displayed and the chart used to display it.  Note that the "brushing" effect we implement in `Epiviz` works for `epivizr` tracks as well.
@@ -101,7 +105,7 @@ keep <- width(colon_blocks) > 250000
 
 # get the data object for chart
 ms_obj <- app$get_ms_object(blocks_chart)
-app$data_mgr$update(ms_obj, colon_blocks[keep,])
+app$update_measurements(ms_obj, colon_blocks[keep,])
 ```
 
 Now, only this subset of blocks will be displayed in the already existing track.
@@ -129,11 +133,11 @@ We pass limits for the y axis in this case. To see other arguments supported, yo
 
 ### The app connection again
 
-We can use the session manager to list charts we have added so far, or to remove charts.
+We can use the app connection object to list charts we have added so far, or to remove charts.
 
 ```{r, eval=TRUE}
 app$chart_mgr$list_charts()
-app$chart_mgr$rm_chart(means_chart)
+app$chart_mgr$rm_chart(means_track)
 app$chart_mgr$list_charts()
 ```
 
@@ -195,7 +199,7 @@ Now, create a new `RangedSummarizedExperiment` object with the two column matrix
 
 ```{r, eval=TRUE}
 sumexp <- SummarizedExperiment(mat, rowRanges=rowRanges(colonSE))
-se_chart <- mgr$plot(sumexp, datasource_name="Mean by Sample Type", columns=c("normal", "cancer"))
+se_chart <- app$plot(sumexp, datasource_name="Mean by Sample Type", columns=c("normal", "cancer"))
 ```
 Again, the `columns` argument specifies what data will be displayed along which axis.
 
@@ -222,10 +226,10 @@ app$slideshow(slideshowRegions, n=5)
 
 ### Closing the session
 
-To close the connection to `Epiviz` and remove all tracks added during the interactive session, we use the `stop_server` function.
+To close the connection to `Epiviz` and remove all tracks added during the interactive session, we use the `stop_app` function.
 
 ```{r}
-app$stop_server()
+app$stop_app()
 ```
 
 ### Standalone version and browsing arbitrary genomes

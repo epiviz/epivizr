@@ -142,6 +142,13 @@ EpivizApp$methods(
   }
 )
 
+# data update methods
+EpivizApp$methods(
+  update_measurements = function(ms_object, new_data_object, send_request = TRUE) {
+    .self$data_mgr$update_measurements(ms_object, new_data_object, send_request = send_request)
+    .self$chart_mgr$.redraw(send_request = send_request)
+  }
+)
 
 # session management methods
 EpivizApp$methods(
