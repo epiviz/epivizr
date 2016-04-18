@@ -155,7 +155,7 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
       
       \\describe{
         \\item{chart_type}{a chart type registered using the \\code{register_chart_type} method}
-        \\item{measurements}{a list of \\code{\\link[epivizrData]{EpivizMeasurements}} objects
+        \\item{measurements}{a list of \\code{\\link[epivizrData]{EpivizMeasurement}} objects
           describing measurements to include in the chart}
         \\item{datasource}{an object of class \\code{\\link[epivizrData]{EpivizData}}, all available
           measurements from datasource are used as appropriate}

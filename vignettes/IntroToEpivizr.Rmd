@@ -20,34 +20,36 @@ The `epivizr` package implements two-way communication between the `R/Bioconduct
 In this vignette we will look at colon cancer methylation data from the TCGA project and expression data from the gene expression barcode project. The `epivizrData` package contains human chromosome 11 methylation data from the Illumina 450kHumanMethylation beadarray processed with the `minfi` package. We use expression data from the `antiProfilesData` bioconductor package.
 
 ```{r, eval=TRUE, echo=TRUE, results='hide', warning=FALSE, error=FALSE}
-require(epivizr)
-require(antiProfilesData)
+library(epivizr)
+library(antiProfilesData)
+library(SummarizedExperiment)
 ```
 
 ```{r}
-data(tcga_colon_example)
+data(tcga_colon_blocks)
+data(tcga_colon_curves)
 data(apColonData)
 ```
 
-The `colon_blocks` object is a `GRanges` object containing chromosome 11 regions of hypo or hyper methylation in colon cancer identified using the `blockFinder` function in the `minfi` package. 
+The `tcga_colon_blocks` object is a `GRanges` object containing chromosome 11 regions of hypo or hyper methylation in colon cancer identified using the `blockFinder` function in the `minfi` package. 
 
 ```{r}
-show(colon_blocks)
+show(tcga_colon_blocks)
 ```
 
 The columns `value` and `p.value` can be used to determine which of these regions, or blocks, are interesting by looking at a volcano plot for instance.
 
 ```{r, fig.width=4, fig.height=4, fig.align='center'}
-plot(colon_blocks$value, -log10(colon_blocks$p.value), main="Volcano plot", xlab="Avg. methylation difference", ylab="-log10 p-value",xlim=c(-.5,.5))
+plot(tcga_colon_blocks$value, -log10(tcga_colon_blocks$p.value), main="Volcano plot", xlab="Avg. methylation difference", ylab="-log10 p-value",xlim=c(-.5,.5))
 ```
 
-The `colon_curves` object is another `GRanges` object which contains the basepair resolution methylation data used to define these regions.
+The `tcga_colon_curves` object is another `GRanges` object which contains the basepair resolution methylation data used to define these regions.
 
 ```{r}
-show(colon_curves)
+show(tcga_colon_curves)
 ```
 
-This basepair resolution data includes mean methylation levels for normal and cancer and a smoothed estimate of methylation difference. This smoothed difference estimate is used to define regions in the `colon_blocks` object.
+This basepair resolution data includes mean methylation levels for normal and cancer and a smoothed estimate of methylation difference. This smoothed difference estimate is used to define regions in the `tcga_colon_blocks` object.
 
 Finally, the `apColonData` object is an `ExpressionSet` containing gene expression data for colon normal and tumor samples for genes within regions of methylation loss identified [this paper](http://www.nature.com/ng/journal/v43/n8/full/ng.865.html). Our goal in this vignette is to visualize this data as we browse the genome.
 
@@ -77,11 +79,11 @@ app$server$service()
 
 ### Adding block region devices
 
-Once the browser is open we can visualize the `colon_blocks` object containing blocks of methylation modifications in colon cancer.
+Once the browser is open we can visualize the `tcga_colon_blocks` object containing blocks of methylation modifications in colon cancer.
 We use the `plot` method to do so. 
 
 ```{r,eval=TRUE}
-blocks_chart <- app$plot(colon_blocks, datasource_name="450k colon_blocks")
+blocks_chart <- app$plot(tcga_colon_blocks, datasource_name="450k colon_blocks")
 ```
 
 ----
@@ -101,22 +103,22 @@ The point of having interactive data connections to `Epiviz` is that we may want
 
 ```{r, eval=TRUE}
 # subset to those with length > 250Kbp
-keep <- width(colon_blocks) > 250000
+keep <- width(tcga_colon_blocks) > 250000
 
 # get the data object for chart
 ms_obj <- app$get_ms_object(blocks_chart)
-app$update_measurements(ms_obj, colon_blocks[keep,])
+app$update_measurements(ms_obj, tcga_colon_blocks[keep,])
 ```
 
 Now, only this subset of blocks will be displayed in the already existing track.
 
 ### Adding line plots along the genome
 
-We have a number of available data types in `epivizr`. In the previous section, we used the `block` type. For the methylation data at base-pair resolution in the `colon_curves` object, we will use the `bp` type.
+We have a number of available data types in `epivizr`. In the previous section, we used the `block` type. For the methylation data at base-pair resolution in the `tcga_colon_curves` object, we will use the `bp` type.
 
 ```{r, eval=TRUE}
 # add low-filter smoothed methylation estimates
-means_track <- app$plot(colon_curves, datasource_name="450kMeth",type="bp",columns=c("cancerMean","normalMean"))
+means_track <- app$plot(tcga_colon_curves, datasource_name="450kMeth",type="bp",columns=c("cancerMean","normalMean"))
 ```
 
 NOTE: You can adjust track settings to change how this new track looks like. For instance, to show all points in the window set the `step` parameter to 1, and to see a smooth interpolation of the data set the `interpolation` parameter to `basis`. We will add support to `epivizr` to set these parameters in an upcoming version.
@@ -126,7 +128,7 @@ Notice that we added two lines in this plot, one for mean methylation in cancer 
 We can also add a track containing the smooth methylation difference estimate used to define methylation blocks.
 
 ```{r, eval=TRUE}
-diff_chart <- app$plot(colon_curves,"450kMethDiff",type="bp",columns=c("smooth"),ylim=matrix(c(-.5,.5),nc=1))
+diff_chart <- app$plot(tcga_colon_curves,"450kMethDiff",type="bp",columns=c("smooth"),ylim=matrix(c(-.5,.5),nc=1))
 ```
 
 We pass limits for the y axis in this case. To see other arguments supported, you can use the help framework in R `?"EpivizApp"`.
@@ -168,29 +170,29 @@ In this case, we specify which data is displayed in each axis of the scatter plo
 
 ### The RangedSummarizedExperiment Object
 
-`Epiviz` is also able to display plots of data in the form of a `RangedSummarizedExperiment` object. After loading the `tcga_colon_expression` dataset in the `epivizrData` package, we can see that the `colonSE` object contains information on 239322 exons in 40 samples.
+`Epiviz` is also able to display plots of data in the form of a `RangedSummarizedExperiment` object. After loading the `tcga_colon_expression` dataset in the `epivizrData` package, we can see that this object contains information on 239322 exons in 40 samples.
 
 ```{r}
 data(tcga_colon_expression)
-show(colonSE)
+show(tcga_colon_expression)
 ```
 
 The `assay` slot holds a matrix of raw sequencing counts, so before we can plot a scatterplot showing expression, we must first normalize the count data. We use the geometric mean of each row as a reference sample to divide each column (sample) by, then use the median of each column as a scaling factor to divide each row (exon) by.
 
 ```{r, eval=TRUE}
-ref_sample <- 2 ^ rowMeans(log2(assay(colonSE) + 1))
-scaled <- (assay(colonSE) + 1) / ref_sample
+ref_sample <- 2 ^ rowMeans(log2(assay(tcga_colon_expression) + 1))
+scaled <- (assay(tcga_colon_expression) + 1) / ref_sample
 scaleFactor <- Biobase::rowMedians(t(scaled))
-assay_normalized <- sweep(assay(colonSE), 2, scaleFactor, "/")
-assay(colonSE) <- assay_normalized
+assay_normalized <- sweep(assay(tcga_colon_expression), 2, scaleFactor, "/")
+assay(tcga_colon_expression) <- assay_normalized
 ```
 
 Now, using the expression data in the `assay` slot and the sample data in the `colData` slot, we can compute mean exon expression by sample type.
 
 ```{r, eval=TRUE}
-status <- colData(colonSE)$sample_type
+status <- colData(tcga_colon_expression)$sample_type
 index <- split(seq(along = status), status)
-logCounts <- log2(assay(colonSE) + 1)
+logCounts <- log2(assay(tcga_colon_expression) + 1)
 means <- sapply(index, function(ind) rowMeans(logCounts[, ind]))
 mat <- cbind(cancer = means[, "Primary Tumor"], normal = means[, "Solid Tissue Normal"])
 ```
@@ -198,7 +200,7 @@ mat <- cbind(cancer = means[, "Primary Tumor"], normal = means[, "Solid Tissue N
 Now, create a new `RangedSummarizedExperiment` object with the two column matrix, and all the information about the features of interest, in this case exons, are stored in the `rowRanges` slot to be queried by `Epiviz`.
 
 ```{r, eval=TRUE}
-sumexp <- SummarizedExperiment(mat, rowRanges=rowRanges(colonSE))
+sumexp <- SummarizedExperiment(mat, rowRanges=rowRanges(tcga_colon_expression))
 se_chart <- app$plot(sumexp, datasource_name="Mean by Sample Type", columns=c("normal", "cancer"))
 ```
 Again, the `columns` argument specifies what data will be displayed along which axis.

@@ -38,6 +38,8 @@ in a given chart.
   \item{index}{Index into \code{.measurements}} list of chart object to obtain data object for.
 }}
 
+\item{\code{is_server_closed()}}{Check if underlying server connection is closed.}
+
 \item{\code{navigate(chr, start, end)}}{Navigate to given position on the epiviz app.}
 
 \item{\code{plot(data_object, ...)}}{Visualize data on epiviz app using its default chart type. Measurements from the \code{data-object} 
@@ -54,12 +56,17 @@ for this type of data.
     \code{\link[epivizrData]{EpivizData}}}
 }}
 
-\item{\code{slideshow(granges, n = length(granges))}}{Navigate on epiviz app successively to given positions.
+\item{\code{service(verbose = TRUE)}}{Block interactive R session to service websocket requests.}
+
+\item{\code{slideshow(granges, n = length(granges), .callback = NULL)}}{Navigate on epiviz app successively to given positions.
 
 \describe{
   \item{granges}{An object of class \code{\link{GenomicRanges}} indicating
     set of genomic regions to navigate in epiviz app.}
   \item{n}{(integer) The number of regions in \code{granges} to navigate to.}
+  \item{.callback}{(function) function to call after navigating to each region. Used for testing purposes.}
 }}
+
+\item{\code{stop_app()}}{stop and clean connection to epiviz app.}
 }}
 

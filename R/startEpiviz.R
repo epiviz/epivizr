@@ -103,6 +103,12 @@
 #' @param ... additional parameters passed to \code{\link[epivizrServer]{createServer}}.
 #' 
 #' @return An object of class \code{\link{EpivizApp}}
+#' 
+#' @examples
+#' # see package vignete for example usage
+#' app <- startEpiviz(non_interactive=TRUE, open_browser=TRUE)
+#' app$stop_app()
+#' 
 #' @export
 startEpiviz <- function(host=NULL, http_port=NULL, path=NULL, use_devel=FALSE, 
                         chr="chr11", start=99800000, end=103383180, 
