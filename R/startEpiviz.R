@@ -67,6 +67,14 @@ startEpiviz <- function(useDevel=FALSE, chr="chr11", start=99800000, end=1033831
                         debug=FALSE, workspace=NULL, scripts=NULL, gists=NULL,
                         openBrowser=TRUE, nonInteractive=FALSE, ...) {
 
+  server <- epivizrServer::createServer(...)
+  data_mgr <- epivizrData::createMgr(server)
+  chart_mgr <- EpivizChartMgr$new(server)
+  app <- EpivizApp$new(server=server,
+                       data_mgr=data_mgr,
+                       chart_mgr=chart_mgr)
+  return(app)
+  
   if (verbose) {
     epivizrMsg("Starting Epivizr!")
   }

@@ -6,10 +6,12 @@
 #' 
 #' @importClassesFrom epivizrServer EpivizServer
 #' @importClassesFrom epivizrData EpivizDataMgr EpivizMeasurement EpivizData
+#' @import GenomicRanges
 #' @include EpivizChartMgr-class.R
 EpivizApp <- setRefClass("EpivizApp",
   fields=list(
     .url="character",
+    .non_interactive="logical",
     server="EpivizServer",
     data_mgr="EpivizDataMgr",
     chart_mgr="EpivizChartMgr"
@@ -74,6 +76,58 @@ EpivizApp$methods(
     .self$chart_mgr$plot(ms_obj)
   }
 )
+
+# # navigation methods
+EpivizApp$methods(
+  navigate=function(chr, start, end) {
+    'Navigate to given position on the epiviz app.'
+    callback <- function(response_data) {
+      invisible()
+    }
+    request_data=list(action="navigate",
+      range=epivizrServer::json_writer(
+        list(seqName=chr,start=start,end=end)))
+    .self$server$send_request(request_data, callback)
+  },
+  get_current_location=function(callback) {
+    'Obtain current genome location on epiviz app and evaluate callback
+    function on result.
+    
+    \\describe{
+      \\item{callback}{A callback function to evaluate on response data. 
+        Response data will be a list with slots \\code{seqName}, \\code{start}
+        and \\code{end}}
+    }'
+    request_data=list(action="getCurrentLocation")
+    .self$server$send_request(request, callback)
+  },
+  slideshow=function(granges, n=length(granges)) {
+    'Navigate on epiviz app successively to given positions.
+    
+    \\describe{
+      \\item{granges}{An object of class \\code{\\link{GenomicRanges}} indicating
+        set of genomic regions to navigate in epiviz app.}
+      \\item{n}{(integer) The number of regions in \\code{granges} to navigate to.}
+    }'
+    if (!is(granges, "GenomicRanges"))
+      stop(("'granges' must be a 'GenomicRanges' object"))
+
+    n <- min(n, length(granges))
+    ind <- seq(len=n)
+    chr <- as.character(seqnames(granges)[ind])
+    start <- start(granges)[ind]
+    end <- end(granges)[ind]
+    for (i in ind) {
+      cat("Region", i, "of", n, ". Press key to continue (ESC to stop)...\n")
+      if (!.self$.non_interactive)
+        readLines(n=1)
+      .self$navigate(chr=chr[i], start=start[i], end=end[i])
+      tryCatch(.self$server$service(.self$.non_interactive), interrupt=function(int) invisible())
+    }
+    invisible()
+  }
+)
+
 
 # # session management methods
 # EpivizDeviceMgr$methods(list(
@@ -154,50 +208,4 @@ EpivizApp$methods(
 #     invisible()
 #   })
 # )
-# 
-# # navigation methods
-# EpivizDeviceMgr$methods(list(
-#   refresh=function() {
-#     'refresh browser'
-#     server$refresh()
-#   },
-#   navigate=function(chr, start, end) {
-#     'navigate to given position'
-#     callback <- function(data) {
-#       invisible(NULL)
-#     }
-#     requestId <- callbackArray$append(callback)
-#     request=list(type="request",
-#                  requestId=requestId,
-#                  data=list(action="navigate",
-#                            range=toJSON(list(seqName=chr,start=start,end=end))))
-#     server$sendRequest(request)
-#   },
-#   getCurrentLocation=function(callback) {
-#     requestId <- callbackArray$append(callback)
-#     request <- list(type="request",
-#                     requestId=requestId,
-#                     data=list(action="getCurrentLocation"))
-#     server$sendRequest(request)
-#   },
-#   slideshow=function(granges, n=length(granges)) {
-#     'navidate to successive positions'
-#     if (!is(granges, "GenomicRanges"))
-#       stop(("'granges' must be a 'GenomicRanges' object"))
-# 
-#     n <- min(n, length(granges))
-#     ind <- seq(len=n)
-#     chr <- as.character(seqnames(granges)[ind])
-#     start <- start(granges)[ind]
-#     end <- end(granges)[ind]
-#     for (i in ind) {
-#       cat("Region", i, "of", n, ". Press key to continue (ESC to stop)...\n")
-#       if (!nonInteractive)
-#         readLines(n=1)
-#       navigate(chr=chr[i], start=start[i], end=end[i])
-#       tryCatch(service(), interrupt=function(int) invisible(NULL))
-#     }
-#     invisible(NULL)
-#   }
-# ))
 # 
