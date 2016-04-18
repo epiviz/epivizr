@@ -48,31 +48,24 @@
 
 #' Start epiviz app and create \code{\class{EpivizApp}} object to manage connection
 #' 
-#' @param port <integer> The port to open server to
-#' @param localURL <character> URL to open
-#' @param useDevel <logical> Use the epiviz-dev app
-#' @param standalone <logical> Is it running standalone through R
-#' @param staticSitePath <character> Directory to serve standalone application
-#' @param chr <character> Chromosome to load at epiviz app start
-#' @param start <integer> Starting location to load at epiviz app start
-#' @param end <integer> Ending location to load at epiviz app start
-#' @param debug <logical> Use debug user for epiviz app workspace storage
-#' @param workspace <character> Id of workspace to load on epiviz app start
-#' @param scripts <character> Path to JS scripts to include on epiviz app start
-#' @param gists <character> Vector of github gist ids with JS code to include on epiviz app start
-#' @param openBrowser <logical> Open browser at URL through this function call
-#' @param daemonized <logical> Run app in non-blocking mode
-#' @param verbose <logical> Print verbose information
-#' @param nonInteractive <logical> Only used internally
-#' @param tryPorts <logical> Try multiple ports until finding an open port when opening WebSocket connection
+#' @param useDevel (logical) use the devel epiviz application server (http://epiviz-dev.cbcb.umd.edu).
+#' @param chr (character) chromosome to browse to on app startup.
+#' @param start (integer) start location to browse to on app startup.
+#' @param end (integer) end location to browse to on app startup.
+#' @param debug (logical) start epiviz app in debug mode.
+#' @param workspace (character) a workspace id to load in the epiviz app on startup.
+#' @param scripts (character) URLs for JavaScript plugin scripts to be imported when epiviz is loaded (see \url{http://epiviz.cbcb.umd.edu/help} for details).
+#' @param gists (character) Ids for github gists (\url{http://gist.github.com}) containing JavaScript plugin scripts to
+#'  be imported when epiviz is loaded (see \url{http://epiviz.cbcb.umd.edu/help} for details).
+#' @param openBrowser (logical) browse to the epiviz URL before exiting function.
+#' @param nonInteractive <logical> run in non-interactive mode, for development purposes only.
+#' @param ... additional parameters passed to \code{\link[epivizrServer]{createServer}}.
 #' 
 #' @return An object of class \code{\link{EpivizApp}}
 #' @export
-startEpiviz <- function(port=7312L, localURL=NULL, useDevel=FALSE, standalone=FALSE, staticSitePath = "", 
-                        chr="chr11", start=99800000, end=103383180, 
+startEpiviz <- function(useDevel=FALSE, chr="chr11", start=99800000, end=103383180, 
                         debug=FALSE, workspace=NULL, scripts=NULL, gists=NULL,
-                        openBrowser=TRUE, daemonized=.epivizrCanDaemonize(),
-                        verbose=FALSE, nonInteractive=FALSE, tryPorts=FALSE) {
+                        openBrowser=TRUE, nonInteractive=FALSE, ...) {
 
   if (verbose) {
     epivizrMsg("Starting Epivizr!")

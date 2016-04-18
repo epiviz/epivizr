@@ -4,47 +4,33 @@
 \alias{startEpiviz}
 \title{Start epiviz app and create \code{\class{EpivizApp}} object to manage connection}
 \usage{
-startEpiviz(port = 7312L, localURL = NULL, useDevel = FALSE,
-  standalone = FALSE, staticSitePath = "", chr = "chr11",
-  start = 99800000, end = 103383180, debug = FALSE, workspace = NULL,
-  scripts = NULL, gists = NULL, openBrowser = TRUE,
-  daemonized = .epivizrCanDaemonize(), verbose = FALSE,
-  nonInteractive = FALSE, tryPorts = FALSE)
+startEpiviz(useDevel = FALSE, chr = "chr11", start = 99800000,
+  end = 103383180, debug = FALSE, workspace = NULL, scripts = NULL,
+  gists = NULL, openBrowser = TRUE, nonInteractive = FALSE, ...)
 }
 \arguments{
-\item{port}{<integer> The port to open server to}
+\item{useDevel}{(logical) use the devel epiviz application server (http://epiviz-dev.cbcb.umd.edu).}
 
-\item{localURL}{<character> URL to open}
+\item{chr}{(character) chromosome to browse to on app startup.}
 
-\item{useDevel}{<logical> Use the epiviz-dev app}
+\item{start}{(integer) start location to browse to on app startup.}
 
-\item{standalone}{<logical> Is it running standalone through R}
+\item{end}{(integer) end location to browse to on app startup.}
 
-\item{staticSitePath}{<character> Directory to serve standalone application}
+\item{debug}{(logical) start epiviz app in debug mode.}
 
-\item{chr}{<character> Chromosome to load at epiviz app start}
+\item{workspace}{(character) a workspace id to load in the epiviz app on startup.}
 
-\item{start}{<integer> Starting location to load at epiviz app start}
+\item{scripts}{(character) URLs for JavaScript plugin scripts to be imported when epiviz is loaded (see \url{http://epiviz.cbcb.umd.edu/help} for details).}
 
-\item{end}{<integer> Ending location to load at epiviz app start}
+\item{gists}{(character) Ids for github gists (\url{http://gist.github.com}) containing JavaScript plugin scripts to
+be imported when epiviz is loaded (see \url{http://epiviz.cbcb.umd.edu/help} for details).}
 
-\item{debug}{<logical> Use debug user for epiviz app workspace storage}
+\item{openBrowser}{(logical) browse to the epiviz URL before exiting function.}
 
-\item{workspace}{<character> Id of workspace to load on epiviz app start}
+\item{nonInteractive}{<logical> run in non-interactive mode, for development purposes only.}
 
-\item{scripts}{<character> Path to JS scripts to include on epiviz app start}
-
-\item{gists}{<character> Vector of github gist ids with JS code to include on epiviz app start}
-
-\item{openBrowser}{<logical> Open browser at URL through this function call}
-
-\item{daemonized}{<logical> Run app in non-blocking mode}
-
-\item{verbose}{<logical> Print verbose information}
-
-\item{nonInteractive}{<logical> Only used internally}
-
-\item{tryPorts}{<logical> Try multiple ports until finding an open port when opening WebSocket connection}
+\item{...}{additional parameters passed to \code{\link[epivizrServer]{createServer}}.}
 }
 \value{
 An object of class \code{\link{EpivizApp}}

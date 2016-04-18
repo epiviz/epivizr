@@ -1,7 +1,6 @@
 context("start epiviz")
 
 test_that("startEpiviz creates a proper object", {
-  skip("for now")
   app <- startEpiviz()
   expect_is(app, "EpivizApp")
   
