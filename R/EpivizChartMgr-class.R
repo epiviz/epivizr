@@ -8,8 +8,7 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
     .chart_list = "environment",
     .chart_id_counter = "integer",
     .server = "EpivizServer",
-    .chart_type_map = "list",
-    .chart_id_map = "list"
+    .chart_type_map = "list"
   ),
   methods=list(
     initialize = function(server=epivizrServer::createServer(), ...) {
@@ -33,6 +32,19 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
       "Check if underlying server is closed, <logical>"
       is.null(.self$.server) || .self$.server$is_closed()
     },
+    .get_chart_object = function(chart_object_or_id) {
+      chart_obj <- NULL
+      if (is.character(chart_object_or_id)) {
+        id <- chart_object_or_id
+        if (!exists(id, envir=.self$.chart_list, inherits=FALSE)) {
+          stop("chart with id ", id, " not found")                  
+        }
+        chart_obj <- .self$.chart_list[[id]]
+      } else {
+        chart_obj <- chart_object_or_id
+      }
+      chart_obj
+    },
     add_chart = function(chart_object, send_request=TRUE) {
       .self$.chart_id_counter <- .self$.chart_id_counter + 1L
       chart_id <- sprintf("epivizChart_%d", .self$.chart_id_counter)
@@ -42,8 +54,8 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
       send_request <- !.self$is_server_closed() && isTRUE(send_request)      
       if (send_request) {
         callback <- function(response_data) {
-          app_chart_id = response_data$value$id
-          .self$.chart_id_map[[chart_id]] <- app_chart_id
+          app_chart_id <- response_data$value$id
+          chart_obj$set_app_id(app_chart_id)
           cat("Chart ", chart_id, " added to browser and connected\n")
         }
         measurements <- NULL
@@ -61,9 +73,58 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
       }
       invisible()
     },
-    rm_chart = function(chart_object_or_id) {},
-    rm_all_charts = function() {},
-    list_charts = function() {},
+    rm_chart = function(chart_object_or_id) {
+      chart_object <- .self$.get_chart_object(chart_object_or_id)
+
+      if (!is(chart_object, "EpivizChart"))
+        stop("'chart_object' must be an 'EpivizChart' object")
+      
+      chart_id <- chart_object$get_id()
+      if(!exists(chart_id, envir=.self$.chart_list, inherits=FALSE)) {
+        stop("object not found")
+      }
+      rm(list=chart_id, envir=.self$.chart_list)
+
+      chart_app_id <- chart_object$get_app_id()
+      if(isTRUE(!is.null(chart_app_id) && (chart_app_id != character()))) {
+        callback <- function(response) {
+          cat("chart ", chart_id, " removed and disconnected\n")
+        }
+        
+        request_data <- list(action = "removeChart",
+          chartId = chart_app_id)
+        .self$.server$send_request(request_data)
+      }
+      invisible()
+    },
+    rm_all_charts = function() {
+      ids <- ls(.self$.chart_list)
+      for (id in ids) {
+          .self$rm_chart(id)
+      }
+      invisible()
+    },
+    list_charts = function() {
+      ids <- ls(.self$.chart_list)
+      if (length(ids) == 0) {
+        return(NULL)
+      }
+      
+      type <- sapply(ids, function(x) .self$.chart_list[[x]]$.type)
+      ms <- sapply(ids,
+                   function(x) {
+                     tmp <- sapply(.self$.chart_list[[x]]$.measurements, function(y) paste0(y$datasourceId,":",y$name))
+                     paste0(tmp, collapse=",")
+                   })
+      connected <- ifelse(sapply(ids, function(x) .self$.chart_list[[x]]$is_connected()), "*", "")
+      out <- data.frame(id=ids,
+                        type=type,
+                        measurements=ms,
+                        connected=connected,
+                        stringsAsFactors=FALSE)
+      rownames(out) <- NULL
+      out
+    },
     register_chart_type = function(chart_type, js_chart_type) {
       .self$.chart_type_map[[chart_type]] <- js_chart_type
     },
