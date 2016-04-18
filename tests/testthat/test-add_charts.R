@@ -1,4 +1,4 @@
-context("add charts")
+context("disconnected add charts")
 
 test_that("adding a block chart works using visualize with just measurement", {
   server <- epivizrServer::createServer()
@@ -18,7 +18,7 @@ test_that("adding a block chart works using visualize with just measurement", {
   expect_equal(chart_obj$.measurements, ms)
   expect_equal(chart_obj$.type, "epiviz.plugins.charts.BlocksTrack")
   expect_true(exists(chart_id, env=chart_mgr$.chart_list))
-  expect_true(is.null(chart_mgr$.chart_id_map[[chart_id]]))
+  expect_equal(chart_obj$get_app_id(), character())
 })
 
 test_that("adding a block chart works using visualize with just datasource", {
@@ -39,8 +39,7 @@ test_that("adding a block chart works using visualize with just datasource", {
   expect_equal(chart_obj$.measurements, ms)
   expect_equal(chart_obj$.type, "epiviz.plugins.charts.BlocksTrack")
   expect_true(exists(chart_id, env=chart_mgr$.chart_list))
-  expect_true(is.null(chart_mgr$.chart_id_map[[chart_id]]))
-  
+  expect_equal(chart_obj$get_app_id(), character())  
 })
 
 test_that("adding a block chart works using visualize with both arguments", {
@@ -64,8 +63,7 @@ test_that("adding a block chart works using visualize with both arguments", {
   expect_equal(chart_obj$.measurements, ms)
   expect_equal(chart_obj$.type, "epiviz.plugins.charts.BlocksTrack")
   expect_true(exists(chart_id, env=chart_mgr$.chart_list))
-  expect_true(is.null(chart_mgr$.chart_id_map[[chart_id]]))
-  
+  expect_equal(chart_obj$get_app_id(), character())
 })
 
 test_that("adding a line chart works using visualize with just measurement", {
@@ -90,7 +88,7 @@ test_that("adding a line chart works using visualize with just measurement", {
   expect_equal(chart_obj$.measurements, ms)
   expect_equal(chart_obj$.type, "epiviz.plugins.charts.LineTrack")
   expect_true(exists(chart_id, env=chart_mgr$.chart_list))
-  expect_true(is.null(chart_mgr$.chart_id_map[[chart_id]]))
+  expect_equal(chart_obj$get_app_id(), character())
 })
 
 test_that("adding a line chart works using visualize with just datasource", {
@@ -115,7 +113,7 @@ test_that("adding a line chart works using visualize with just datasource", {
   expect_equal(chart_obj$.measurements, ms_obj$get_measurements())
   expect_equal(chart_obj$.type, "epiviz.plugins.charts.LineTrack")
   expect_true(exists(chart_id, env=chart_mgr$.chart_list))
-  expect_true(is.null(chart_mgr$.chart_id_map[[chart_id]]))
+  expect_equal(chart_obj$get_app_id(), character())
 })
 
 test_that("adding a line chart works using visualize with both arguments", {
@@ -140,6 +138,6 @@ test_that("adding a line chart works using visualize with both arguments", {
   expect_equal(chart_obj$.measurements, ms)
   expect_equal(chart_obj$.type, "epiviz.plugins.charts.LineTrack")
   expect_true(exists(chart_id, env=chart_mgr$.chart_list))
-  expect_true(is.null(chart_mgr$.chart_id_map[[chart_id]]))
+  expect_equal(chart_obj$get_app_id(), character())
 })
 

@@ -1,4 +1,4 @@
-makeGeneInfo <- function() {
+make_test_gene_info <- function() {
   library(bumphunter)
 
   tt <- bumphunter::TT$transcripts

@@ -392,48 +392,10 @@ EpivizDeviceMgr$methods(list(
    addChart=function(chartObject, sendRequest=!nonInteractive, ...) {
    },
    .getChartObject=function(chartId) {
-     if (!exists(chartId, envir=chartList, inherits=FALSE))
-      stop("cannot find object")
-    get(chartId, envir=chartList, inherits=FALSE)
    },
    rmChart=function(chartObj) {
-    if (is.character(chartObj)) {
-      # passed the id instead of the object
-      chartObj <- .self$.getChartObject(chartObj)
-    }
-
-    if (!is(chartObj, "EpivizChart"))
-      stop("'chartObj' must be an 'EpivizChart' object")
-
-    if(!exists(chartObj$getId(), envir=chartList, inherits=FALSE))
-      stop("object not found")
-
-    chartId <- chartObj$getId()
-    rm(list=chartId, envir=chartList)
-
-    if(!is.null(chartIdMap[[chartId]])) {
-      callback=function(data) {
-        epivizrMsg("chart ", chartId, " removed and disconnected", tagPrompt=TRUE)
-      }
-      requestId=callbackArray$append(callback)
-      request <- list(type="request",
-                      requestId=requestId,
-                      data=list(action="removeChart",
-                        chartId=chartIdMap[[chartId]]))
-      server$sendRequest(request)
-    }
-    invisible(NULL)
    },
    rmAllCharts=function(which=c("noDevice", "onlyDevice", "all")) {
-    which <- match.arg(which)
-    ids <- ls(chartList)
-    for (id in ids) {
-      obj <- chartList[[id]]
-      if ((!obj$inDevice && (which %in% c("noDevice", "all"))) ||
-          (obj$inDevice && (which %in% c("onlyDevice", "all"))))
-        rmChart(obj)
-    }
-    invisible()
    },
    listCharts=function() {
      ids <- ls(chartList)

@@ -3,12 +3,16 @@ EpivizChart <- setRefClass("EpivizChart",
 		.measurements = "list",
     .datasource = "ANY",
     .datasourceGroup = "ANY",
-		.id = "character",
+		.mgr_id = "character",
+		.app_id = "character",
 		.mgr = "EpivizChartMgr",
 		.type="character"),
 	methods=list(
-		set_id = function(id) { .self$.id <- id },
-		get_id = function() { .self$.id },
+		set_id = function(id) { .self$.mgr_id <- id },
+		get_id = function() { .self$.mgr_id },
+		set_app_id = function(id) { .self$.app_id <- id },
+		get_app_id = function(id) { .self$.app_id },
+		is_connected = function() { isTRUE(.self$.app_id != character()) },
 		show = function() {
 			cat("EpivizChart object: ", .self$get_id(), "\n")
 			cat("type: ", .self$.type, "\n")
