@@ -3,7 +3,13 @@
 
 \encoding{UTF-8}
 
-
+\section{Version 2.0.1}{
+  \itemize{
+    \item Move socket connection and data serving code outside of package to new packages
+    \item Use new 'epivizrServer' and 'epivizrData' packages
+    \item Move standalone to package 'epivizrStandalone'
+  }
+}
 \section{Version 1.9.4}{
   \itemize{
     \item Set 'useCookie' URL parameter to FALSE so that empty workspaces are started
