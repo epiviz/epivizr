@@ -3,6 +3,12 @@
 
 \encoding{UTF-8}
 
+
+\section{Version 1.9.4}{
+  \itemize{
+    \item Set 'useCookie' URL parameter to FALSE so that empty workspaces are started
+  }
+}
 \section{Version 1.6.1}{
   \itemize{
     \item Transition cached ranges for querying to 'GNCLists' from 'GIntervalTree'
