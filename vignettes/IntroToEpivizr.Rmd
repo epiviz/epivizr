@@ -60,7 +60,7 @@ app <- startEpiviz(workspace="qyOTB6vVnff", gists="2caf8e891201130c7daa")
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
-mgr <- startEpiviz(debug=TRUE, openBrowser=FALSE, nonInteractive=TRUE, tryPorts=TRUE)
+app <- startEpiviz(debug=TRUE, openBrowser=FALSE, nonInteractive=TRUE, try_ports=TRUE)
 app$server$start_server()
 ```
 This opens a websocket connection between the interactive `R` session and the browser client. This will allow us to visualize data stored in the `Epiviz` server along with data in the interactive `R` session.
@@ -69,7 +69,7 @@ This opens a websocket connection between the interactive `R` session and the br
 *Windows users:* In Windows platforms we need to use the `service` function to let the interactive `R` session connect to the `epiviz` web app and serve data requests. We then escape (using `ctl-c` or `esc` depending on your environment) to continue with the interactive `R` session. This is required anytime you want `epivizr` to serve data to the web app, for example, when interacting with the UI. (We are actively developing support for non-blocking sessions in Windows platforms).
 
 ```{r, eval=TRUE}
-mgr$server$service()
+app$server$service()
 ```
 ----
 

@@ -20,7 +20,8 @@ Depends:
     methods,
 Imports:
     epivizrServer,
-    epivizrData
+    epivizrData,
+    GenomicRanges
 Suggests:
     testthat,
     roxygen2,

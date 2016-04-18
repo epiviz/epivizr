@@ -1,17 +1,27 @@
 context("browser commands")
 
-test_that("refresh works", {
-  skip("for now")
-  tryCatch({
-    mgr <- .startMGR()
-    mgr$refresh()
-  }, finally=mgr$stopServer())
+test_that("navigate works", {
+  server <- epivizrServer::createServer()
+  data_mgr <- epivizrData::createMgr(server)
+  chart_mgr <- EpivizChartMgr$new(server)
+  
+  app <- EpivizApp$new(server=server,
+                       data_mgr=data_mgr,
+                       chart_mgr=chart_mgr)
+  app$navigate(chr="chr10", start=2000, end=10000)
 })
 
-test_that("navigate works", {
-  skip("for now")
-  tryCatch({
-    mgr <- .startMGR()
-    mgr$navigate(chr="chr10", start=2000, end=10000)
-  }, finally=mgr$stopServer())
+test_that("slideshow works", {
+  server <- epivizrServer::createServer()
+  data_mgr <- epivizrData::createMgr(server)
+  chart_mgr <- EpivizChartMgr$new(server)
+  
+  app <- EpivizApp$new(server=server,
+    data_mgr=data_mgr,
+    chart_mgr=chart_mgr,
+    .non_interactive=TRUE)
+  
+  granges <- GenomicRanges::GRanges("chr10", 
+    IRanges::IRanges(start=(1:10)*1000, width=10000))
+  expect_error(app$slideshow(granges, n=4))
 })

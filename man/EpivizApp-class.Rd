@@ -20,6 +20,15 @@ Class managing connection to epiviz application.
 \section{Methods}{
 
 \describe{
+\item{\code{get_current_location(callback)}}{Obtain current genome location on epiviz app and evaluate callback
+function on result.
+
+\describe{
+  \item{callback}{A callback function to evaluate on response data. 
+    Response data will be a list with slots \code{seqName}, \code{start}
+    and \code{end}}
+}}
+
 \item{\code{get_ms_object(chart_id_or_object, index = 1)}}{Get object of class \code{\link[epivizrData]{EpivizData}} used as a data source
 in a given chart.
 
@@ -28,6 +37,8 @@ in a given chart.
     a chart loaded to the epiviz app.}
   \item{index}{Index into \code{.measurements}} list of chart object to obtain data object for.
 }}
+
+\item{\code{navigate(chr, start, end)}}{Navigate to given position on the epiviz app.}
 
 \item{\code{plot(data_object, ...)}}{Visualize data on epiviz app using its default chart type. Measurements from the \code{data-object} 
 are first added to the epiviz app using the \code{add_measurements} method for class 
@@ -41,6 +52,14 @@ for this type of data.
   \item{data_object}{An object to plot in epiviz app.}
   \item{...}{Additional arguments passed to \code{add_measurements} method for class
     \code{\link[epivizrData]{EpivizData}}}
+}}
+
+\item{\code{slideshow(granges, n = length(granges))}}{Navigate on epiviz app successively to given positions.
+
+\describe{
+  \item{granges}{An object of class \code{\link{GenomicRanges}} indicating
+    set of genomic regions to navigate in epiviz app.}
+  \item{n}{(integer) The number of regions in \code{granges} to navigate to.}
 }}
 }}
 
