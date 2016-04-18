@@ -1,40 +1,47 @@
 context("add charts")
 
-test_that("blockChart works", {
-  skip("for now")
-	sendRequest=sendRequest
-  gr <- GRanges(seqnames="chr1", ranges=IRanges(start=1:10, width=1))
-  mgr <- .startMGR(openBrowser=sendRequest)
+test_that("adding a block chart works using visualize", {
+  server <- epivizrServer::createServer()
+  data_mgr <- epivizrData::createMgr(server)
+  chart_mgr <- EpivizChartMgr$new(server)
+  
+  gr <- GenomicRanges::GRanges(seqnames="chr1", ranges=IRanges::IRanges(start=1:10, width=1))
+  ms_obj <- data_mgr$add_measurements(gr, "ms1", send_request=FALSE)
+  ms_id <- ms_obj$get_id()
+  ms <- ms_obj$get_measurements()
 
-  tryCatch({
-    if (sendRequest) wait_until(mgr$server$socketConnected)
-    msObj <- mgr$addMeasurements(gr, "ms1", sendRequest=sendRequest)
-    msId <- msObj$getId()
-
-    if (sendRequest) wait_until(!mgr$server$requestWaiting)
-    
-    if (standalone) {
-      mgr$addSeqinfo(seqinfo(gr))
-      if (sendRequest) wait_until(!mgr$server$requestWaiting)
-      
-      navigate_range <- gr[1,] + 2000
-      mgr$navigate(as.character(seqnames(navigate_range)), start(navigate_range), end(navigate_range))
-      if (sendRequest) wait_until(!mgr$server$requestWaiting)
-    }
-    
-    ms <- msObj$getMeasurements()
-    chartObj <- mgr$blockChart(ms, sendRequest=sendRequest)
-    chartId <- chartObj$getId()
-
-    if (sendRequest) wait_until(!mgr$server$requestWaiting)
-    expect_is(chartObj, "EpivizChart")
-    expect_equal(chartObj$measurements, ms)
-    expect_equal(chartObj$type, "epiviz.plugins.charts.BlocksTrack")
-    expect_false(is.null(mgr$chartList[[chartId]]))
-
-    connected <- !is.null(mgr$chartIdMap[[chartId]])
-    expect_equal(connected, sendRequest)
-  }, finally=mgr$stopServer())
+  chart_mgr$register_chart_type("BlockChart", "epiviz.plugins.charts.BlocksTrack")
+  
+  # check using just measurement
+  chart_obj <- chart_mgr$visualize("BlockChart", ms)
+  chart_id <- chart_obj$get_id()
+  
+  expect_is(chart_obj, "EpivizChart")
+  expect_equal(chart_obj$.measurements, ms)
+  expect_equal(chart_obj$.type, "epiviz.plugins.charts.BlocksTrack")
+  expect_true(exists(chart_id, env=chart_mgr$.chart_list))
+  expect_true(is.null(chart_mgr$.chart_id_map[[chart_id]]))
+  
+  # check using just datasource
+  chart_obj <- chart_mgr$visualize("BlockChart", datasource=ms_obj)
+  chart_id <- chart_obj$get_id()
+  
+  expect_is(chart_obj, "EpivizChart")
+  expect_equal(chart_obj$.measurements, ms)
+  expect_equal(chart_obj$.type, "epiviz.plugins.charts.BlocksTrack")
+  expect_true(exists(chart_id, env=chart_mgr$.chart_list))
+  expect_true(is.null(chart_mgr$.chart_id_map[[chart_id]]))
+  
+  # check using both
+  chart_obj <- chart_mgr$visualize("BlockChart", measurements=ms, datasource=ms_obj)
+  chart_id <- chart_obj$get_id()
+  
+  expect_is(chart_obj, "EpivizChart")
+  expect_equal(chart_obj$.measurements, ms)
+  expect_equal(chart_obj$.type, "epiviz.plugins.charts.BlocksTrack")
+  expect_true(exists(chart_id, env=chart_mgr$.chart_list))
+  expect_true(is.null(chart_mgr$.chart_id_map[[chart_id]]))
+  
 })
 
 

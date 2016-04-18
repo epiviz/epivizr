@@ -390,32 +390,6 @@ EpivizDeviceMgr$methods(list(
 # chart management methods
 EpivizDeviceMgr$methods(list(
    addChart=function(chartObject, sendRequest=!nonInteractive, ...) {
-    chartIdCounter <<- chartIdCounter + 1L
-    chartId <- sprintf("epivizChart_%d", chartIdCounter)
-    chartObject$setId(chartId)
-    chartList[[chartId]] <<- chartObject
-
-    if (sendRequest) {
-      callback=function(data) {
-        appChartId = data$value$id
-        chartIdMap[[chartId]] <<- appChartId
-        activeId <<- chartId
-        epivizrMsg("Chart ", chartId, " added to browser and connected", tagPrompt=TRUE)
-      }
-      requestId=callbackArray$append(callback)
-      measurements = NULL
-      if (!is.null(chartObject$measurements)) { measurements = toJSON(chartObject$measurements) }
-      request <- list(type="request",
-                      requestId=requestId,
-                      data=list(action="addChart",
-                        type=chartObject$type,
-                        measurements=measurements,
-                        datasource=chartObject$datasource,
-                        datasourceGroup=chartObject$datasourceGroup
-                        ))
-      server$sendRequest(request)
-    }
-    invisible(NULL)
    },
    .getChartObject=function(chartId) {
      if (!exists(chartId, envir=chartList, inherits=FALSE))
@@ -710,21 +684,6 @@ EpivizDeviceMgr$methods(list(
 # chart methods
 EpivizDeviceMgr$methods(list(
   visualize=function(chartType, measurements=NULL, datasource=NULL, ...) {
-    if (is.null(measurements) && !is.null(datasource)) {
-      measurements = list(datasource$getMeasurements()[[1]])
-    }
-    ds = NULL
-    if (!is.null(datasource)) {
-      ds = datasource$id
-    }
-    chartObj <- EpivizChart$new(
-      measurements=measurements,
-      datasource=ds,
-      datasourceGroup=ds,
-      mgr=.self,
-      type=chartTypeMap[[chartType]])
-    addChart(chartObj, ...)
-    chartObj
   },
   blockChart=function(ms, ...) {
     chartObj <- EpivizChart$new(
