@@ -129,6 +129,11 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
       .self$.chart_type_map[[chart_type]] <- js_chart_type
     },
     visualize = function(chart_type, measurements = NULL, datasource = NULL, ...) {
+      js_chart_type <- .self$.chart_type_map[[chart_type]]
+      if (is.null(js_chart_type)) {
+        stop("Can't visualize ", chart_type, ", it is not registered")
+      }
+
       if (is.null(measurements)) {
         if (!is.null(datasource)) {
           measurements = datasource$get_measurements()
@@ -137,15 +142,22 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
         }
       }
       datasource_id <- measurements$datasourceId
-
+      
       chart_obj <- EpivizChart$new(
         .measurements=measurements,
         .datasource=datasource_id,
         .datasourceGroup=datasource_id,
         .mgr=.self,
-        .type=.self$.chart_type_map[[chart_type]])
+        .type=js_chart_type)
       .self$add_chart(chart_obj, ...)
       chart_obj
+    },
+    plot = function(measurement_object) {
+      if (!is(measurement_object, "EpivizData")) {
+        stop("'measurement_object' must be of class 'EpivizData'")
+      }
+      chart_type <- measurement_object$get_default_chart_type()
+      .self$visualize(chart_type, datasource=measurement_object)
     }
   )
 )                              
