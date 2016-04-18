@@ -1,6 +1,6 @@
 .constructURL <- function(port=7312L, localURL=NULL, useDevel=FALSE, standalone=FALSE,
                           chr="chr11", start=99800000, end=103383180,
-                          debug=FALSE, workspace=NULL, scripts=NULL, gists=NULL)
+                          debug=FALSE, workspace=NULL, scripts=NULL, gists=NULL, useCookie=FALSE)
   {
   if (missing(localURL) || is.null(localURL)) {
     url <- ifelse(useDevel,"epiviz-dev", "epiviz")
@@ -38,6 +38,9 @@
       gistString <- paste(sprintf("gist[]=%s&", gists), collapse="")
       url <- paste0(url,gistString)
     }
+    
+    cookieString = sprintf("useCookie=%s&", ifelse(useCookie, "true", "false"))
+    url <- paste0(url, cookieString)
   }
   
   url
