@@ -75,8 +75,8 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
           stop("Either 'measurements' or 'datasource' must be non-NULL")
         }
       }
-      
       datasource_id <- measurements$datasourceId
+
       chart_obj <- EpivizChart$new(
         .measurements=measurements,
         .datasource=datasource_id,
