@@ -2,13 +2,21 @@
 % Please edit documentation in R/startEpiviz.R
 \name{startEpiviz}
 \alias{startEpiviz}
-\title{Start epiviz app and create \code{\link{EpivizApp}} object to manage connection}
+\title{Start epiviz app and create \code{\link{EpivizApp}} object to manage connection.}
 \usage{
-startEpiviz(use_devel = FALSE, chr = "chr11", start = 99800000,
-  end = 103383180, debug = FALSE, workspace = NULL, scripts = NULL,
-  gists = NULL, open_browser = TRUE, non_interactive = FALSE, ...)
+startEpiviz(host = NULL, http_port = NULL, path = NULL,
+  use_devel = FALSE, chr = "chr11", start = 99800000, end = 103383180,
+  debug = FALSE, workspace = NULL, scripts = NULL, gists = NULL,
+  use_cookie = TRUE, register_function = .register_all_the_epiviz_things,
+  open_browser = TRUE, ...)
 }
 \arguments{
+\item{host}{(character) use a host for the epiviz app other than the cbcb.umd.edu hosts.}
+
+\item{http_port}{(integer) port at host serving the epiviz app.}
+
+\item{path}{(character) path at host where epiviz app is located.}
+
 \item{use_devel}{(logical) use the devel epiviz application server (http://epiviz-dev.cbcb.umd.edu).}
 
 \item{chr}{(character) chromosome to browse to on app startup.}
@@ -26,9 +34,11 @@ startEpiviz(use_devel = FALSE, chr = "chr11", start = 99800000,
 \item{gists}{(character) Ids for github gists (\url{http://gist.github.com}) containing JavaScript plugin scripts to
 be imported when epiviz is loaded (see \url{http://epiviz.cbcb.umd.edu/help} for details).}
 
-\item{open_browser}{(logical) browse to the epiviz URL before exiting function.}
+\item{use_cookie}{(logical) use cookies within the epiviz app.}
 
-\item{non_interactive}{<logical> run in non-interactive mode, for development purposes only.}
+\item{register_function}{(function) function used to register actions and charts on the epiviz app.}
+
+\item{open_browser}{(logical) browse to the epiviz URL before exiting function.}
 
 \item{...}{additional parameters passed to \code{\link[epivizrServer]{createServer}}.}
 }
@@ -36,6 +46,12 @@ be imported when epiviz is loaded (see \url{http://epiviz.cbcb.umd.edu/help} for
 An object of class \code{\link{EpivizApp}}
 }
 \description{
-Start epiviz app and create \code{\link{EpivizApp}} object to manage connection
+Start epiviz app and create \code{\link{EpivizApp}} object to manage connection.
+}
+\examples{
+# see package vignete for example usage
+app <- startEpiviz(non_interactive=TRUE, open_browser=TRUE)
+app$stop_app()
+
 }
 

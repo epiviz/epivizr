@@ -26,7 +26,8 @@ Suggests:
     testthat,
     roxygen2,
     knitr,
-    SummarizedExperiments,
+    Biobase,
+    SummarizedExperiment,
     S4Vectors,
     antiProfilesData,
     hgu133plus2.db,
@@ -36,6 +37,7 @@ Collate:
     'EpivizApp-class.R'
     'EpivizChart-class.R'
     'startEpiviz.R'
+    'vignette_data.R'
 biocViews: Visualization, Infrastructure, GUI
 Video: https://www.youtube.com/watch?v=099c4wUxozA
 RoxygenNote: 5.0.1

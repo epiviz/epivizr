@@ -67,6 +67,7 @@ test_that("plot feature works", {
 })
 
 test_that("plot gene track works", {
+  skip_if_not_installed("bumphunter")
   server <- epivizrServer::createServer()
   data_mgr <- epivizrData::createMgr(server)
   chart_mgr <- EpivizChartMgr$new(server)

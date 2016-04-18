@@ -32,11 +32,12 @@ See \code{is_closed} method in class \code{\link[epivizrServer]{EpivizServer}}.}
         \item{measurement_object}{an object of class \code{\link[epivizrData]{EpivizData}}}
       }}
 
-\item{\code{register_chart_type(chart_type, js_chart_type)}}{Register a chart type name to a JavaScript chart type in the epiviz app.
+\item{\code{register_chart_type(chart_type,
+  js_chart_type = paste0("epiviz.plugins.charts.", chart_type))}}{Register a chart type name to a JavaScript chart type in the epiviz app.
 \describe{
   \item{chart_type}{the name to use for chart type in R (e.g., 'BlocksTrack')}
   \item{js_chart_type}{the full JavaScript class name of the corresponding chart type 
-    (e.g. 'epiviz.plugins.charts.BlocksTrack)'}
+    (e.g. 'epiviz.plugins.charts.BlocksTrack'). If missing it is taken from the \code{chart_type} argument}
 }}
 
 \item{\code{rm_all_charts()}}{Remove all charts loaded by chart manager.}
@@ -53,7 +54,7 @@ is used to decide which measurements are used in the chart
 
 \describe{
   \item{chart_type}{a chart type registered using the \code{register_chart_type} method}
-  \item{measurements}{a list of \code{\link[epivizrData]{EpivizMeasurements}} objects
+  \item{measurements}{a list of \code{\link[epivizrData]{EpivizMeasurement}} objects
     describing measurements to include in the chart}
   \item{datasource}{an object of class \code{\link[epivizrData]{EpivizData}}, all available
     measurements from datasource are used as appropriate}
