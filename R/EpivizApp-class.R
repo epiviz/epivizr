@@ -28,9 +28,19 @@ EpivizApp <- setRefClass("EpivizApp",
 
 # general plot method
 EpivizApp$methods(
+  get_ms_object = function(chart_id_or_object, index=1) {
+    chart_object <- .self$chart_mgr$.get_chart_object(chart_id_or_object)
+    measurements <- chart_object$.measurements
+    if (index < 1 || index > length(measurements)) {
+      stop("'index' out of range")
+    }
+    measurement <- measurements[[index]]
+    datasource <- measurement@datasourceId
+    .self$data_mgr$.find_datasource(datasource)
+  },
   plot = function(data_object, ...) {
     ms_obj <- .self$data_mgr$add_measurements(data_object, ...)
-    .self$plot(ms_obj)
+    .self$chart_mgr$plot(ms_obj)
   }
 )
 
