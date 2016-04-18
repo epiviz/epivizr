@@ -1,4 +1,8 @@
-#' Class managing connection to epiviz application
+#' Class managing connection to epiviz application.
+#' 
+#' @field server An object of class \code{\link[epivizrServer]{EpivizServer}} used to communicate with epiviz app.
+#' @field data_mgr An object of class \code{\link[epivizrData]{EpivizData}} used to serve data to epiviz app.
+#' @field chart_mgr An object of class \code{EpivizChartMgr} used to manage charts added to epiviz app session.
 #' 
 #' @importClassesFrom epivizrServer EpivizServer
 #' @importClassesFrom epivizrData EpivizDataMgr EpivizMeasurement EpivizData
@@ -12,6 +16,7 @@ EpivizApp <- setRefClass("EpivizApp",
   ),
   methods=list(
    show=function() {
+     "Print information about app connection."
       cat("Epiviz App connection:\n")
       cat("Server: ")
       server$show(); cat("\n")
@@ -34,6 +39,14 @@ EpivizApp <- setRefClass("EpivizApp",
 # general plot method
 EpivizApp$methods(
   get_ms_object = function(chart_id_or_object, index=1) {
+    "Get object of class \\code{\\link[epivizrData]{EpivizData}} used as a data source
+    in a given chart.
+    
+    \\describe{
+      \\item{chart_id_or_object}{An object of class \\code{EpivizChart} or an id for
+        a chart loaded to the epiviz app.}
+      \\item{index}{Index into \\code{.measurements}} list of chart object to obtain data object for.
+    }"
     chart_object <- .self$chart_mgr$.get_chart_object(chart_id_or_object)
     measurements <- chart_object$.measurements
     if (index < 1 || index > length(measurements)) {
@@ -44,6 +57,19 @@ EpivizApp$methods(
     .self$data_mgr$.find_datasource(datasource)
   },
   plot = function(data_object, ...) {
+    "Visualize data on epiviz app using its default chart type. Measurements from the \\code{data-object} 
+    are first added to the epiviz app using the \\code{add_measurements} method for class 
+    \\code{\\link[epivizrData]{EpivizData}}. See documentation for \\code{\\link[epivizrData]{register}}
+    for information on supported data types and the \\code{\\link[epivizrData]{EpivizData}} class
+    encapsulating this type of data. Once measurements are loaded, the \\code{\\link{plot}} method
+    of class \\code{\\link{EpivizChartMgr}} is used to plot the data, using the default chart type
+    for this type of data.
+    
+    \\describe{
+      \\item{data_object}{An object to plot in epiviz app.}
+      \\item{...}{Additional arguments passed to \\code{add_measurements} method for class
+        \\code{\\link[epivizrData]{EpivizData}}}
+    }"
     ms_obj <- .self$data_mgr$add_measurements(data_object, ...)
     .self$chart_mgr$plot(ms_obj)
   }
