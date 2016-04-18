@@ -1,6 +1,7 @@
 context("browser commands")
 
 test_that("refresh works", {
+  skip("for now")
   tryCatch({
     mgr <- .startMGR()
     mgr$refresh()
@@ -8,6 +9,7 @@ test_that("refresh works", {
 })
 
 test_that("navigate works", {
+  skip("for now")
   tryCatch({
     mgr <- .startMGR()
     mgr$navigate(chr="chr10", start=2000, end=10000)
