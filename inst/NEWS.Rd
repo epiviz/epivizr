@@ -3,11 +3,13 @@
 
 \encoding{UTF-8}
 
-\section{Version 2.0.1}{
+\section{Version 2.0.0}{
+  This is not a backwards-compatible version. 
   \itemize{
-    \item Move socket connection and data serving code outside of package to new packages
-    \item Use new 'epivizrServer' and 'epivizrData' packages
-    \item Move standalone to package 'epivizrStandalone'
+    \item Move socket connection and data serving code outside of package to new packages.
+    \item Use new 'epivizrServer' and 'epivizrData' packages.
+    \item Move standalone to package 'epivizrStandalone'.
+    \item Use simplified 'plot' and 'visualize' interface to add charts.
   }
 }
 \section{Version 1.9.4}{
