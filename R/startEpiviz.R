@@ -25,7 +25,7 @@
   
   if (!is.null(workspace)) {
     url <- paste0(url,"ws=",workspace,"&")
-  } else {
+  } else if (!is.null(chr) && !is.null(start) && !is.null(end)) {
     url <- paste0(url,
                   sprintf("seqName=%s&start=%d&end=%d&",
                           chr,
@@ -70,7 +70,11 @@
       request_data$measurement)
   })
   
-  ## TODO: register actions 'getSeqInfos' and 'search'
+  app$server$register_action("getSeqInfos", function(request_data) {
+    list(seqInfos=epivizrServer::json_writer(app$data_mgr$get_seqinfo()))
+  })
+    
+  ## TODO: register action 'search'
   
   # register chart types
   app$chart_mgr$register_chart_type("BlocksTrack")
