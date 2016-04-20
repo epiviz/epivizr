@@ -88,10 +88,7 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
       if (!is(chart_object, "EpivizChart"))
         stop("'chartObj' must be an 'EpivizChart' object")
       
-      if(!exists(chart_object$getId(), envir=chartList, inherits=FALSE))
-        stop("object not found")
-      
-      chart_id <- chart_object$getId()
+      chart_id <- chart_object$get_id()
       if(!exists(chart_id, envir=.self$.chart_list, inherits=FALSE)) {
         stop("object not found")
       }
