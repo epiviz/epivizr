@@ -9,7 +9,7 @@
   }
 
   if (!is.null(http_port)) {
-    port <- sprintf(":%d", port)
+    port <- sprintf(":%d", http_port)
   } else {
     port <- ""
   }
@@ -100,6 +100,7 @@
 #' @param use_cookie (logical) use cookies within the epiviz app.
 #' @param register_function (function) function used to register actions and charts on the epiviz app.
 #' @param open_browser (logical) browse to the epiviz URL before exiting function.
+#' @param server (EpivizServer) if not \code{NULL} use this object as underlying WebSocket and HTTP server
 #' @param ... additional parameters passed to \code{\link[epivizrServer]{createServer}}.
 #' 
 #' @return An object of class \code{\link{EpivizApp}}
