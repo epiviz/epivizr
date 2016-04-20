@@ -114,9 +114,12 @@ startEpiviz <- function(host=NULL, http_port=NULL, path=NULL, use_devel=FALSE,
                         chr="chr11", start=99800000, end=103383180, 
                         debug=FALSE, workspace=NULL, scripts=NULL, gists=NULL, use_cookie=TRUE,
                         register_function=.register_all_the_epiviz_things,
-                        open_browser=TRUE, ...) {
+                        open_browser=TRUE, server=NULL, ...) {
 
-  server <- epivizrServer::createServer(...)
+  if(is.null(server) || !is(server, "EpivizServer") ) {
+    server <- epivizrServer::createServer(...)
+  }
+  
   data_mgr <- epivizrData::createMgr(server)
   chart_mgr <- EpivizChartMgr$new(server)
   
