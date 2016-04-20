@@ -20,7 +20,7 @@
 #'  \item{\code{fwerArea}}{family-wise error rate estimate based on area}
 #' }
 #' @source TCGA project: \url{https://tcga-data.nci.nih.gov/tcga/}
-#' @value A \code{\link[GenomicRanges]{GRanges}} object.
+#' @return A \code{\link[GenomicRanges]{GRanges}} object.
 "tcga_colon_blocks"
 
 #' Example methylation data (smoothed methylation levels) for epivizr vignette
@@ -42,7 +42,7 @@
 #' }
 #' 
 #' @source TCGA project: \url{https://tcga-data.nci.nih.gov/tcga/}
-#' @value A \code{\link[GenomicRanges]{GRanges}} object.
+#' @return A \code{\link[GenomicRanges]{GRanges}} object.
 "tcga_colon_curves"
 
 
@@ -59,7 +59,7 @@
 #'      Normal/Tumor status is given in column \code{sample_type}}
 #'  }
 #'  
-#'  @source TCGA project: \url{https://tcga-data.nci.nih.gov/tcga/}
-#' @value A \code{\link[SummarizedExperiment]{RangedSummarizedExperiment}} object.
+#' @source TCGA project: \url{https://tcga-data.nci.nih.gov/tcga/}
+#' @return A \code{\link[SummarizedExperiment]{RangedSummarizedExperiment}} object.
 "tcga_colon_expression"
 

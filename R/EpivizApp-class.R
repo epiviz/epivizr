@@ -61,7 +61,7 @@ EpivizApp$methods(
     datasource <- measurement@datasourceId
     .self$data_mgr$.find_datasource(datasource)
   },
-  plot = function(data_object, ...) {
+  plot = function(data_object, send_request=TRUE, ...) {
     "Visualize data on epiviz app using its default chart type. Measurements from the \\code{data-object} 
     are first added to the epiviz app using the \\code{add_measurements} method for class 
     \\code{\\link[epivizrData]{EpivizData}}. See documentation for \\code{\\link[epivizrData]{register}}
@@ -75,13 +75,13 @@ EpivizApp$methods(
       \\item{...}{Additional arguments passed to \\code{add_measurements} method for class
         \\code{\\link[epivizrData]{EpivizData}}}
     }"
-    ms_obj <- .self$data_mgr$add_measurements(data_object, ...)
+    ms_obj <- .self$data_mgr$add_measurements(data_object, send_request=send_request, ...)
     .self$server$wait_to_clear_requests()
     
-    if (!.self$data_mgr$is_ms_connected(ms_obj)) {
+    if (send_request && .self$server$is_interactive() && !.self$data_mgr$is_ms_connected(ms_obj)) {
       stop("Error adding measurements for data object\n")
     }
-    .self$chart_mgr$plot(ms_obj)
+    .self$chart_mgr$plot(ms_obj, send_request=send_request)
   }
 )
 

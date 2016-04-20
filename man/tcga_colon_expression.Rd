@@ -9,11 +9,15 @@
    \item{\code{assay(tcga_colon_expression)}}{exon-level count matrix}
    \item{\code{colData(tcga_colon_expression)}}{a \code{DataFrame} containing sample information. 
      Normal/Tumor status is given in column \code{sample_type}}
- }
- 
- @source TCGA project: \url{https://tcga-data.nci.nih.gov/tcga/}}
+ }}
+\source{
+TCGA project: \url{https://tcga-data.nci.nih.gov/tcga/}
+}
 \usage{
 tcga_colon_expression
+}
+\value{
+A \code{\link[SummarizedExperiment]{RangedSummarizedExperiment}} object.
 }
 \description{
 A \code{\link[SummarizedExperiment]{RangedSummarizedExperiment}} object containing exon-level

@@ -16,7 +16,7 @@ test_that("EpivizChartMgr creates a proper object", {
 })
 
 test_that("server opening works as expected", {
-  server <- epivizrServer::createServer()
+  server <- epivizrServer::createServer(try_ports=TRUE)
   mgr <- EpivizChartMgr$new(server)
   expect_true(mgr$is_server_closed())
   

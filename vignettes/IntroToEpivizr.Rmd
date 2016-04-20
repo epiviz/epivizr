@@ -128,7 +128,7 @@ Notice that we added two lines in this plot, one for mean methylation in cancer 
 We can also add a track containing the smooth methylation difference estimate used to define methylation blocks.
 
 ```{r, eval=TRUE}
-diff_chart <- app$plot(tcga_colon_curves,"450kMethDiff",type="bp",columns=c("smooth"),ylim=matrix(c(-.5,.5),nc=1))
+diff_chart <- app$plot(tcga_colon_curves, datasource_name="450kMethDiff",type="bp",columns=c("smooth"),ylim=matrix(c(-.5,.5),nc=1))
 ```
 
 We pass limits for the y axis in this case. To see other arguments supported, you can use the help framework in R `?"EpivizApp"`.

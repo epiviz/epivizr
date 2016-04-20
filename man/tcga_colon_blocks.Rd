@@ -25,6 +25,9 @@ TCGA project: \url{https://tcga-data.nci.nih.gov/tcga/}
 \usage{
 tcga_colon_blocks
 }
+\value{
+A \code{\link[GenomicRanges]{GRanges}} object.
+}
 \description{
 Example results from methylation analysis of human chromosome 11 using the \code{\link[minfi]{minfi-package}} package 
 of TCGA 450k beadarray samples. This object contains large regions of methylation difference between tumor 
