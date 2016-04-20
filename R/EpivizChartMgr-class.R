@@ -164,14 +164,32 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
       rownames(out) <- NULL
       out
     },
-    register_chart_type = function(chart_type, js_chart_type=paste0("epiviz.plugins.charts.", chart_type)) {
+    register_chart_type = function(chart_type, js_chart_type=paste0("epiviz.plugins.charts.", chart_type), js_chart_settings=NULL) {
       "Register a chart type name to a JavaScript chart type in the epiviz app.
       \\describe{
         \\item{chart_type}{the name to use for chart type in R (e.g., 'BlocksTrack')}
-        \\item{js_chart_type}{the full JavaScript class name of the corresponding chart type 
+        \\item{js_chart_type}{the full JavaScript class name of the corresponding chart type
           (e.g. 'epiviz.plugins.charts.BlocksTrack'). If missing it is taken from the \\code{chart_type} argument}
+        \\item{js_chart_settings}{custom settings that can be applied to charts in JS}
       }"
-      .self$.chart_type_map[[chart_type]] <- js_chart_type
+      .self$.chart_type_map[[chart_type]] <- list(js_chart_type=js_chart_type, js_chart_settings=js_chart_settings)
+    },
+    list_available_chart_types = function() {
+      "Return \\code{data.frame} describing charts types registered with epivizr and their default settings"
+      
+      type <- ls(.self$.chart_type_map)
+      default_settings <- sapply(type, function(x) {
+        tmp <- .self$.chart_type_map[[x]]
+        text <- sapply(tmp$js_chart_settings, function(val) paste0(val$label, ":", val$defaultValue))
+        paste0(text, collapse=", ")
+      })
+      
+      out <- data.frame(type=type,
+                        settings=default_settings,
+                        stringsAsFactors=FALSE)
+      rownames(out) <- NULL
+      out
+      
     },
     visualize = function(chart_type, measurements = NULL, datasource = NULL, ...) {
       "Visualize data use the given chart type. One of arguments \\code{measurements} or \\code{datasource} must be non-\\code{NULL}. If \\code{measurements}
@@ -185,7 +203,7 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
         \\item{datasource}{an object of class \\code{\\link[epivizrData]{EpivizData}}, all available
           measurements from datasource are used as appropriate}
       }"
-      js_chart_type <- .self$.chart_type_map[[chart_type]]
+      js_chart_type <- .self$.chart_type_map[[chart_type]]$js_chart_type
       if (is.null(js_chart_type)) {
         stop("Can't visualize ", chart_type, ", it is not registered")
       }

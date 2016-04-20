@@ -77,14 +77,16 @@
   ## TODO: register action 'search'
   
   # register chart types
-  app$chart_mgr$register_chart_type("BlocksTrack")
-  app$chart_mgr$register_chart_type("LineTrack")
-  app$chart_mgr$register_chart_type("GenesTrack")
-  app$chart_mgr$register_chart_type("HeatmapPlot")
-  app$chart_mgr$register_chart_type("LinePlot")
-  app$chart_mgr$register_chart_type("ScatterPlot")
-  app$chart_mgr$register_chart_type("StackedLinePlot")
-  app$chart_mgr$register_chart_type("StackedLineTrack")
+  request_data=list(action="getAvailableCharts")
+  app$server$send_request(request_data, function(response_data) {
+    data <- response_data$value
+    register_chartType <- function(x) {
+      app$chart_mgr$register_chart_type(gsub("epiviz.plugins.charts.", "", x$chartName, fixed = TRUE), 
+                                        js_chart_type=x$chartName, 
+                                        js_chart_settings=x$customSettings)
+    }
+    out <- sapply(data, register_chartType)
+  })
 }
 
 #' Start epiviz app and create \code{\link{EpivizApp}} object to manage connection.

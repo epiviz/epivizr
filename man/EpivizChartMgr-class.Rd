@@ -20,6 +20,8 @@ Class providing chart manager for epiviz app
 \item{\code{is_server_closed()}}{Returns \code{TRUE} if underlying server is closed.
 See \code{is_closed} method in class \code{\link[epivizrServer]{EpivizServer}}.}
 
+\item{\code{list_available_chart_types()}}{Return \code{data.frame} describing charts types registered with epivizr and their default settings}
+
 \item{\code{list_charts()}}{Return \code{data.frame} describing charts loaded by chart manager}
 
 \item{\code{num_charts()}}{Return the number of charts currently loaded through manager.}
@@ -33,11 +35,13 @@ See \code{is_closed} method in class \code{\link[epivizrServer]{EpivizServer}}.}
       }}
 
 \item{\code{register_chart_type(chart_type,
-  js_chart_type = paste0("epiviz.plugins.charts.", chart_type))}}{Register a chart type name to a JavaScript chart type in the epiviz app.
+  js_chart_type = paste0("epiviz.plugins.charts.", chart_type),
+  js_chart_settings = NULL)}}{Register a chart type name to a JavaScript chart type in the epiviz app.
 \describe{
   \item{chart_type}{the name to use for chart type in R (e.g., 'BlocksTrack')}
-  \item{js_chart_type}{the full JavaScript class name of the corresponding chart type 
+  \item{js_chart_type}{the full JavaScript class name of the corresponding chart type
     (e.g. 'epiviz.plugins.charts.BlocksTrack'). If missing it is taken from the \code{chart_type} argument}
+  \item{js_chart_settings}{custom settings that can be applied to charts in JS}
 }}
 
 \item{\code{rm_all_charts()}}{Remove all charts loaded by chart manager.}
