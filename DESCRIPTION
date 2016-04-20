@@ -20,7 +20,7 @@ Depends:
     methods,
 Imports:
     epivizrServer (>= 0.99.1),
-    epivizrData (>= 0.99.1),
+    epivizrData (>= 0.99.2),
     GenomicRanges
 Suggests:
     testthat,

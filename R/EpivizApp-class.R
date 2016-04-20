@@ -77,6 +77,10 @@ EpivizApp$methods(
     }"
     ms_obj <- .self$data_mgr$add_measurements(data_object, ...)
     .self$server$wait_to_clear_requests()
+    
+    if (!.self$data_mgr$is_ms_connected(ms_obj)) {
+      stop("Error adding measurements for data object\n")
+    }
     .self$chart_mgr$plot(ms_obj)
   }
 )
