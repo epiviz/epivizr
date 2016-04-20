@@ -24,7 +24,7 @@ See \code{is_closed} method in class \code{\link[epivizrServer]{EpivizServer}}.}
 
 \item{\code{num_charts()}}{Return the number of charts currently loaded through manager.}
 
-\item{\code{plot(measurement_object)}}{Visualize data in an \code{\link[epivizrData]{EpivizData}} object using its default chart type.
+\item{\code{plot(measurement_object, send_request = TRUE)}}{Visualize data in an \code{\link[epivizrData]{EpivizData}} object using its default chart type.
       The method \code{get_default_chart_type} in class \code{\link[epivizrData]{EpivizData}} is used
       to determine which chart type is used.
 
@@ -48,7 +48,8 @@ See \code{is_closed} method in class \code{\link[epivizrServer]{EpivizServer}}.}
    string indicating the chart's id assigned by chart manager}
 }}
 
-\item{\code{visualize(chart_type, measurements = NULL, datasource = NULL, ...)}}{Visualize data use the given chart type. One of arguments \code{measurements} or \code{datasource} must be non-\code{NULL}. If \code{measurements}
+\item{\code{visualize(chart_type, measurements = NULL, datasource = NULL,
+  send_request = TRUE, ...)}}{Visualize data use the given chart type. One of arguments \code{measurements} or \code{datasource} must be non-\code{NULL}. If \code{measurements}
 is \code{NULL}, the \code{get_measurements} method in class \code{\link[epivizrData]{EpivizData}}
 is used to decide which measurements are used in the chart
 

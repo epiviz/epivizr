@@ -173,7 +173,7 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
       }"
       .self$.chart_type_map[[chart_type]] <- js_chart_type
     },
-    visualize = function(chart_type, measurements = NULL, datasource = NULL, ...) {
+    visualize = function(chart_type, measurements = NULL, datasource = NULL, send_request=TRUE, ...) {
       "Visualize data use the given chart type. One of arguments \\code{measurements} or \\code{datasource} must be non-\\code{NULL}. If \\code{measurements}
       is \\code{NULL}, the \\code{get_measurements} method in class \\code{\\link[epivizrData]{EpivizData}}
       is used to decide which measurements are used in the chart
@@ -205,10 +205,10 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
         .datasourceGroup=datasource_id,
         .mgr=.self,
         .type=js_chart_type)
-      .self$add_chart(chart_obj, ...)
+      .self$add_chart(chart_obj, send_request=send_request, ...)
       chart_obj
     },
-    plot = function(measurement_object) {
+    plot = function(measurement_object, send_request=TRUE) {
       "Visualize data in an \\code{\\link[epivizrData]{EpivizData}} object using its default chart type.
       The method \\code{get_default_chart_type} in class \\code{\\link[epivizrData]{EpivizData}} is used
       to determine which chart type is used.
@@ -220,7 +220,7 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
         stop("'measurement_object' must be of class 'EpivizData'")
       }
       chart_type <- measurement_object$get_default_chart_type()
-      .self$visualize(chart_type, datasource=measurement_object)
+      .self$visualize(chart_type, datasource=measurement_object, send_request=send_request)
     },
     .redraw = function(send_request = TRUE) {
       send_request <- !.self$is_server_closed() && isTRUE(send_request)      
