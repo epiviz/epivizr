@@ -194,6 +194,15 @@ EpivizApp$methods(
       stop(e)
     })
   },
+  print_workspace=function(file_name=NULL, file_type="pdf"){
+    callback=function(data) {
+      cat("workspace is being saved as", file_type, "\n")
+    }
+    
+    request_data <- list(action = "printWorkspace", fileName=file_name, fileType=file_type)
+    .self$server$send_request(request_data, callback)
+    invisible()
+  },
   service=function(verbose=TRUE) {
     "Block interactive R session to service websocket requests."
     if (verbose && .self$server$is_interactive() && !.self$server$is_daemonized()) {

@@ -81,6 +81,34 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
       }
       invisible()
     },
+    print_chart=function(chart_object_or_id, file_name=NULL, file_type="pdf") {
+      
+      chart_object <- .self$.get_chart_object(chart_object_or_id)
+      
+      if (!is(chart_object, "EpivizChart"))
+        stop("'chartObj' must be an 'EpivizChart' object")
+      
+      if(!exists(chart_object$getId(), envir=chartList, inherits=FALSE))
+        stop("object not found")
+      
+      chart_id <- chart_object$getId()
+      if(!exists(chart_id, envir=.self$.chart_list, inherits=FALSE)) {
+        stop("object not found")
+      }
+      
+      if (chart_object$is_connected()) {
+        callback <- function(response) {
+          cat("chart ", chart_id, " is being saved\n")
+        }
+        
+        request_data <- list(action = "printWorkspace",
+                             chartId = chart_object$.app_id,
+                             fileName = file_name,
+                             fileType = file_type)
+        .self$.server$send_request(request_data, callback)
+      }
+      invisible()
+    },
     rm_chart = function(chart_object_or_id) {
       "Remove chart from chart manager.
        \\describe{
