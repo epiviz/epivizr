@@ -17,14 +17,28 @@ Class providing chart manager for epiviz app
   \item{send_request}{send request to app through websocket}
 }}
 
+\item{\code{get_chart_settings(chart_object_or_id)}}{List custom chart settings from a chart object
+\describe{
+\item{chart_object_or_id}{An object of class \code{\link{EpivizChart}} or a 
+string indicating the chart's id assigned by chart manager}
+}}
+
 \item{\code{is_server_closed()}}{Returns \code{TRUE} if underlying server is closed.
 See \code{is_closed} method in class \code{\link[epivizrServer]{EpivizServer}}.}
+
+\item{\code{list_all_available_chart_types()}}{Print charts types with their default settings and colors registered with epivizr}
+
+\item{\code{list_available_chart_type(chart_type)}}{List available options for a chart type.
+\describe{
+  \item{chart_type}{the name for a chart type in R (e.g., 'BlocksTrack', 'StackedLineTrack')}
+}}
 
 \item{\code{list_charts()}}{Return \code{data.frame} describing charts loaded by chart manager}
 
 \item{\code{num_charts()}}{Return the number of charts currently loaded through manager.}
 
-\item{\code{plot(measurement_object, send_request = TRUE)}}{Visualize data in an \code{\link[epivizrData]{EpivizData}} object using its default chart type.
+\item{\code{plot(measurement_object, send_request = TRUE, settings = NULL,
+  colors = NULL)}}{Visualize data in an \code{\link[epivizrData]{EpivizData}} object using its default chart type.
       The method \code{get_default_chart_type} in class \code{\link[epivizrData]{EpivizData}} is used
       to determine which chart type is used.
 
@@ -32,12 +46,23 @@ See \code{is_closed} method in class \code{\link[epivizrServer]{EpivizServer}}.}
         \item{measurement_object}{an object of class \code{\link[epivizrData]{EpivizData}}}
       }}
 
+\item{\code{print_chart(chart_object_or_id, file_name = NULL, file_type = "pdf")}}{Remove chart from chart manager.
+\describe{
+ \item{chart_object_or_id}{An object of class \code{\link{EpivizChart}} or a 
+   string indicating the chart's id assigned by chart manager}
+}}
+
+\item{\code{register_available_chart_types()}}{request the epiviz app to get available chart types and registers them 
+with the epivizr session.}
+
 \item{\code{register_chart_type(chart_type,
-  js_chart_type = paste0("epiviz.plugins.charts.", chart_type))}}{Register a chart type name to a JavaScript chart type in the epiviz app.
+  js_chart_type = paste0("epiviz.plugins.charts.", chart_type),
+  js_chart_settings = NULL, js_chart_colors = NULL)}}{Register a chart type name to a JavaScript chart type in the epiviz app.
 \describe{
   \item{chart_type}{the name to use for chart type in R (e.g., 'BlocksTrack')}
   \item{js_chart_type}{the full JavaScript class name of the corresponding chart type 
     (e.g. 'epiviz.plugins.charts.BlocksTrack'). If missing it is taken from the \code{chart_type} argument}
+  \item{js_chart_settings}{custom settings that can be applied to charts in JS}
 }}
 
 \item{\code{rm_all_charts()}}{Remove all charts loaded by chart manager.}
@@ -48,8 +73,17 @@ See \code{is_closed} method in class \code{\link[epivizrServer]{EpivizServer}}.}
    string indicating the chart's id assigned by chart manager}
 }}
 
+\item{\code{set_chart_settings(chart_object_or_id, settings = NULL, colors = NULL)}}{Apply custom chart settings to a chart object
+
+\describe{
+  \item{chart_object_or_id}{An object of class \code{\link{EpivizChart}} or a 
+    string indicating the chart's id assigned by chart manager}
+  \item{settings}{a list of settings to apply to the chart object}
+  \item{colors}{a list of colors to use as default colors for the chart object}
+}}
+
 \item{\code{visualize(chart_type, measurements = NULL, datasource = NULL,
-  send_request = TRUE, ...)}}{Visualize data use the given chart type. One of arguments \code{measurements} or \code{datasource} must be non-\code{NULL}. If \code{measurements}
+  send_request = TRUE, settings = NULL, colors = NULL, ...)}}{Visualize data use the given chart type. One of arguments \code{measurements} or \code{datasource} must be non-\code{NULL}. If \code{measurements}
 is \code{NULL}, the \code{get_measurements} method in class \code{\link[epivizrData]{EpivizData}}
 is used to decide which measurements are used in the chart
 

@@ -13,12 +13,20 @@ Class encapsulating a chart in epiviz app
 \describe{
 \item{\code{get_app_id(id)}}{Get chart's id assigned by epiviz app.}
 
+\item{\code{get_colors()}}{Get color palette applied to the chart.}
+
 \item{\code{get_id()}}{Get chart's id assigned by chart manager}
+
+\item{\code{get_settings()}}{Get custom settings for the chart.}
 
 \item{\code{is_connected()}}{Returns \code{TRUE} if chart is connected to a chart on epiviz app.}
 
 \item{\code{set_app_id(id)}}{Set chart's id assigned by epiviz app.}
 
+\item{\code{set_colors(colors)}}{Set custom colors for the chart.}
+
 \item{\code{set_id(id)}}{Set chart's id assigned by chart manager.}
+
+\item{\code{set_settings(settings)}}{Set custom settings for the chart.}
 }}
 
