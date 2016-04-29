@@ -1,53 +1,3 @@
-.constructURL <- function(host=NULL, http_port=NULL, path = NULL, ws_port=7123L,
-                          use_devel=FALSE, debug=FALSE, 
-                          chr="chr11", start=99800000, end=103383180,
-                          workspace=NULL, scripts=NULL, gists=NULL, use_cookie=FALSE)
-  {
-  if (is.null(host)) {
-    host <- ifelse(use_devel,"epiviz-dev", "epiviz")
-    host <- sprintf("http://%s.cbcb.umd.edu", host)
-  }
-
-  if (!is.null(http_port)) {
-    port <- sprintf(":%d", http_port)
-  } else {
-    port <- ""
-  }
-  
-  if (is.null(path)) {
-    path <- "/index.php"
-  }
-  
-  url <- paste0(host,port,path)
-  controllerHost <- sprintf("ws://localhost:%d", ws_port)  
-  url <- sprintf("%s?websocket-host[]=%s&", url, controllerHost)
-  url <- paste0(url, sprintf("debug=%s&", ifelse(debug, "true", "false")))
-  
-  if (!is.null(workspace)) {
-    url <- paste0(url,"ws=",workspace,"&")
-  } else if (!is.null(chr) && !is.null(start) && !is.null(end)) {
-    url <- paste0(url,
-                  sprintf("seqName=%s&start=%d&end=%d&",
-                          chr,
-                          as.integer(start),
-                          as.integer(end)))
-  }
-
-  if (!is.null(scripts)) {
-    script_string <- paste(sprintf("script[]=%s&", scripts),collapse="")
-    url <- paste0(url, script_string)
-  }
-    
-  if (!is.null(gists)) {
-    gist_string <- paste(sprintf("gist[]=%s&", gists), collapse="")
-    url <- paste0(url, gist_string)
-  }
-    
-  cookie_string <- sprintf("useCookie=%s&", ifelse(use_cookie, "true", "false"))
-  url <- paste0(url, cookie_string)
-  url
-  }
-
 .register_all_the_epiviz_things <- function(app) {
   # register actions requested from epiviz app
   app$server$register_action("getMeasurements", function(request_data) {
@@ -74,10 +24,11 @@
     app$data_mgr$get_seqinfo()
   })
     
-  ## TODO: register action 'search'
+  app$server$register_action("registerChartTypes", function(request_data) {
+    app$chart_mgr$.register_available_chart_types(request_data$data)
+  })
   
-  # register chart types
-  app$chart_mgr$register_available_chart_types()
+  ## TODO: register action 'search'
 }
 
 #' Start epiviz app and create \code{\link{EpivizApp}} object to manage connection.
@@ -121,7 +72,7 @@ startEpiviz <- function(host=NULL, http_port=NULL, path=NULL, use_devel=FALSE,
   data_mgr <- epivizrData::createMgr(server)
   chart_mgr <- EpivizChartMgr$new(server)
   
-  url <- .constructURL(host=host,
+  url_parms <- list(host=host,
     http_port=http_port,
     path=path,
     ws_port=server$.port,
@@ -135,7 +86,7 @@ startEpiviz <- function(host=NULL, http_port=NULL, path=NULL, use_devel=FALSE,
     gists=gists,
     use_cookie=use_cookie)
   
-  app <- EpivizApp$new(.url=url,
+  app <- EpivizApp$new(.url_parms=url_parms,
                        server=server,
                        data_mgr=data_mgr,
                        chart_mgr=chart_mgr)

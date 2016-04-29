@@ -1,3 +1,53 @@
+.constructURL <- function(host=NULL, http_port=NULL, path = NULL, ws_port=7123L,
+                          use_devel=FALSE, debug=FALSE, 
+                          chr="chr11", start=99800000, end=103383180,
+                          workspace=NULL, scripts=NULL, gists=NULL, use_cookie=FALSE)
+{
+  if (is.null(host)) {
+    host <- ifelse(use_devel,"epiviz-dev", "epiviz")
+    host <- sprintf("http://%s.cbcb.umd.edu", host)
+  }
+  
+  if (!is.null(http_port)) {
+    port <- sprintf(":%d", http_port)
+  } else {
+    port <- ""
+  }
+  
+  if (is.null(path)) {
+    path <- "/index.php"
+  }
+  
+  url <- paste0(host,port,path)
+  controllerHost <- sprintf("ws://localhost:%d", ws_port)  
+  url <- sprintf("%s?websocket-host[]=%s&", url, controllerHost)
+  url <- paste0(url, sprintf("debug=%s&", ifelse(debug, "true", "false")))
+  
+  if (!is.null(workspace)) {
+    url <- paste0(url,"ws=",workspace,"&")
+  } else if (!is.null(chr) && !is.null(start) && !is.null(end)) {
+    url <- paste0(url,
+                  sprintf("seqName=%s&start=%d&end=%d&",
+                          chr,
+                          as.integer(start),
+                          as.integer(end)))
+  }
+  
+  if (!is.null(scripts)) {
+    script_string <- paste(sprintf("script[]=%s&", scripts),collapse="")
+    url <- paste0(url, script_string)
+  }
+  
+  if (!is.null(gists)) {
+    gist_string <- paste(sprintf("gist[]=%s&", gists), collapse="")
+    url <- paste0(url, gist_string)
+  }
+  
+  cookie_string <- sprintf("useCookie=%s&", ifelse(use_cookie, "true", "false"))
+  url <- paste0(url, cookie_string)
+  url
+}
+
 #' Class managing connection to epiviz application.
 #' 
 #' @field server An object of class \code{\link[epivizrServer]{EpivizServer}} used to communicate with epiviz app.
@@ -14,7 +64,7 @@
 #' @include EpivizChartMgr-class.R
 EpivizApp <- setRefClass("EpivizApp",
   fields=list(
-    .url="character",
+    .url_parms="list",
     server="EpivizServer",
     data_mgr="EpivizDataMgr",
     chart_mgr="EpivizChartMgr"
@@ -160,6 +210,20 @@ EpivizApp$methods(
 
 # session management methods
 EpivizApp$methods(
+  .wait_for_connection = function(timeout=10L) {
+    if (.self$server$.verbose) {
+      cat("Servicing websocket until connected\n")
+    }
+    
+    ptm <- proc.time()["elapsed"]
+    while(!.self$server$is_socket_connected() && (proc.time()["elapsed"] - ptm  < timeout)) {
+      .self$service(verbose=FALSE)
+    }
+    
+    if (!.self$server$is_socket_connected()) {
+      stop("[epivizr] Error opening connection. UI unable to connect to websocket server.")
+    }
+  },
   .open_browser=function() {
     close_on_error <- FALSE
     if (.self$is_server_closed()) {
@@ -180,23 +244,13 @@ EpivizApp$methods(
     }
 
     tryCatch({
-      browseURL(.self$.url)
-      
+      .self$.url_parms$ws_port <- .self$server$.port
+      url <- do.call(.constructURL, .self$.url_parms)
+      browseURL(url)
       if (.self$server$is_daemonized()) {
         return(invisible())
       }
-
-      if (.self$server$.verbose) {
-        cat("Servicing websocket until connected\n")
-      }
-
-      ptm <- proc.time()
-      while(!.self$server$is_socket_connected() && (proc.time()-ptm)[2] * 1000 <= 30) {
-        .self$service(verbose=FALSE)
-      }
-      if (!.self$server$is_socket_connected()) {
-        stop("[epivizr] Error opening connection. UI unable to connect to websocket server.")
-      }
+      .self$.wait_for_connection()      
     }, error=function(e) {
       if (closeOnError) .self$server$stop_server()
       stop(e)
