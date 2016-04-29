@@ -62,7 +62,30 @@ app <- startEpiviz(workspace="qyOTB6vVnff", gists="2caf8e891201130c7daa")
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
-app <- startEpiviz(debug=TRUE, open_browser=FALSE, non_interactive=TRUE, try_ports=TRUE)
+app <- startEpiviz(host="http://localhost", http_port=8989, debug=TRUE, open_browser=FALSE, non_interactive=TRUE, try_ports=TRUE)
+
+
+# register BlockTrack
+js_chart_settings <- list(list(id = "title", type = "string", defaultValue = "", label = "Title", possibleValues = NULL), list(id = "marginTop", type = "number", defaultValue = 25, label = "Top margin", possibleValues = NULL), list(id = "marginBottom", type = "number", defaultValue = 23, label = "Bottom margin", possibleValues = NULL), list(id = "marginLeft", type = "number", defaultValue = 20, label = "Left margin", possibleValues = NULL), list(id = "marginRight", type = "number", defaultValue = 10, label = "Right margin", possibleValues = NULL), list(id = "minBlockDistance", type = "number", defaultValue = 5, label = "Minimum block distance", possibleValues = NULL))
+
+js_chart_colors = c("#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf")
+
+app$chart_mgr$register_chart_type("BlocksTrack", "epiviz.plugins.charts.BlocksTrack", js_chart_settings=js_chart_settings, js_chart_colors=js_chart_colors)
+
+# register LineTrack
+js_chart_settings <- list(list(id = "title", type = "string", defaultValue = "", label = "Title", possibleValues = NULL), list(id = "marginTop", type = "number", defaultValue = 25, label = "Top margin", possibleValues = NULL), list(id = "marginBottom", type = "number", defaultValue = 23, label = "Bottom margin", possibleValues = NULL), list(id = "marginLeft", type = "number", defaultValue = 20, label = "Left margin", possibleValues = NULL), list(id = "marginRight", type = "number", defaultValue = 10, label = "Right margin", possibleValues = NULL), list(id = "measurementGroupsAggregator", type = "categorical", defaultValue = "mean-stdev", label = "Aggregator for measurement groups", possibleValues = c("mean-stdev", "quartiles", "count", "min", "max", "sum")), list(id = "step", type = "number", defaultValue = 50, label = "Step", possibleValues = NULL), list(id = "showPoints", type = "boolean", defaultValue = FALSE, label = "Show points", possibleValues = NULL), list(id = "showLines", type = "boolean", defaultValue = TRUE, label = "Show lines", possibleValues = NULL), list(id = "showErrorBars", type = "boolean", defaultValue = TRUE, label = "Show error bars", possibleValues = NULL), list(id = "pointRadius", type = "number", defaultValue = 1, label = "Point radius", possibleValues = NULL), list(id = "lineThickness", type = "number", defaultValue = 1, label = "Line thickness", possibleValues = NULL), list(id = "yMin", type = "number", defaultValue = "default", label = "Min Y", possibleValues = NULL), list(id = "yMax", type = "number", defaultValue = "default", label = "Max Y", possibleValues = NULL), list(id = "interpolation", type = "categorical", defaultValue = "linear", label = "Interpolation", possibleValues = c("linear", "step-before", "step-after", "basis", "basis-open", "basis-closed", "bundle", "cardinal", "cardinal-open", "monotone")))
+
+js_chart_colors <- c("#1859a9", "#ed2d2e", "#008c47", "#010101", "#f37d22", "#662c91", "#a11d20", "#b33893")
+
+app$chart_mgr$register_chart_type("LineTrack", "epiviz.plugins.charts.LineTrack", js_chart_settings=js_chart_settings, js_chart_colors=js_chart_colors)
+
+# register ScatterPlot
+js_chart_settings <- list(list(id = "title", type = "string", defaultValue = "", label = "Title", possibleValues = NULL), list(id = "marginTop", type = "number", defaultValue = 15, label = "Top margin", possibleValues = NULL), list(id = "marginBottom", type = "number", defaultValue = 50, label = "Bottom margin", possibleValues = NULL), list(id = "marginLeft", type = "number", defaultValue = 50, label = "Left margin", possibleValues = NULL), list(id = "marginRight", type = "number", defaultValue = 15, label = "Right margin", possibleValues = NULL), list(id = "measurementGroupsAggregator", type = "categorical", defaultValue = "mean-stdev", label = "Aggregator for measurement groups", possibleValues = c("mean-stdev", "quartiles", "count", "min", "max", "sum")), list(id = "circleRadiusRatio", type = "number", defaultValue = 0.015, label = "Circle radius ratio", possibleValues = NULL), list(id = "xMin", type = "number", defaultValue = "default", label = "Min X", possibleValues = NULL), list(id = "xMax", type = "number", defaultValue = "default", label = "Max X", possibleValues = NULL), list(id = "yMin", type = "number", defaultValue = "default", label = "Min Y", possibleValues = NULL), list(id = "yMax", type = "number", defaultValue = "default", label = "Max Y", possibleValues = NULL))
+
+js_chart_colors <- c("#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf")
+
+app$chart_mgr$register_chart_type("ScatterPlot", "epiviz.plugins.charts.ScatterPlot", js_chart_settings=js_chart_settings, js_chart_colors=js_chart_colors)
+
 app$server$start_server()
 ```
 This opens a websocket connection between the interactive `R` session and the browser client. This will allow us to visualize data stored in the `Epiviz` server along with data in the interactive `R` session.
@@ -76,6 +99,15 @@ app$server$service()
 ```
 
 ----
+
+### List available chart types
+
+Once the browser is open and is connected to an active epivizr session, the epivizr session registers available chart types supported in the browser client. To list registered chart types
+
+```{r, eval=TRUE}
+app$chart_mgr$list_all_available_chart_types()
+```
+
 
 ### Adding block region devices
 
@@ -111,6 +143,43 @@ app$update_measurements(ms_obj, tcga_colon_blocks[keep,])
 ```
 
 Now, only this subset of blocks will be displayed in the already existing track.
+
+### Modify default chart settings and colors
+
+To modify default chart colors or settings, we need to know what settings can be applied to the chart.
+
+There are two ways to set settings and colors to a chart. 
+
+* When plotting the chart
+
+If using the plot function, use the `list_all_available_chart_types` method to list settings that can be applied to a chart type. For example, for a blocksTrack chart, we can set `minBlockDistance` as a setting for the plot function.
+  
+```{r, eval=TRUE}
+settings <- list(minBlockDistance=50)
+colors <- c("#d15014", "#5e97eb", "#e81ccd")
+blocks_chart <- app$plot(tcga_colon_blocks, datasource_name="450k colon_blocks", settings=settings, colors=colors)
+```
+
+* if the block is already added to the session, use the `set_chart_settings` method to update settings and colors. Since the block track is already added to the browser, you can also use `get_chart_settings` to list the settings that are currently applied to the plot.
+
+```{r, eval=TRUE}
+# to list applied chart settings
+app$chart_mgr$get_chart_settings(blocks_chart)
+
+# create a list of settings and colors to update the plot
+settings <- list(minBlockDistance=100)
+colors <- c("#d15014", "#5e97eb", "#e81ccd")
+app$chart_mgr$set_chart_settings(blocks_chart, settings=settings, colors=colors)
+```
+
+### Print or Save plots
+
+plots and visualization can be saved through the epivizr session as a pdf or png. To do so, use the `print_chart` method.
+
+```{r, eval=TRUE}
+app$chart_mgr$print_chart(blocks_chart, file_name="blocks_chart", file_type="pdf")
+```
+
 
 ### Adding line plots along the genome
 
@@ -224,6 +293,14 @@ ind <- order(foldChange,decreasing=TRUE)
 # bounding 1Mb around each exon
 slideshowRegions <- trim(rowRanges(sumexp)[ind] + 1000000L)
 app$slideshow(slideshowRegions, n=5)
+```
+
+### Save Workspace/session
+
+To print your workspace as a pdf or png, we use the `print_workspace` method
+
+```{r, eval=TRUE}
+app$print_workspace(file_name="workspace", file_type="pdf")
 ```
 
 ### Closing the session
