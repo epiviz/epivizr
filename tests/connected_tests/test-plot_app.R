@@ -34,7 +34,7 @@ test_that("plot feature works", {
   se <- make_test_SE()
 
   chart_mgr$register_chart_type("ScatterPlot", "epiviz.plugins.charts.ScatterPlot")    
-  chart_obj <- app$plot(se, "ms1", columns=c("A","B"), assay="counts2")
+  chart_obj <- app$plot(se, datasource_name="ms1", columns=c("A","B"), assay="counts2")
   chart_id <- chart_obj$get_id()
   wait_until(!server$has_request_waiting())
   Sys.sleep(2)

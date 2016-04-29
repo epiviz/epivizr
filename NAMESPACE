@@ -2,6 +2,8 @@
 
 export(startEpiviz)
 import(GenomicRanges)
+import(IRanges)
+import(S4Vectors)
 import(methods)
 importClassesFrom(epivizrData,EpivizData)
 importClassesFrom(epivizrData,EpivizDataMgr)

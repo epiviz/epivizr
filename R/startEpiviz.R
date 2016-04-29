@@ -51,7 +51,7 @@
 .register_all_the_epiviz_things <- function(app) {
   # register actions requested from epiviz app
   app$server$register_action("getMeasurements", function(request_data) {
-    list(measurements=epivizrServer::json_writer(app$data_mgr$get_measurements()))
+    app$data_mgr$get_measurements()
   })
   
   app$server$register_action("getRows", function(request_data) {
@@ -71,7 +71,7 @@
   })
   
   app$server$register_action("getSeqInfos", function(request_data) {
-    list(seqInfos=epivizrServer::json_writer(app$data_mgr$get_seqinfo()))
+    app$data_mgr$get_seqinfo()
   })
     
   ## TODO: register action 'search'

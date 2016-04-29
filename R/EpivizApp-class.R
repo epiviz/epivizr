@@ -7,6 +7,10 @@
 #' @importClassesFrom epivizrServer EpivizServer
 #' @importClassesFrom epivizrData EpivizDataMgr EpivizMeasurement EpivizData
 #' @import GenomicRanges 
+#' @import S4Vectors
+#' @import methods
+#' @import IRanges
+#' 
 #' @include EpivizChartMgr-class.R
 EpivizApp <- setRefClass("EpivizApp",
   fields=list(
