@@ -65,7 +65,7 @@ EpivizApp$methods(
     datasource <- measurement@datasourceId
     .self$data_mgr$.find_datasource(datasource)
   },
-  plot = function(data_object, send_request=TRUE, ...) {
+  plot = function(data_object, send_request=TRUE, settings=NULL, colors=NULL, ...) {
     "Visualize data on epiviz app using its default chart type. Measurements from the \\code{data-object} 
     are first added to the epiviz app using the \\code{add_measurements} method for class 
     \\code{\\link[epivizrData]{EpivizData}}. See documentation for \\code{\\link[epivizrData]{register}}
@@ -85,7 +85,7 @@ EpivizApp$methods(
     if (send_request && .self$server$is_interactive() && !.self$data_mgr$is_ms_connected(ms_obj)) {
       stop("Error adding measurements for data object\n")
     }
-    .self$chart_mgr$plot(ms_obj, send_request=send_request)
+    .self$chart_mgr$plot(ms_obj, send_request=send_request, settings=settings, colors=colors)
   }
 )
 
@@ -203,6 +203,7 @@ EpivizApp$methods(
     })
   },
   print_workspace=function(file_name=NULL, file_type="pdf"){
+    "Save epiviz workspace as a pdf or png."
     callback=function(data) {
       cat("workspace is being saved as", file_type, "\n")
     }

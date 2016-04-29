@@ -77,14 +77,7 @@
   ## TODO: register action 'search'
   
   # register chart types
-  app$chart_mgr$register_chart_type("BlocksTrack")
-  app$chart_mgr$register_chart_type("LineTrack")
-  app$chart_mgr$register_chart_type("GenesTrack")
-  app$chart_mgr$register_chart_type("HeatmapPlot")
-  app$chart_mgr$register_chart_type("LinePlot")
-  app$chart_mgr$register_chart_type("ScatterPlot")
-  app$chart_mgr$register_chart_type("StackedLinePlot")
-  app$chart_mgr$register_chart_type("StackedLineTrack")
+  app$chart_mgr$register_available_chart_types()
 }
 
 #' Start epiviz app and create \code{\link{EpivizApp}} object to manage connection.
