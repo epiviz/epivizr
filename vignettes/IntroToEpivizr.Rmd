@@ -19,7 +19,7 @@ The `epivizr` package implements two-way communication between the `R/Bioconduct
 
 In this vignette we will look at colon cancer methylation data from the TCGA project and expression data from the gene expression barcode project. The `epivizrData` package contains human chromosome 11 methylation data from the Illumina 450kHumanMethylation beadarray processed with the `minfi` package. We use expression data from the `antiProfilesData` bioconductor package.
 
-```{r, eval=TRUE, echo=TRUE, results='hide', warning=FALSE, error=FALSE}
+```{r, eval=TRUE, echo=TRUE, results='hide', warning=FALSE, error=FALSE, message=FALSE}
 library(epivizr)
 library(antiProfilesData)
 library(SummarizedExperiment)
@@ -100,14 +100,15 @@ app$server$service()
 
 ----
 
-### List available chart types
+### Listing available chart types
 
-Once the browser is open and is connected to an active epivizr session, the epivizr session registers available chart types supported in the browser client. To list registered chart types
+Once the browser is open and is connected to an active epivizr session, the epivizr session registers available chart types supported in the epiviz JS app. To list available chart types we use method `list_chart_types`. In this vignette, we only show three chart types available for use in the epiviz JS app. The production epiviz JS app has a larger number of chart types available. Chart types can also be added dynamically as described in the epiviz JS documentation: [http://epiviz.cbcb.umd.edu/help](http://epiviz.cbcb.umd.edu/help). Chart types that are added dynamically are listed and usable within an `epivizr` session.
 
-```{r, eval=TRUE}
-app$chart_mgr$list_all_available_chart_types()
+```{r}
+app$chart_mgr$list_chart_types()
 ```
 
+Chart type settings, e.g., line widths, colors, margins etc. can be modified dynamically. Settings available for each chart type are briefly listed in this call. See below for further detail on customizing charts through settings and colors.
 
 ### Adding block region devices
 
@@ -129,9 +130,9 @@ app$server$service()
 
 ----
 
-You should now see that a new track is added to the `Epiviz` web app. You can think of this track as an interactive display device in `R`. As you navigate on the browser, data is requested from the `R` session through the websocket connection. Remember to escape to continue with your interactive `R` session. The `blocks_chart` object inherits from class `EpivizChart`, which we can use to  get information about the data being displayed and the chart used to display it.  Note that the "brushing" effect we implement in `Epiviz` works for `epivizr` tracks as well.
+You should now see that a new track is added to the `Epiviz` web app. You can think of this track as an interactive display device in `R`. As you navigate on the browser, data is requested from the `R` session through the websocket connection. Remember to escape to continue with your interactive `R` session if you are not running "non-blocking" mode. The `blocks_chart` object inherits from class `EpivizChart`, which we can use to  get information about the data being displayed and the chart used to display it.  Note that the "brushing" effect we implement in `Epiviz` works for `epivizr` tracks as well.
 
-The point of having interactive data connections to `Epiviz` is that we may want to iteratively compute and visualize our data. For example, we may want to only display methylation blocks inferred at a certain statistical significance level. In this case, we will filter by block size.
+Now that we have interactive data connections to `Epiviz` we may want to iteratively compute and visualize our data. For example, we may want to only display methylation blocks inferred at a certain statistical significance level. In this case, we will filter by block size.
 
 ```{r, eval=TRUE}
 # subset to those with length > 250Kbp
@@ -144,15 +145,20 @@ app$update_measurements(ms_obj, tcga_colon_blocks[keep,])
 
 Now, only this subset of blocks will be displayed in the already existing track.
 
-### Modify default chart settings and colors
+### Modifying chart settings and colors
 
-To modify default chart colors or settings, we need to know what settings can be applied to the chart.
+To modify default chart colors or settings, we need to know what settings can be applied to the chart. Again, as these are defined dynamically in the epiviz JS app we use a method, `print_chart_type_info` on the `EpivizChartMgr` class to list settings that can be applied to specific chart type. For example, to list chart settings available for a `BlocksTrack` chart we use the following:
 
-There are two ways to set settings and colors to a chart. 
+```{r}
+app$chart_mgr$print_chart_type_info("BlocksTrack")
+```
 
-* When plotting the chart
+There are two ways to set settings and colors to a chart: when the chart is initially created using the `plot` method, or after the
+chart is created using the `set` method in class `EpivizChart`. We will illustrate both ways of doing this:
 
-If using the plot function, use the `list_all_available_chart_types` method to list settings that can be applied to a chart type. For example, for a blocksTrack chart, we can set `minBlockDistance` as a setting for the plot function.
+If using the `plot` method, use the `list_chart_settings` method as above to list settings that can be applied to a chart type. 
+For example, for a `BlocksTrack` chart, we can set `minBlockDistance` as a setting for the plot function which controls how close genomic
+regions can be before they are merged into a single rectangle in the chart. We can also change colors used in the chart this way.
   
 ```{r, eval=TRUE}
 settings <- list(minBlockDistance=50)
@@ -160,37 +166,52 @@ colors <- c("#d15014", "#5e97eb", "#e81ccd")
 blocks_chart <- app$plot(tcga_colon_blocks, datasource_name="450k colon_blocks", settings=settings, colors=colors)
 ```
 
-* if the block is already added to the session, use the `set_chart_settings` method to update settings and colors. Since the block track is already added to the browser, you can also use `get_chart_settings` to list the settings that are currently applied to the plot.
+This will create a second blocks track using a different color map.
+
+On the other hand, if the `BlockChart` is already added to the epiviz JS application session, use the `set_chart_settings` method to update settings and colors. 
 
 ```{r, eval=TRUE}
-# to list applied chart settings
-app$chart_mgr$get_chart_settings(blocks_chart)
-
 # create a list of settings and colors to update the plot
 settings <- list(minBlockDistance=100)
-colors <- c("#d15014", "#5e97eb", "#e81ccd")
+colors <- c("#5e97eb", "#d15014", "#e81ccd")
 app$chart_mgr$set_chart_settings(blocks_chart, settings=settings, colors=colors)
 ```
 
-### Print or Save plots
+This changes the color map for the second blocks track added.
+To list can also use `print_chart_info` to list settings and colors currently used in the chart.
 
-plots and visualization can be saved through the epivizr session as a pdf or png. To do so, use the `print_chart` method.
+```{r}
+# to list applied chart settings
+app$chart_mgr$print_chart_info(blocks_chart)
+```
+
+Methods are also available directly on the `EpivizChart` objects. E.g., calls `blocks_chart$set(settings=settings, colors=colors)`
+and `blocks_chart$print_info()` yield the same result.
+
+### Printing charts
+
+Charts can be printed as a pdf or png file through the epivizr session. To do so, use the `print_chart` method:
 
 ```{r, eval=TRUE}
 app$chart_mgr$print_chart(blocks_chart, file_name="blocks_chart", file_type="pdf")
 ```
 
+This will create a file named `blocks_chart.pdf` which will be downloaded through your web browser. It will be found in the default file download location for your web browser.
 
 ### Adding line plots along the genome
 
-We have a number of available data types in `epivizr`. In the previous section, we used the `block` type. For the methylation data at base-pair resolution in the `tcga_colon_curves` object, we will use the `bp` type.
+There are a number of different data types available to use through `epivizr`. In the previous section, we used the `block` type. To visualize methylation data at base-pair resolution from the `tcga_colon_curves` object, we will use the `bp` type.
 
 ```{r, eval=TRUE}
 # add low-filter smoothed methylation estimates
 means_track <- app$plot(tcga_colon_curves, datasource_name="450kMeth",type="bp",columns=c("cancerMean","normalMean"))
 ```
 
-NOTE: You can adjust track settings to change how this new track looks like. For instance, to show all points in the window set the `step` parameter to 1, and to see a smooth interpolation of the data set the `interpolation` parameter to `basis`. We will add support to `epivizr` to set these parameters in an upcoming version.
+NOTE: You can adjust track settings to change how this new track looks like. For instance, to show all points in the window set the `step` parameter to 1, and to see a smooth interpolation of the data set the `interpolation` parameter to `basis`:
+
+```{r, eval=TRUE}
+means_track$set(settings=list(step=1, interpolation="basis"))
+```
 
 Notice that we added two lines in this plot, one for mean methylation in cancer and another for mean methylation in normal. The `columns` argument specifies which columns in `mcols(colon_curves)` will be displayed. 
 
@@ -200,7 +221,7 @@ We can also add a track containing the smooth methylation difference estimate us
 diff_chart <- app$plot(tcga_colon_curves, datasource_name="450kMethDiff",type="bp",columns=c("smooth"),ylim=matrix(c(-.5,.5),nc=1))
 ```
 
-We pass limits for the y axis in this case. To see other arguments supported, you can use the help framework in R `?"EpivizApp"`.
+We pass limits for the y axis in this case. To see other arguments supported, you can use the help framework in R `?"EpivizApp"`. As before, we can specify settings for this new track.
 
 ### The app connection again
 
@@ -286,7 +307,7 @@ There is a convenience function to quickly navigate to a series of locations in 
 We can use that to browse the genome along a ranked list of regions. Let's navigate to the
 5 most up-regulated exons in the colon exon expression data.
 
-```{r, eval=TRUE}
+```{r, eval=TRUE, warnings=FALSE}
 foldChange <- mat[,"cancer"]-mat[,"normal"]
 ind <- order(foldChange,decreasing=TRUE)
 
@@ -295,13 +316,15 @@ slideshowRegions <- trim(rowRanges(sumexp)[ind] + 1000000L)
 app$slideshow(slideshowRegions, n=5)
 ```
 
-### Save Workspace/session
+### Printing the epivizr workspace
 
-To print your workspace as a pdf or png, we use the `print_workspace` method
+To print the current epiviz workspace as a pdf or png, we use the `print_workspace` method:
 
 ```{r, eval=TRUE}
 app$print_workspace(file_name="workspace", file_type="pdf")
 ```
+
+This will create a file named `workspace.pdf` and will be downloaded through your web browser. It will be saved to the default file download location for your web browser.
 
 ### Closing the session
 

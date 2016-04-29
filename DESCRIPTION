@@ -2,7 +2,7 @@ Package: epivizr
 Maintainer: Hector Corrada Bravo <hcorrada@gmail.com>
 Author: Hector Corrada Bravo, Florin Chelaru, Llewellyn Smith, Naomi
     Goldstein
-Version: 1.99.3
+Version: 1.99.4
 License: Artistic-2.0
 Title: R Interface to epiviz web app
 Description: This package provides connections to the
@@ -37,6 +37,7 @@ Collate:
     'EpivizChartMgr-class.R'
     'EpivizApp-class.R'
     'EpivizChart-class.R'
+    'settings_utils.R'
     'startEpiviz.R'
     'vignette_data.R'
 biocViews: Visualization, Infrastructure, GUI
