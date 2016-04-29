@@ -175,6 +175,7 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
         \\item{js_chart_type}{the full JavaScript class name of the corresponding chart type 
           (e.g. 'epiviz.plugins.charts.BlocksTrack'). If missing it is taken from the \\code{chart_type} argument}
         \\item{js_chart_settings}{custom settings that can be applied to charts in JS}
+        \\item{js_chart_colors}{default color palette applied to charts in JS}
       }"
       .self$.chart_type_map[[chart_type]] <- list(js_chart_type=js_chart_type, js_chart_settings=js_chart_settings, js_chart_colors=js_chart_colors)
     },
@@ -267,7 +268,7 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
       out_settings
     },
     set_chart_settings = function(chart_object_or_id, settings=NULL, colors=NULL) {
-      "Apply custom chart settings to a chart object
+      "Apply custom chart settings or colors to a chart object
       
       \\describe{
         \\item{chart_object_or_id}{An object of class \\code{\\link{EpivizChart}} or a 

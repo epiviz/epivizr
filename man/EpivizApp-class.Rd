@@ -42,7 +42,8 @@ in a given chart.
 
 \item{\code{navigate(chr, start, end)}}{Navigate to given position on the epiviz app.}
 
-\item{\code{plot(data_object, send_request = TRUE, ...)}}{Visualize data on epiviz app using its default chart type. Measurements from the \code{data-object} 
+\item{\code{plot(data_object, send_request = TRUE, settings = NULL, colors = NULL,
+  ...)}}{Visualize data on epiviz app using its default chart type. Measurements from the \code{data-object} 
 are first added to the epiviz app using the \code{add_measurements} method for class 
 \code{\link[epivizrData]{EpivizData}}. See documentation for \code{\link[epivizrData]{register}}
 for information on supported data types and the \code{\link[epivizrData]{EpivizData}} class
@@ -55,6 +56,8 @@ for this type of data.
   \item{...}{Additional arguments passed to \code{add_measurements} method for class
     \code{\link[epivizrData]{EpivizData}}}
 }}
+
+\item{\code{print_workspace(file_name = NULL, file_type = "pdf")}}{Save epiviz workspace as a pdf or png.}
 
 \item{\code{service(verbose = TRUE)}}{Block interactive R session to service websocket requests.}
 
