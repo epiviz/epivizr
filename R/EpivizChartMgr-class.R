@@ -42,7 +42,7 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
         if (!exists(id, envir=.self$.chart_list, inherits=FALSE)) {
           
           c_ids <- ls(.self$.chart_list)
-          if (length(ids) == 0) {
+          if (length(c_ids) == 0) {
             return(NULL)
           }
           
