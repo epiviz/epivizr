@@ -40,33 +40,35 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
       if (is.character(chart_object_or_id)) {
         id <- chart_object_or_id
         if (!exists(id, envir=.self$.chart_list, inherits=FALSE)) {
-          
-          c_ids <- ls(.self$.chart_list)
-          if (length(c_ids) == 0) {
-            return(NULL)
-          }
-          
-          match_id <- NULL
-          
-          for (c_id in c_ids) {
-            if(.self$.chart_list[[c_id]]$.app_id == id) {
-              match_id <- c_id
-            }
-          }
-          
-          if(is.null(match_id)) {
-            stop("chart with id ", id, " not found")  
-          }
-          
-          id <- match_id
-          
+          stop("chart with id ", id, " not found")                  
         }
-        
         chart_obj <- .self$.chart_list[[id]]
       } else {
         chart_obj <- chart_object_or_id
       }
       chart_obj
+    },
+    .get_chart_from_app_id = function(chart_app_id) {
+      chart_obj <- NULL
+      c_ids <- ls(.self$.chart_list)
+      if (length(c_ids) == 0) {
+        return(NULL)
+      }
+      
+      id <- NULL
+      
+      for (c_id in c_ids) {
+        if(.self$.chart_list[[c_id]]$.app_id == chart_app_id) {
+          id <- c_id
+        }
+      }
+      
+      if(is.null(id)) {
+        stop("chart with app id ", chart_app_id, " not found")  
+      }
+      
+      chart_obj <- .self$.chart_list[[id]]
+      chart_obj  
     },
     add_chart = function(chart_object, send_request=TRUE) {
       "Add a chart to the chart manager.
@@ -271,7 +273,7 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
     .update_chart_settings = function(request_data) {
       
       chart_app_id <- request_data$chartId
-      chart_object <- .self$.get_chart_object(chart_app_id)
+      chart_object <- .self$.get_chart_from_app_id(chart_app_id)
       
       if (!is(chart_object, "EpivizChart"))
         warning("'chart_object' must be an 'EpivizChart' object")
