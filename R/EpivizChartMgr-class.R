@@ -41,7 +41,7 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
         id <- chart_object_or_id
         if (!exists(id, envir=.self$.chart_list, inherits=FALSE)) {
           
-          ids <- ls(.self$.chart_list)
+          c_ids <- ls(.self$.chart_list)
           if (length(ids) == 0) {
             return(NULL)
           }
@@ -53,6 +53,7 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
               match_id <- c_id
             }
           }
+          
           if(is.null(match_id)) {
             stop("chart with id ", id, " not found")  
           }
