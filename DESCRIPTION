@@ -1,7 +1,7 @@
 Package: epivizr
 Maintainer: Hector Corrada Bravo <hcorrada@gmail.com>
 Author: Hector Corrada Bravo, Florin Chelaru, Llewellyn Smith, Naomi
-    Goldstein
+    Goldstein, Jayaram Kancherla
 Version: 1.99.4
 License: Artistic-2.0
 Title: R Interface to epiviz web app
