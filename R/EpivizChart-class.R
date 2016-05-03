@@ -118,7 +118,8 @@ EpivizChart <- setRefClass("EpivizChart",
 		  if (!is.null(settings)) {
 		    settings <- .self$.filter_settings(settings)
 		    for (id in names(settings)) {
-		      .self$.settings[[id]] <- settings[[id]]
+		      pos <- which(sapply(.self$.settings, function(x) x$id) == id)
+		      .self$.settings[[pos]]$defaultValue <- settings[[id]]
 		    }
 		  }
 		  settings
