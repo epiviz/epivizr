@@ -40,8 +40,27 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
       if (is.character(chart_object_or_id)) {
         id <- chart_object_or_id
         if (!exists(id, envir=.self$.chart_list, inherits=FALSE)) {
-          stop("chart with id ", id, " not found")                  
+          
+          ids <- ls(.self$.chart_list)
+          if (length(ids) == 0) {
+            return(NULL)
+          }
+          
+          match_id <- NULL
+          
+          for (c_id in c_ids) {
+            if(.self$.chart_list[[c_id]]$.app_id == id) {
+              match_id <- c_id
+            }
+          }
+          if(is.null(match_id)) {
+            stop("chart with id ", id, " not found")  
+          }
+          
+          id <- match_id
+          
         }
+        
         chart_obj <- .self$.chart_list[[id]]
       } else {
         chart_obj <- chart_object_or_id
@@ -247,6 +266,23 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
                                   js_chart_colors=x$colorMap)
       }
       invisible(NULL)
+    },
+    .update_chart_settings = function(request_data) {
+      
+      chart_app_id <- request_data$chartId
+      chart_object <- .self$.get_chart_object(chart_app_id)
+      
+      if (!is(chart_object, "EpivizChart"))
+        warning("'chart_object' must be an 'EpivizChart' object")
+      
+      chart_id <- chart_object$get_id()
+      if(!exists(chart_id, envir=.self$.chart_list, inherits=FALSE)) {
+        warning("object ", chart_id, " not found")
+      }
+      
+      chart_object$.update(settings=request_data$settings, colors=request_data$colorMap)
+      invisible()
+      
     },
     set_chart_settings = function(chart_object_or_id, settings=NULL, colors=NULL) {
       "Apply custom chart settings or colors to a chart object.

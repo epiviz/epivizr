@@ -28,6 +28,10 @@
     app$chart_mgr$.register_available_chart_types(request_data$data)
   })
   
+  app$server$register_action("getChartSettings", function(request_data) {
+    app$chart_mgr$.update_chart_settings(request_data)
+  })
+  
   ## TODO: register action 'search'
 }
 

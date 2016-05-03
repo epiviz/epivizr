@@ -50,6 +50,17 @@ EpivizChart <- setRefClass("EpivizChart",
 		  cat(paste0(.self$.colors, collapse=", "), "\n")
 		  invisible()
 		},
+		.update = function(settings=NULL, colors=NULL) {
+		  if (!is.null(settings)) {
+		    settings <- .self$set_settings(settings)
+		  }
+		  
+		  if (!is.null(colors)) {
+		    .self$set_colors(colors)
+		  }
+		  
+		  invisible()
+		},
 		set = function(settings=NULL, colors=NULL) {
 		  "Set settings and colors used in chart.
 		  \\describe{
