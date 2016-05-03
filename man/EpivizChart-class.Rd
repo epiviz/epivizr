@@ -21,12 +21,23 @@ Class encapsulating a chart in epiviz app
 
 \item{\code{is_connected()}}{Returns \code{TRUE} if chart is connected to a chart on epiviz app.}
 
+\item{\code{print_info()}}{Print settings and color currently used in chart object.}
+
+\item{\code{set(settings = NULL, colors = NULL)}}{Set settings and colors used in chart.
+  \describe{
+    \item{settings}{List of settings to apply.}
+\item{colors}{Character vector of HEX colors to use in chart.}
+  }}
+
 \item{\code{set_app_id(id)}}{Set chart's id assigned by epiviz app.}
 
 \item{\code{set_colors(colors)}}{Set custom colors for the chart.}
 
 \item{\code{set_id(id)}}{Set chart's id assigned by chart manager.}
 
-\item{\code{set_settings(settings)}}{Set custom settings for the chart.}
+\item{\code{set_settings(settings)}}{Set custom settings for the chart. Returns subset of valid settings.
+\describe{
+  \item{settings}{List of settings to apply.}
+}}
 }}
 

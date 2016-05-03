@@ -177,8 +177,7 @@ colors <- c("#5e97eb", "#d15014", "#e81ccd")
 app$chart_mgr$set_chart_settings(blocks_chart, settings=settings, colors=colors)
 ```
 
-This changes the color map for the second blocks track added.
-To list can also use `print_chart_info` to list settings and colors currently used in the chart.
+This changes the color map for the second blocks track added. Use the `print_chart_info` method to list settings and colors currently used in the chart.
 
 ```{r}
 # to list applied chart settings
@@ -200,7 +199,7 @@ This will create a file named `blocks_chart.pdf` which will be downloaded throug
 
 ### Adding line plots along the genome
 
-There are a number of different data types available to use through `epivizr`. In the previous section, we used the `block` type. To visualize methylation data at base-pair resolution from the `tcga_colon_curves` object, we will use the `bp` type.
+There are a number of different data types available to use through `epivizr`. You can see a list of R/BioC classes that are supported using `?register`. In the previous section, we used the `block` data type to register a `GenomicRanges` object. To visualize methylation data at base-pair resolution from the `tcga_colon_curves` `GenomicRanges` object, we will use the `bp` type.
 
 ```{r, eval=TRUE}
 # add low-filter smoothed methylation estimates
@@ -307,7 +306,7 @@ There is a convenience function to quickly navigate to a series of locations in 
 We can use that to browse the genome along a ranked list of regions. Let's navigate to the
 5 most up-regulated exons in the colon exon expression data.
 
-```{r, eval=TRUE, warnings=FALSE}
+```{r, eval=TRUE, warning=FALSE}
 foldChange <- mat[,"cancer"]-mat[,"normal"]
 ind <- order(foldChange,decreasing=TRUE)
 
