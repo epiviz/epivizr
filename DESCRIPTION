@@ -19,8 +19,8 @@ Depends:
     R (>= 3.2.3),
     methods,
 Imports:
-    epivizrServer (>= 0.99.1),
-    epivizrData (>= 0.99.5),
+    epivizrServer (>= 1.0.1),
+    epivizrData (>= 1.0.1),
     GenomicRanges,
     S4Vectors,
     IRanges
