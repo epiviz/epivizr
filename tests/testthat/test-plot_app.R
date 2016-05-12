@@ -1,8 +1,6 @@
 context("app plot methods")
 
 test_that("plot block works", {
-  skip("gc error")
-  
   server <- epivizrServer::createServer()
   data_mgr <- epivizrData::createMgr(server)
   chart_mgr <- EpivizChartMgr$new(server)
@@ -27,8 +25,6 @@ test_that("plot block works", {
 })
 
 test_that("plot bp works", {
-  skip("gc error")
-  
   server <- epivizrServer::createServer()
   data_mgr <- epivizrData::createMgr(server)
   chart_mgr <- EpivizChartMgr$new(server)
@@ -57,8 +53,6 @@ test_that("plot bp works", {
 })
 
 test_that("plot feature works", {
-  skip("gc error")
-  
   server <- epivizrServer::createServer()
   data_mgr <- epivizrData::createMgr(server)
   chart_mgr <- EpivizChartMgr$new(server)
@@ -71,7 +65,7 @@ test_that("plot feature works", {
   sset <- make_test_SE()
 
   chart_mgr$register_chart_type("ScatterPlot", "epiviz.plugins.charts.ScatterPlot")    
-  chart_obj <- app$plot(sset, "ms1", send_request=FALSE, columns=c("A","B"), assay="counts2")
+  chart_obj <- app$plot(sset, datasource_name="ms1", send_request=FALSE, columns=c("A","B"), assay="counts2")
   chart_id <- chart_obj$get_id()
   
   ms_obj <- app$get_ms_object(chart_id) 
@@ -85,8 +79,6 @@ test_that("plot feature works", {
 })
 
 test_that("plot gene track works", {
-  skip("gc error")
-  
   skip_if_not_installed("bumphunter")
   skip_on_cran()
   
@@ -101,7 +93,7 @@ test_that("plot gene track works", {
   gr <- make_test_gene_info()
 
   chart_mgr$register_chart_type("GenesTrack", "epiviz.plugins.charts.GenesTrack")    
-  chart_obj <- app$plot(gr, "ms1", type="gene_info", send_request=FALSE)
+  chart_obj <- app$plot(gr, datasource_name="ms1", type="gene_info", send_request=FALSE)
   chart_id <- chart_obj$get_id()
   
   ms_obj <- app$get_ms_object(chart_id)

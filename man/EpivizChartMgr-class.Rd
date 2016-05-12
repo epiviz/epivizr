@@ -84,7 +84,7 @@ See \code{is_closed} method in class \code{\link[epivizrServer]{EpivizServer}}.}
 
 \item{\code{register_chart_type(chart_type,
   js_chart_type = paste0("epiviz.plugins.charts.", chart_type),
-  js_chart_settings = NULL, js_chart_colors = NULL)}}{Register a chart type name to a JavaScript chart type in the epiviz app.
+  js_chart_settings = list(), js_chart_colors = character())}}{Register a chart type name to a JavaScript chart type in the epiviz app.
 \describe{
   \item{chart_type}{the name to use for chart type in R (e.g., 'BlocksTrack')}
   \item{js_chart_type}{the full JavaScript class name of the corresponding chart type 
