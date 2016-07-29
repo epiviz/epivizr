@@ -65,6 +65,7 @@
 EpivizApp <- setRefClass("EpivizApp",
   fields=list(
     .url_parms="list",
+    .browser_fun="function",
     server="EpivizServer",
     data_mgr="EpivizDataMgr",
     chart_mgr="EpivizChartMgr"
@@ -246,13 +247,13 @@ EpivizApp$methods(
     tryCatch({
       .self$.url_parms$ws_port <- .self$server$.port
       url <- do.call(.constructURL, .self$.url_parms)
-      browseURL(url)
+      .self$.browser_fun(url)
       if (.self$server$is_daemonized()) {
         return(invisible())
       }
       .self$.wait_for_connection()      
     }, error=function(e) {
-      if (closeOnError) .self$server$stop_server()
+      if (close_on_error) .self$server$stop_server()
       stop(e)
     })
   },
