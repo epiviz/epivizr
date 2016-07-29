@@ -8,7 +8,8 @@ startEpiviz(host = NULL, http_port = NULL, path = NULL,
   use_devel = FALSE, chr = "chr11", start = 99800000, end = 103383180,
   debug = FALSE, workspace = NULL, scripts = NULL, gists = NULL,
   use_cookie = TRUE, register_function = .register_all_the_epiviz_things,
-  open_browser = TRUE, server = NULL, browser_fun = browseURL, ...)
+  open_browser = TRUE, server = NULL, browser_fun = browseURL,
+  ws_host = "localhost", ...)
 }
 \arguments{
 \item{host}{(character) use a host for the epiviz app other than the cbcb.umd.edu hosts.}
@@ -43,6 +44,8 @@ be imported when epiviz is loaded (see \url{http://epiviz.cbcb.umd.edu/help} for
 \item{server}{(EpivizServer) if not \code{NULL} use this object as underlying WebSocket and HTTP server}
 
 \item{browser_fun}{(function) function used to browse to URL (\code{browseURL} by default)}
+
+\item{ws_host}{(character) host address to use for websocket connection ("localhost" by default)}
 
 \item{...}{additional parameters passed to \code{\link[epivizrServer]{createServer}}.}
 }
