@@ -166,7 +166,7 @@ EpivizApp$methods(
         and \\code{end}}
     }'
     request_data=list(action="getCurrentLocation")
-    .self$server$send_request(request, callback)
+    .self$server$send_request(request_data, callback)
   },
   slideshow=function(granges, n=length(granges), .callback=NULL) {
     'Navigate on epiviz app successively to given positions.
