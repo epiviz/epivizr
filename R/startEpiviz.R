@@ -53,6 +53,7 @@
 #' @param register_function (function) function used to register actions and charts on the epiviz app.
 #' @param open_browser (logical) browse to the epiviz URL before exiting function.
 #' @param server (EpivizServer) if not \code{NULL} use this object as underlying WebSocket and HTTP server
+#' @param browser_fun (function) function used to browse to URL (\code{browseURL} by default)
 #' @param ... additional parameters passed to \code{\link[epivizrServer]{createServer}}.
 #' 
 #' @return An object of class \code{\link{EpivizApp}}
@@ -67,7 +68,7 @@ startEpiviz <- function(host=NULL, http_port=NULL, path=NULL, use_devel=FALSE,
                         chr="chr11", start=99800000, end=103383180, 
                         debug=FALSE, workspace=NULL, scripts=NULL, gists=NULL, use_cookie=TRUE,
                         register_function=.register_all_the_epiviz_things,
-                        open_browser=TRUE, server=NULL, ...) {
+                        open_browser=TRUE, server=NULL, browser_fun=browseURL, ...) {
 
   if(is.null(server) || !is(server, "EpivizServer") ) {
     server <- epivizrServer::createServer(...)
@@ -91,6 +92,7 @@ startEpiviz <- function(host=NULL, http_port=NULL, path=NULL, use_devel=FALSE,
     use_cookie=use_cookie)
   
   app <- EpivizApp$new(.url_parms=url_parms,
+                       .browser_fun=browser_fun,
                        server=server,
                        data_mgr=data_mgr,
                        chart_mgr=chart_mgr)
