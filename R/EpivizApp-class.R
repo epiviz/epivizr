@@ -1,4 +1,4 @@
-.constructURL <- function(host=NULL, http_port=NULL, path = NULL, ws_port=7123L,
+.constructURL <- function(host=NULL, http_port=NULL, path = NULL, ws_host="localhost", ws_port=7123L,
                           use_devel=FALSE, debug=FALSE, 
                           chr="chr11", start=99800000, end=103383180,
                           workspace=NULL, scripts=NULL, gists=NULL, use_cookie=FALSE)
@@ -19,7 +19,7 @@
   }
   
   url <- paste0(host,port,path)
-  controllerHost <- sprintf("ws://localhost:%d", ws_port)  
+  controllerHost <- sprintf("ws://%s:%d", ws_host, ws_port)  
   url <- sprintf("%s?websocket-host[]=%s&", url, controllerHost)
   url <- paste0(url, sprintf("debug=%s&", ifelse(debug, "true", "false")))
   
@@ -247,6 +247,11 @@ EpivizApp$methods(
     tryCatch({
       .self$.url_parms$ws_port <- .self$server$.port
       url <- do.call(.constructURL, .self$.url_parms)
+      
+      if(.self$server$.verbose) {
+        cat("Using url ", url, "\n")
+      }
+      
       .self$.browser_fun(url)
       if (.self$server$is_daemonized()) {
         return(invisible())
