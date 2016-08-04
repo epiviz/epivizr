@@ -2,7 +2,7 @@ Package: epivizr
 Maintainer: Hector Corrada Bravo <hcorrada@gmail.com>
 Author: Hector Corrada Bravo, Florin Chelaru, Llewellyn Smith, Naomi
     Goldstein, Jayaram Kancherla, Morgan Walter
-Version: 2.3.7
+Version: 2.3.8
 License: Artistic-2.0
 Title: R Interface to epiviz web app
 Description: This package provides connections to the
@@ -32,7 +32,8 @@ Suggests:
     SummarizedExperiment,
     antiProfilesData,
     hgu133plus2.db,
-    Mus.musculus
+    Mus.musculus,
+    BiocStyle
 Collate:
     'EpivizChartMgr-class.R'
     'EpivizApp-class.R'
