@@ -2,7 +2,7 @@
 title: "Introduction to `epivizr`: interactive visualization for genomic data"
 author: "Héctor Corrada Bravo"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output: BiocStyle::html_document
 vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteIndexEntry{Introduction to epivizr}
@@ -13,11 +13,11 @@ vignette: >
 
 <iframe width="480" height="360" src="http://www.youtube.com/embed/099c4wUxozA" frameborder="1" allowfullscreen></iframe>
 
-The `epivizr` package implements two-way communication between the `R/Bioconductor` computational genomics environment and `Epiviz`. Objects in an `R` session can be displayed as tracks or plots on Epiviz. Epivizr uses Websockets for communication between the browser Javascript client and the R environment, the same technology underlying the popular [Shiny](http://www.rstudio.com/shiny/) system for authoring interactive web-based reports in R.
+The `r Biocpkg("epivizr")` package implements two-way communication between the `R/Bioconductor` computational genomics environment and `Epiviz`. Objects in an `R` session can be displayed as tracks or plots on Epiviz. Epivizr uses Websockets for communication between the browser Javascript client and the R environment, the same technology underlying the popular [Shiny](http://www.rstudio.com/shiny/) system for authoring interactive web-based reports in R.
 
-### Preliminaries: the data
+# Preliminaries: the data
 
-In this vignette we will look at colon cancer methylation data from the TCGA project and expression data from the gene expression barcode project. The `epivizrData` package contains human chromosome 11 methylation data from the Illumina 450kHumanMethylation beadarray processed with the `minfi` package. We use expression data from the `antiProfilesData` bioconductor package.
+In this vignette we will look at colon cancer methylation data from the TCGA project and expression data from the gene expression barcode project. The `r Biocpkg("epivizrData")` package contains human chromosome 11 methylation data from the Illumina 450kHumanMethylation beadarray processed with the `r Biocpkg("minfi")` package. We use expression data from the `r Biocpkg("antiProfilesData")` bioconductor package.
 
 ```{r, eval=TRUE, echo=TRUE, results='hide', warning=FALSE, error=FALSE, message=FALSE}
 library(epivizr)
@@ -31,7 +31,7 @@ data(tcga_colon_curves)
 data(apColonData)
 ```
 
-The `tcga_colon_blocks` object is a `GRanges` object containing chromosome 11 regions of hypo or hyper methylation in colon cancer identified using the `blockFinder` function in the `minfi` package. 
+The `tcga_colon_blocks` object is a `GRanges` object containing chromosome 11 regions of hypo or hyper methylation in colon cancer identified using the `blockFinder` function in the `r Biocpkg("minfi")` package. 
 
 ```{r}
 show(tcga_colon_blocks)
@@ -53,7 +53,9 @@ This basepair resolution data includes mean methylation levels for normal and ca
 
 Finally, the `apColonData` object is an `ExpressionSet` containing gene expression data for colon normal and tumor samples for genes within regions of methylation loss identified [this paper](http://www.nature.com/ng/journal/v43/n8/full/ng.865.html). Our goal in this vignette is to visualize this data as we browse the genome.
 
-### The epivizr app
+# Using epivizr
+
+## The epivizr app
 
 The connection to `Epiviz` is managed through a session manager object of class `EpivizApp`. We can create this object and open `Epiviz` using the `startEpiviz` function.
 
@@ -100,7 +102,7 @@ app$server$service()
 
 ----
 
-### Listing available chart types
+## Listing available chart types
 
 Once the browser is open and is connected to an active epivizr session, the epivizr session registers available chart types supported in the epiviz JS app. To list available chart types we use method `list_chart_types`. In this vignette, we only show three chart types available for use in the epiviz JS app. The production epiviz JS app has a larger number of chart types available. Chart types can also be added dynamically as described in the epiviz JS documentation: [http://epiviz.cbcb.umd.edu/help](http://epiviz.cbcb.umd.edu/help). Chart types that are added dynamically are listed and usable within an `epivizr` session.
 
@@ -110,7 +112,9 @@ app$chart_mgr$list_chart_types()
 
 Chart type settings, e.g., line widths, colors, margins etc. can be modified dynamically. Settings available for each chart type are briefly listed in this call. See below for further detail on customizing charts through settings and colors.
 
-### Adding block region devices
+# Adding charts
+
+## Adding block region tracks
 
 Once the browser is open we can visualize the `tcga_colon_blocks` object containing blocks of methylation modifications in colon cancer.
 We use the `plot` method to do so. 
@@ -145,7 +149,7 @@ app$update_measurements(ms_obj, tcga_colon_blocks[keep,])
 
 Now, only this subset of blocks will be displayed in the already existing track.
 
-### Modifying chart settings and colors
+## Modifying chart settings and colors
 
 To modify default chart colors or settings, we need to know what settings can be applied to the chart. Again, as these are defined dynamically in the epiviz JS app we use a method, `print_chart_type_info` on the `EpivizChartMgr` class to list settings that can be applied to specific chart type. For example, to list chart settings available for a `BlocksTrack` chart we use the following:
 
@@ -187,7 +191,7 @@ app$chart_mgr$print_chart_info(blocks_chart)
 Methods are also available directly on the `EpivizChart` objects. E.g., calls `blocks_chart$set(settings=settings, colors=colors)`
 and `blocks_chart$print_info()` yield the same result.
 
-### Printing charts
+## Printing charts
 
 Charts can be printed as a pdf or png file through the epivizr session. To do so, use the `print_chart` method:
 
@@ -197,7 +201,7 @@ app$chart_mgr$print_chart(blocks_chart, file_name="blocks_chart", file_type="pdf
 
 This will create a file named `blocks_chart.pdf` which will be downloaded through your web browser. It will be found in the default file download location for your web browser.
 
-### Adding line plots along the genome
+## Adding line plots along the genome
 
 There are a number of different data types available to use through `epivizr`. You can see a list of R/BioC classes that are supported using `?register`. In the previous section, we used the `block` data type to register a `GenomicRanges` object. To visualize methylation data at base-pair resolution from the `tcga_colon_curves` `GenomicRanges` object, we will use the `bp` type.
 
@@ -222,7 +226,7 @@ diff_chart <- app$plot(tcga_colon_curves, datasource_name="450kMethDiff",type="b
 
 We pass limits for the y axis in this case. To see other arguments supported, you can use the help framework in R `?"EpivizApp"`. As before, we can specify settings for this new track.
 
-### The app connection again
+# Managing the app
 
 We can use the app connection object to list charts we have added so far, or to remove charts.
 
@@ -232,7 +236,9 @@ app$chart_mgr$rm_chart(means_track)
 app$chart_mgr$list_charts()
 ```
 
-### Adding a scatterplot
+# Charts that are not aligned to genomic location
+
+## Adding a scatterplot
 
 Now we want to visualize the colon expression data in `apColonData` object as an MA plot in `Epiviz`. First, we add an `"MA"` assay to the `ExpressionSet`:
 
@@ -257,7 +263,7 @@ eset_chart <- app$plot(apColonData, datasource_name="MAPlot", columns=c("colonA"
 
 In this case, we specify which data is displayed in each axis of the scatter plot using the `columns` argument. The `assay` arguments indicates where data is obtained.
 
-### The RangedSummarizedExperiment Object
+## The RangedSummarizedExperiment Object
 
 `Epiviz` is also able to display plots of data in the form of a `RangedSummarizedExperiment` object. After loading the `tcga_colon_expression` dataset in the `epivizrData` package, we can see that this object contains information on 239322 exons in 40 samples.
 
@@ -294,7 +300,9 @@ se_chart <- app$plot(sumexp, datasource_name="Mean by Sample Type", columns=c("n
 ```
 Again, the `columns` argument specifies what data will be displayed along which axis.
 
-### Slideshow
+# More application interactions
+
+## Slideshow
 
 We can navigate to a location on the genome using the `navigate` method of the app object:
 
@@ -315,7 +323,7 @@ slideshowRegions <- trim(rowRanges(sumexp)[ind] + 1000000L)
 app$slideshow(slideshowRegions, n=5)
 ```
 
-### Printing the epivizr workspace
+## Printing the epivizr workspace
 
 To print the current epiviz workspace as a pdf or png, we use the `print_workspace` method:
 
@@ -325,7 +333,7 @@ app$print_workspace(file_name="workspace", file_type="pdf")
 
 This will create a file named `workspace.pdf` and will be downloaded through your web browser. It will be saved to the default file download location for your web browser.
 
-### Closing the session
+## Closing the session
 
 To close the connection to `Epiviz` and remove all tracks added during the interactive session, we use the `stop_app` function.
 
@@ -333,12 +341,12 @@ To close the connection to `Epiviz` and remove all tracks added during the inter
 app$stop_app()
 ```
 
-### Standalone version and browsing arbitrary genomes
+# Standalone version and browsing arbitrary genomes
 
 The `epivizrStandalone` all files required to run the web app UI locally. This feature
 can be used to browse any genome of interest. See that packages vignette for more information.
 
-### SessionInfo
+# SessionInfo
 
 ```{r session-info, cache=FALSE}
 sessionInfo()
