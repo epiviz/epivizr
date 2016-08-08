@@ -59,6 +59,12 @@ for this type of data.
 
 \item{\code{print_workspace(file_name = NULL, file_type = "pdf")}}{Save epiviz workspace as a pdf or png.}
 
+\item{\code{save(file, stop_server = TRUE)}}{Save EpivizApp object representation of a workspace into .RData file.
+
+    \describe{
+      \item{file}{(character) The name of the file to save the EpivizApp object into, ending in .rda.}
+    }}
+
 \item{\code{service(verbose = TRUE)}}{Block interactive R session to service websocket requests.}
 
 \item{\code{slideshow(granges, n = length(granges), .callback = NULL)}}{Navigate on epiviz app successively to given positions.
