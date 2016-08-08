@@ -342,6 +342,26 @@ app$print_workspace(file_name="workspace", file_type="pdf")
 
 This will create a file named `workspace.pdf` and will be downloaded through your web browser. It will be saved to the default file download location for your web browser.
 
+## Saving the epivizr workspace
+
+To save the current epiviz workspace into a .RData file, we use the `save` method:
+
+```{r, eval=TRUE}
+app$save(app, file="app.rda", stop_server=TRUE)
+```
+
+This will create a file named `app.rda` that can be restarted for later use and analysis. The default option is to stop the app connection and close the server, however this can be turned off if you still wish to use the workspace interactively.
+
+## Restarting the epivizr workspace
+
+After a workspace is saved using the `save` method shown above, we can replot it using the following:
+
+```{r, eval=TRUE}
+app <- restartEpiviz(file="app.rda")
+```
+
+This will recreate the workspace in your web browser and reconnect it with the R session.
+
 ## Closing the session
 
 To close the connection to `Epiviz` and remove all tracks added during the interactive session, we use the `stop_app` function.
