@@ -38,6 +38,7 @@ Collate:
     'EpivizChartMgr-class.R'
     'EpivizApp-class.R'
     'EpivizChart-class.R'
+    'restartEpiviz.R'
     'settings_utils.R'
     'startEpiviz.R'
     'vignette_data.R'

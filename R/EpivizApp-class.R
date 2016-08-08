@@ -315,3 +315,37 @@ EpivizApp$methods(
   }
 )
 
+# save method
+EpivizApp$methods(
+  save = function(file, stop_server=TRUE) {
+    "Save EpivizApp object representation of a workspace into .RData file.
+
+    \\describe{
+      \\item{file}{(character) The name of the file to save the EpivizApp object into, ending in .rda.}
+    }"
+    if (!is(.self, "EpivizApp")) {
+      stop("'app' must be an 'EpivizApp' object")
+    }
+    
+    if (.self$is_server_closed()) {
+      stop("The server for 'app' is closed")
+    }
+    loc <- NULL
+    .self$get_current_location(function(response) {
+      if (response$success) {
+        loc <<- response$value
+      }})
+    .self$.url_parms$chr <- loc$seqName
+    .self$.url_parms$start <- loc$start
+    .self$.url_parms$end <- loc$end
+    
+    save(.self, file=file)
+    
+    if (stop_server==TRUE) {
+      .self$stop_app()
+      .self$server$stop_server()
+    }
+    }
+)
+
+  
