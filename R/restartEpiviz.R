@@ -1,13 +1,13 @@
 #' Restart epiviz app connection and workspace.
-#' 
+#'
 #' @param file (character) The name of the file that holds the EpivizApp object to be restarted, ending in .rda.
-#' 
+#'
 #' @return An object of class \code{\link{EpivizApp}}
-#' 
+#'
 #' @examples
 #' # see package vignette for example usage
 #' app <- restartEpiviz(file="app.rda")
-#' 
+#'
 #' @export
 restartEpiviz <- function(file) {
 
@@ -27,4 +27,5 @@ restartEpiviz <- function(file) {
     chart_obj <- saved_app$chart_mgr$.get_chart_object(id)
     app$chart_mgr$add_chart(chart_obj)
   }
+  return(app)
 }
