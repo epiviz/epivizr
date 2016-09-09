@@ -251,14 +251,23 @@ Indexes <- split(seq(along=status),status)
 exprMat <- exprs(apColonData)
 mns <- sapply(Indexes, function(ind) rowMeans(exprMat[,ind]))
 mat <- cbind(colonM=mns[,"1"]-mns[,"0"], colonA=0.5*(mns[,"1"]+mns[,"0"]))
-assayDataElement(apColonData, "MA") <- mat
-show(apColonData)
+
+pd <- data.frame(stat=c("M","A"))
+rownames(pd) <- colnames(mat)
+
+maEset <- ExpressionSet(
+  assayData=mat,
+  phenoData=AnnotatedDataFrame(pd),
+  featureData=featureData(apColonData),
+  annotation=annotation(apColonData)
+)
+show(maEset)
 ```
 
-`epivizr` will use the `annotation(apColonData)` annotation to determine genomic locations using the `AnnotationDbi` package so that only probesets inside the current browser window are displayed. 
+`epivizr` will use the `annotation(maEset)` annotation to determine genomic locations using the `AnnotationDbi` package so that only probesets inside the current browser window are displayed. 
 
 ```{r, eval=TRUE}
-eset_chart <- app$plot(apColonData, datasource_name="MAPlot", columns=c("colonA","colonM"), assay="MA")
+eset_chart <- app$plot(maEset, datasource_name="MAPlot", columns=c("colonA","colonM"))
 ```
 
 In this case, we specify which data is displayed in each axis of the scatter plot using the `columns` argument. The `assay` arguments indicates where data is obtained.
