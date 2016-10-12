@@ -152,6 +152,6 @@ setMethod("show", signature(object="EpivizChart"),
     
     if (num_to_show < num_measurements) {
       num_left <- num_measurements - num_to_show
-      cat("<", num_left, "more>\n")
+      cat(paste0("<", num_left, " more>"), "\n")
     }
 })
