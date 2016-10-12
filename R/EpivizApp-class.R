@@ -51,7 +51,7 @@
 #' Class managing connection to epiviz application.
 #' 
 #' @field server An object of class \code{\link[epivizrServer]{EpivizServer}} used to communicate with epiviz app.
-#' @field data_mgr An object of class \code{\link[epivizrData]{EpivizData}} used to serve data to epiviz app.
+#' @field data_mgr An object of class \code{\link[epivizrData]{EpivizDataMgr}} used to serve data to epiviz app.
 #' @field chart_mgr An object of class \code{EpivizChartMgr} used to manage charts added to epiviz app session.
 #' 
 #' @importClassesFrom epivizrServer EpivizServer
@@ -116,7 +116,7 @@ EpivizApp$methods(
     datasource <- measurement@datasourceId
     .self$data_mgr$.find_datasource(datasource)
   },
-  plot = function(data_object, send_request=TRUE, settings=NULL, colors=NULL, ...) {
+  plot = function(data_object, datasource_name=NULL, send_request=TRUE, settings=NULL, colors=NULL, ...) {
     "Visualize data on epiviz app using its default chart type. Measurements from the \\code{data-object} 
     are first added to the epiviz app using the \\code{add_measurements} method for class 
     \\code{\\link[epivizrData]{EpivizData}}. See documentation for \\code{\\link[epivizrData]{register}}
@@ -127,10 +127,16 @@ EpivizApp$methods(
     
     \\describe{
       \\item{data_object}{An object to plot in epiviz app.}
+      \\item{datasource_name}{Name to use for datasource, parses \\code{data_object} if missing or NULL}
       \\item{...}{Additional arguments passed to \\code{add_measurements} method for class
         \\code{\\link[epivizrData]{EpivizData}}}
     }"
-    ms_obj <- .self$data_mgr$add_measurements(data_object, send_request=send_request, ...)
+    if (missing(datasource_name)) {
+      datasource_name <- deparse(substitute(data_object))
+    }
+    ms_obj <- .self$data_mgr$add_measurements(data_object, 
+                                              datasource_name=datasource_name,
+                                              send_request=send_request, ...)
     .self$server$wait_to_clear_requests()
     
     if (send_request && .self$server$is_interactive() && !.self$data_mgr$is_ms_connected(ms_obj)) {
