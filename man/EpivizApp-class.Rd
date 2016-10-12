@@ -13,7 +13,7 @@ Class managing connection to epiviz application.
 \describe{
 \item{\code{server}}{An object of class \code{\link[epivizrServer]{EpivizServer}} used to communicate with epiviz app.}
 
-\item{\code{data_mgr}}{An object of class \code{\link[epivizrData]{EpivizData}} used to serve data to epiviz app.}
+\item{\code{data_mgr}}{An object of class \code{\link[epivizrData]{EpivizDataMgr}} used to serve data to epiviz app.}
 
 \item{\code{chart_mgr}}{An object of class \code{EpivizChartMgr} used to manage charts added to epiviz app session.}
 }}
@@ -42,8 +42,8 @@ in a given chart.
 
 \item{\code{navigate(chr, start, end)}}{Navigate to given position on the epiviz app.}
 
-\item{\code{plot(data_object, send_request = TRUE, settings = NULL, colors = NULL,
-  ...)}}{Visualize data on epiviz app using its default chart type. Measurements from the \code{data-object} 
+\item{\code{plot(data_object, datasource_name = NULL, send_request = TRUE,
+  settings = NULL, colors = NULL, ...)}}{Visualize data on epiviz app using its default chart type. Measurements from the \code{data-object} 
 are first added to the epiviz app using the \code{add_measurements} method for class 
 \code{\link[epivizrData]{EpivizData}}. See documentation for \code{\link[epivizrData]{register}}
 for information on supported data types and the \code{\link[epivizrData]{EpivizData}} class
@@ -53,6 +53,7 @@ for this type of data.
 
 \describe{
   \item{data_object}{An object to plot in epiviz app.}
+  \item{datasource_name}{Name to use for datasource, parses \code{data_object} if missing or NULL}
   \item{...}{Additional arguments passed to \code{add_measurements} method for class
     \code{\link[epivizrData]{EpivizData}}}
 }}
