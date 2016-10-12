@@ -76,7 +76,7 @@ test_that("adding a line chart works using visualize with just measurement", {
     score1=rnorm(length(seq(1,100,by=25))),
     score2=rnorm(length(seq(1,100,by=25))))
 
-  ms_obj <- data_mgr$add_measurements(gr, "ms1", send_request=FALSE)
+  ms_obj <- data_mgr$add_measurements(gr, "ms1", type="bp", send_request=FALSE)
   ms_id <- ms_obj$get_id()
   ms <- ms_obj$get_measurements()[2]
   
@@ -101,7 +101,7 @@ test_that("adding a line chart works using visualize with just datasource", {
                                score1=rnorm(length(seq(1,100,by=25))),
                                score2=rnorm(length(seq(1,100,by=25))))
   
-  ms_obj <- data_mgr$add_measurements(gr, "ms1", send_request=FALSE)
+  ms_obj <- data_mgr$add_measurements(gr, "ms1", type="bp", send_request=FALSE)
   ms_id <- ms_obj$get_id()
   ms <- ms_obj$get_measurements()[2]
   
@@ -126,7 +126,7 @@ test_that("adding a line chart works using visualize with both arguments", {
                                score1=rnorm(length(seq(1,100,by=25))),
                                score2=rnorm(length(seq(1,100,by=25))))
   
-  ms_obj <- data_mgr$add_measurements(gr, "ms1", send_request=FALSE)
+  ms_obj <- data_mgr$add_measurements(gr, "ms1", type="bp", send_request=FALSE)
   ms_id <- ms_obj$get_id()
   ms <- ms_obj$get_measurements()[2]
   

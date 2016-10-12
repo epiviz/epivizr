@@ -387,15 +387,17 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
         stop("Can't visualize ", chart_type, ", it is not registered")
       }
 
+      # check if no measurements given
       if (is.null(measurements)) {
+        # check if datasource is given
         if (!is.null(datasource)) {
-          measurements = datasource$get_measurements()
+          measurements <- datasource$get_measurements()
         } else {
           stop("Either 'measurements' or 'datasource' must be non-NULL")
         }
       }
       
-      datasource_id <- measurements$datasourceId
+      datasource_id <- measurements[[1]]@datasourceId
       
       chart_obj <- EpivizChart$new(
         .measurements=measurements,
