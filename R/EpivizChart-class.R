@@ -34,13 +34,6 @@ EpivizChart <- setRefClass("EpivizChart",
 		  "Returns \\code{TRUE} if chart is connected to a chart on epiviz app."
 		  isTRUE(length(.self$.app_id) > 0) 
 		},
-		show = function() {
-		  "Print information about chart."
-			cat("EpivizChart object ", .self$get_id(), ":\n")
-			cat("type: ", .self$.type, "\n")
-      nms <- sapply(.self$.measurements, function(x) paste0(x@datasourceId, ":", x@id))
-			cat("measurements: ", paste0(nms, collapse=","), "\n")
-		},
 		print_info = function() {
 		  "Print settings and color currently used in chart object."
 		  cat("Chart settings for chart id ", .self$.mgr_id, ":\n")
@@ -139,3 +132,26 @@ EpivizChart <- setRefClass("EpivizChart",
 	)
 )
 
+#' Print information about EpivizChart
+#' @param object an \code{\link{EpivizChart}} object
+#' @export
+setMethod("show", signature(object="EpivizChart"),
+  function(object) {
+    cat("EpivizChart object ", object$get_id(), ":\n")
+    cat("type: ", object$.type, "\n")
+    cat("measurements:\n")
+    num_measurements <- length(object$.measurements)
+    num_to_show <- pmin(10, num_measurements)
+    
+    for (i in seq_len(num_to_show)) {
+      ms <- object$.measurements[[i]]
+      cat(paste0("[", i, "] "))
+      callGeneric(ms)
+      cat("\n")
+    }
+    
+    if (num_to_show < num_measurements) {
+      num_left <- num_measurements - num_to_show
+      cat("<", num_left, "more>\n")
+    }
+})
