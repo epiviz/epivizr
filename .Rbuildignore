@@ -1,0 +1,9 @@
+.gitignore
+inst/www/minifier.jar
+inst/www-full
+
+^.*\.Rproj$
+^\.Rproj\.user$
+^update_remotes.sh
+
+^vignettes/figure

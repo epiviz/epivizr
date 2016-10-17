@@ -1,0 +1,46 @@
+Package: epivizr
+Maintainer: Hector Corrada Bravo <hcorrada@gmail.com>
+Author: Hector Corrada Bravo, Florin Chelaru, Llewellyn Smith, Naomi
+    Goldstein, Jayaram Kancherla, Morgan Walter
+Version: 2.4.0
+License: Artistic-2.0
+Title: R Interface to epiviz web app
+Description: This package provides connections to the
+    epiviz web app (http://epiviz.cbcb.umd.edu) for interactive
+    visualization of genomic data. Objects in R/bioc interactive
+    sessions can be displayed in genome browser tracks or plots to
+    be explored by navigation through genomic regions. Fundamental
+    Bioconductor data structures are supported (e.g., GenomicRanges
+    and RangedSummarizedExperiment objects), while providing an easy
+    mechanism to support other data structures (through package epivizrData).
+    Visualizations (using d3.js) can be easily added to the web app as well.
+VignetteBuilder: knitr
+Depends:
+    R (>= 3.3),
+    methods,
+Imports:
+    epivizrServer (>= 1.1.1),
+    epivizrData (>= 1.1.1),
+    GenomicRanges,
+    S4Vectors,
+    IRanges
+Suggests:
+    testthat,
+    roxygen2,
+    knitr,
+    Biobase,
+    SummarizedExperiment,
+    antiProfilesData,
+    hgu133plus2.db,
+    Mus.musculus,
+    BiocStyle
+Collate:
+    'EpivizChartMgr-class.R'
+    'EpivizApp-class.R'
+    'EpivizChart-class.R'
+    'settings_utils.R'
+    'startEpiviz.R'
+    'vignette_data.R'
+biocViews: Visualization, Infrastructure, GUI
+Video: https://www.youtube.com/watch?v=099c4wUxozA
+RoxygenNote: 5.0.1
