@@ -117,3 +117,30 @@ test_that("list_charts works", {
     expect_equal(charts_list, expected_df)
 })
 
+test_that("checking that revisualize works", {
+  server <- epivizrServer::createServer()
+  data_mgr <- epivizrData::createMgr(server)
+  chart_mgr <- EpivizChartMgr$new(server)
+  
+  gr <- GenomicRanges::GRanges(seqnames="chr1", 
+                               ranges=IRanges::IRanges(start=seq(1,100,by=25), width=1), 
+                               score1=rnorm(length(seq(1,100,by=25))),
+                               score2=rnorm(length(seq(1,100,by=25))))
+  
+  ms_obj <- data_mgr$add_measurements(gr, "ms1", type="bp", send_request=FALSE)
+  ms <- ms_obj$get_measurements()[2]
+  
+  chart_mgr$register_chart_type("LineChart", "epiviz.plugins.charts.LineTrack")
+  chart_mgr$register_chart_type("BlockChart", "epiviz.plugins.charts.BlocksTrack")
+  
+  chart1 <- chart_mgr$visualize("BlockChart", datasource=ms_obj)
+  
+  chart_obj <- chart_mgr$visualize("LineChart", measurements=ms)
+  chart_obj_rev <- chart_mgr$revisualize(chart_type = "BlockChart", chart=chart_obj)
+  
+  expect_is(chart_obj, "EpivizChart")
+  expect_equal(chart_obj$.measurements, ms)
+  expect_equal(chart_obj_rev$.measurements, ms)
+  expect_equal(chart_obj$.type, "epiviz.plugins.charts.LineTrack")
+  expect_equal(chart_obj_rev$.type, "epiviz.plugins.charts.BlocksTrack")
+})
