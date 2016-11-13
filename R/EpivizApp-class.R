@@ -62,6 +62,7 @@
 #' @import IRanges
 #' 
 #' @include EpivizChartMgr-class.R
+#' @exportClass EpivizApp
 EpivizApp <- setRefClass("EpivizApp",
   fields=list(
     .url_parms="list",
