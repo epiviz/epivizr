@@ -40,6 +40,12 @@ in a given chart.
 
 \item{\code{is_server_closed()}}{Check if underlying server connection is closed.}
 
+\item{\code{load_workspace(workspace_id = NULL)}}{load an epiviz workspace.
+
+    \describe{
+      \item{workspace_id}{Workspace id to load from the database.}
+    }}
+
 \item{\code{navigate(chr, start, end)}}{Navigate to given position on the epiviz app.}
 
 \item{\code{plot(data_object, datasource_name = NULL, send_request = TRUE,
