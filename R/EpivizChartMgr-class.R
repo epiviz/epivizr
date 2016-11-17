@@ -425,6 +425,21 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
       }
       chart_obj
     },
+    revisualize = function(chart_type, chart, ...){
+        "Revisualize uses data the given chart and replots it in the given chart type. The argument \\code{chart} must be non-\\code{NULL}.
+        \\describe{
+        \\item{chart_type}{a chart type registered using the \\code{register_chart_type} method}
+        \\item{chart}{a chart that includes measurements to be used in a new chart}
+        }"
+        if (!is.null(chart)){
+          measurements <- chart$get_measurements()
+        } 
+        else {
+          stop("Either 'chart' must be non-NULL")
+        }
+    
+        .self$visualize(chart_type = chart_type, measurements = measurements, ...)
+    },
     plot = function(measurement_object, settings=NULL, colors=NULL, send_request=TRUE) {
       "Visualize data in an \\code{\\link[epivizrData]{EpivizData}} object using its default chart type.
       The method \\code{get_default_chart_type} in class \\code{\\link[epivizrData]{EpivizData}} is used
