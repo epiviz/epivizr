@@ -17,6 +17,8 @@ Class encapsulating a chart in epiviz app
 
 \item{\code{get_id()}}{Get chart's id assigned by chart manager}
 
+\item{\code{get_measurements()}}{Get measurements for the chart.}
+
 \item{\code{get_settings()}}{Get custom settings for the chart.}
 
 \item{\code{is_connected()}}{Returns \code{TRUE} if chart is connected to a chart on epiviz app.}

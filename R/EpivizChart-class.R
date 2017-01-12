@@ -138,6 +138,7 @@ EpivizChart <- setRefClass("EpivizChart",
 
 #' Print information about EpivizChart
 #' @param object an \code{\link{EpivizChart}} object
+#' @return Nothing, this function is called for its side-effects
 #' @export
 setMethod("show", signature(object="EpivizChart"),
   function(object) {
