@@ -339,13 +339,12 @@ EpivizApp$methods(
     .self$.url_parms$start <- loc$start
     .self$.url_parms$end <- loc$end
     
-    base::save(.self, file=file)
-    
     if (stop_server==TRUE) {
       .self$stop_app()
       .self$server$stop_server()
     }
-    }
+    base::save(.self, file=file)
+  }
 )
 
   
