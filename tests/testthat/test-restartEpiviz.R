@@ -1,21 +1,26 @@
 context("restart epiviz")
 
 test_that("restartEpiviz restarts connection and workspace", {
-  app <- startEpiviz(open_browser=FALSE,
-                     port=7123L,
-                     static_site_path=".",
-                     daemonized=TRUE,
-                     verbose=TRUE)
+  # TODO(briangottfried): Because EpivizApp$save() checks
+  #                       if EpivizApp's server is closed,
+  #                       I would like to explore a better
+  #                       way to initially call startEpiviz
+  #                       in order to save, and restart.
+  app <- startEpiviz(non_interactive=TRUE)
   app$server$start_server()
   
   file_name <- "test-restartEpiviz.rda"
+  
   expect_false(app$server$is_closed())
   expect_false(file.exists(file_name))
-  app$save(file_name)
+  
+  app$save(file=file_name)
+  
   expect_true(file.exists(file_name))
   expect_true(app$server$is_closed())
   
   app <- restartEpiviz(file_name)
+  
   expect_false(app$server$is_closed())
   expect_is(app, "EpivizApp")
   expect_is(app$server, "EpivizServer")
