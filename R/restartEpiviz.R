@@ -2,6 +2,7 @@
 #'
 #' @param file (character) The name of the file that holds the EpivizApp object to be restarted, ending in .rda.
 #' @param open_browser (logical) browse to the epiviz URL before exiting function.
+#' @param start_server (logical) start the epiviz app's server
 #' @return An object of class \code{\link{EpivizApp}}
 #'
 #' @examples
@@ -9,7 +10,7 @@
 #' app <- restartEpiviz(file="app.rda")
 #'
 #' @export
-restartEpiviz <- function(file, open_browser=TRUE) {
+restartEpiviz <- function(file, open_browser=TRUE, start_server=TRUE) {
 
   if (!file.exists(file)) {
     stop("File does not exist")
@@ -17,8 +18,11 @@ restartEpiviz <- function(file, open_browser=TRUE) {
 
   load(file=file)
   saved_app <- .self
+  
+  if (start_server){
+    .self$server$start_server()    
+  }
 
-  .self$server$start_server()
   if (open_browser) {
     .self$.open_browser()
   }
