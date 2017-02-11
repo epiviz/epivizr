@@ -10,7 +10,7 @@
 #' app <- restartEpiviz(file="app.rda")
 #'
 #' @export
-restartEpiviz <- function(file, open_browser=TRUE, start_server=TRUE) {
+restartEpiviz <- function(file, open_browser=TRUE) {
 
   if (!file.exists(file)) {
     stop("File does not exist")
@@ -19,20 +19,19 @@ restartEpiviz <- function(file, open_browser=TRUE, start_server=TRUE) {
   load(file=file)
   saved_app <- .self
   
-  if (start_server){
-    .self$server$start_server()    
-  }
-
+  saved_app$server$start_server()    
   if (open_browser) {
-    .self$.open_browser()
+    saved_app$.open_browser()
   }
-  .self$service()
-
+  saved_app$service()
+  
   chart_ids <- ls(envir=saved_app$chart_mgr$.chart_list)
+  
   for (id in chart_ids) {
-    chart_obj <- saved_app$chart_mgr$.get_chart_object(id)
-    .self$chart_mgr$add_chart(chart_obj)
+    chart_obj <- saved_chart_mgr$.get_chart_object(id)
+    saved_app$chart_mgr$rm_chart(chart_obj)
+    saved_app$chart_mgr$add_chart(chart_obj)
   }
   
-  return(.self)
+  return(saved_app)
 }
