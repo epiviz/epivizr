@@ -27,7 +27,7 @@ restartEpiviz <- function(file, open_browser=TRUE) {
   chart_ids <- ls(envir=saved_app$chart_mgr$.chart_list)
   
   for (id in chart_ids) {
-    chart_obj <- saved_chart_mgr$.get_chart_object(id)
+    chart_obj <- saved_app$chart_mgr$.get_chart_object(id)
     saved_app$chart_mgr$rm_chart(chart_obj)
     saved_app$chart_mgr$add_chart(chart_obj)
   }
