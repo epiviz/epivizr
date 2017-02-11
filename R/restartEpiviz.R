@@ -2,7 +2,6 @@
 #'
 #' @param file (character) The name of the file that holds the EpivizApp object to be restarted, ending in .rda.
 #' @param open_browser (logical) browse to the epiviz URL before exiting function.
-#' @param start_server (logical) start the epiviz app's server
 #' @return An object of class \code{\link{EpivizApp}}
 #'
 #' @examples
