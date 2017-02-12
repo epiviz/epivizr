@@ -16,7 +16,7 @@ Description: This package provides connections to the
     Visualizations (using d3.js) can be easily added to the web app as well.
 VignetteBuilder: knitr
 Depends:
-    R (>= 3.4),
+    R (>= 3.0),
     methods,
 Imports:
     epivizrServer (>= 1.1.1),
