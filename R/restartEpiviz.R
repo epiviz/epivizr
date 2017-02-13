@@ -19,17 +19,24 @@ restartEpiviz <- function(file, open_browser=TRUE) {
   saved_app <- .self
   
   saved_app$server$start_server()    
-  if (open_browser) {
-    saved_app$.open_browser()
-  }
   saved_app$service()
   
   chart_ids <- ls(envir=saved_app$chart_mgr$.chart_list)
   
-  for (id in chart_ids) {
+  chart_objs <- lapply(chart_ids, function(id){
     chart_obj <- saved_app$chart_mgr$.get_chart_object(id)
     saved_app$chart_mgr$rm_chart(chart_obj)
+    chart_obj
+  })
+  
+  for (chart_obj in chart_objs) {
     saved_app$chart_mgr$add_chart(chart_obj)
+  }
+  
+  if (open_browser) {
+    sink("/dev/null")  
+    saved_app$.open_browser()
+    sink()
   }
   
   return(saved_app)
