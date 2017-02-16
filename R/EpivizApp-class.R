@@ -317,11 +317,13 @@ EpivizApp$methods(
 
 # save method
 EpivizApp$methods(
-  save = function(file, stop_server=TRUE) {
+  save = function(file, stop_app=TRUE, include_data=TRUE) {
     "Save EpivizApp object representation of a workspace into .RData file.
 
     \\describe{
       \\item{file}{(character) The name of the file to save the EpivizApp object into, ending in .rda.}
+      \\item{stop_app}{(logical) Stop the EpivizApp session.}
+      \\item{include_data}{(logical) Include EpivizApp's data when saving the EpivizApp object.}
     }"
     if (!is(.self, "EpivizApp")) {
       stop("'app' must be an 'EpivizApp' object")
@@ -330,19 +332,48 @@ EpivizApp$methods(
     if (.self$is_server_closed()) {
       stop("The server for 'app' is closed")
     }
+    
     loc <- NULL
     .self$get_current_location(function(response) {
       if (response$success) {
         loc <<- response$value
-      }})
+      }
+    })
     .self$.url_parms$chr <- loc$seqName
     .self$.url_parms$start <- loc$start
     .self$.url_parms$end <- loc$end
   
+    if (!include_data) {
+      ms_ids <- ls(envir=.self$data_mgr$.ms_list)
+      ms_objs <- NULL
+      if (length(ms_ids) > 0) {
+        ms_objs <- lapply(ms_ids, function(id) {
+          ms_obj <- .self$data_mgr$.get_ms_object(id)
+          .self$data_mgr$rm_measurements(ms_obj)
+          ms_obj
+        })
+      }
+    }
+    
     base::save(.self, file=file)
     
-    if (stop_server==TRUE) {
+    if (stop_app) {
       .self$stop_app()
+    } else if (!include_data) {
+      if (!is.null(ms_objs)) {
+        for (ms_obj in ms_objs) {
+          # TODO: Add original datasource name
+          ms_record <- list(
+            measurements=ms_obj$get_measurements(),
+            name=ms_obj$get_name(),
+            obj=ms_obj, 
+          # source=ms_obj$get_source_name()
+            connected=FALSE
+          )
+          
+          assign(ms_obj$get_id(), ms_record, envir=.self$data_mgr$.ms_list)
+        }
+      }
     }
   }
 )
