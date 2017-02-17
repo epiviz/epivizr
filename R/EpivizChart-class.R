@@ -7,6 +7,7 @@ EpivizChart <- setRefClass("EpivizChart",
 		.measurements = "list",
     .datasource = "ANY",
     .datasourceGroup = "ANY",
+	  .datasourceOriginName = "character",
 		.mgr_id = "character",
 		.app_id = "character",
 		.mgr = "EpivizChartMgr",
@@ -22,6 +23,10 @@ EpivizChart <- setRefClass("EpivizChart",
 		  "Get chart's id assigned by chart manager"
 		  .self$.mgr_id 
 		},
+	  get_source_name = function() { 
+	    "Get chart's id assigned by chart manager"
+	    .self$.datasourceOriginName
+	  },
 		set_app_id = function(id) { 
 		  "Set chart's id assigned by epiviz app."
 		  .self$.app_id <- id 
