@@ -350,15 +350,7 @@ EpivizApp$methods(
     .self$.url_parms$end <- loc$end
   
     if (!include_data) {
-      ms_ids <- ls(envir=.self$data_mgr$.ms_list)
-      ms_objs <- NULL
-      if (length(ms_ids) > 0) {
-        ms_objs <- lapply(ms_ids, function(id) {
-          ms_obj <- .self$data_mgr$.get_ms_object(id)
-          .self$data_mgr$rm_measurements(ms_obj)
-          ms_obj
-        })
-      }
+      .self$data_mgr$rm_all_measurements()
     }
     
     base::save(.self, file=file)
