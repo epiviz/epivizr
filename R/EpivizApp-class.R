@@ -333,6 +333,12 @@ EpivizApp$methods(
       stop("The server for 'app' is closed")
     }
     
+    # TODO: Make copy of session, remove data, and save copy
+    # (for this case to work)
+    if(!stop_app & !include_data){
+      stop("Cannot remove data and continue session.")
+    }
+    
     loc <- NULL
     .self$get_current_location(function(response) {
       if (response$success) {
@@ -359,21 +365,7 @@ EpivizApp$methods(
     
     if (stop_app) {
       .self$stop_app()
-    } else if (!include_data) {
-      if (!is.null(ms_objs)) {
-        for (ms_obj in ms_objs) {
-          ms_record <- list(
-            measurements=ms_obj$get_measurements(),
-            name=ms_obj$get_name(),
-            obj=ms_obj, 
-            source=ms_obj$get_source_name(),
-            connected=FALSE
-          )
-          assign(ms_obj$get_id(), ms_record, envir=.self$data_mgr$.ms_list)
-        }
-      }
-    }
-  }
+    } 
 )
 
   
