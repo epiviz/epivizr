@@ -30,11 +30,14 @@ restartEpiviz <- function(file, open_browser=TRUE) {
   
   datasource_names <- ls(envir=saved_app$data_mgr$.ms_list)
   datasource_origin_names <- NULL
-  if (length(datasource_names) > 0) {
+  source_name_len <- length(datasource_names)
+  if (source_name_len > 0) {
     datasource_origin_names <- lapply(datasource_names, function(name) {
       ms_obj <- saved_app$data_mgr$.get_ms_object(name);
       ms_obj$get_source_name()
     })
+  } else if (source_name_len == 0){
+    saved_app$data_mgr$.ms_idCounter <- 0L
   }
   
   for (chart_obj in chart_objs) {
@@ -47,10 +50,11 @@ restartEpiviz <- function(file, open_browser=TRUE) {
         stop("Data for ", chart_obj$get_id(), " was not saved in file. Please load ", 
         origin_source_name, " before restarting.")
       }
-      
-       ms_object <- saved_app$data_mgr$add_measurements(chart_obj_data)
+
+       datasource_name <- gsub('_\\d*','', chart_obj$.datasource)
+       
+       ms_object <- saved_app$data_mgr$add_measurements(chart_obj_data, datasource_name)
        ms_object$set_source_name(origin_source_name)
-       ms_object$set_id(chart_obj$.datasource)
     }
 
     saved_app$chart_mgr$add_chart(chart_obj)
