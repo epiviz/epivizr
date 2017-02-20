@@ -357,7 +357,7 @@ EpivizApp$methods(
     
     if (stop_app) {
       .self$stop_app()
-    } 
-)
+    }
+})
 
   
