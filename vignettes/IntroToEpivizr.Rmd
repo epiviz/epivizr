@@ -351,7 +351,7 @@ app$save(file="app.rda", stop_app=TRUE, include_data=TRUE)
 ```
 
 This will create a file named `app.rda` that can be restarted for later use and analysis. The default option is to stop the app connection and close the server, however this can be turned off if you still wish to use the workspace interactively. 
-For a smaller file size, you may choose whether to include/exclude the data. 
+For a smaller file size, you may choose whether to include or exclude the data when saving the workspace. 
 
 ## Restarting the epivizr workspace
 
@@ -361,7 +361,7 @@ After a workspace is saved using the `save` method shown above, we can replot it
 app <- restartEpiviz(file="app.rda", open_browser=TRUE)
 ```
 
-This will recreate the workspace in your web browser and reconnect it with the R session.
+This will recreate the workspace in your web browser and reconnect it with the R session. If the workspace you are restarting did not include its data when saving the file, you will need to load the data in your global environment before restarting epiviz.
 
 ## Closing the session
 
