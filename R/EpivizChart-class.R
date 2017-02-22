@@ -128,7 +128,11 @@ EpivizChart <- setRefClass("EpivizChart",
 		get_colors = function() {
 		  "Get color palette applied to the chart."
 		  .self$.colors
-		}
+    },
+		get_measurements = function() {
+  	  "Get measurements for the chart."
+  	  .self$.measurements
+    }
 	)
 )
 
