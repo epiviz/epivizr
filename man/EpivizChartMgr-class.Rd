@@ -32,9 +32,12 @@ Class providing chart manager for epiviz app
 \item{\code{is_server_closed()}}{Returns \code{TRUE} if underlying server is closed.
 See \code{is_closed} method in class \code{\link[epivizrServer]{EpivizServer}}.}
 
-\item{\code{list_charts()}}{Return \code{data.frame} describing charts loaded by chart manager}
-
 \item{\code{list_chart_type_colors(chart_type)}}{List colors currently used in given chart type}
+
+\item{\code{list_chart_type_settings(chart_type)}}{List available settings for a specific chart type.
+\describe{
+  \item{chart_type}{the name for a chart type in R (e.g., 'BlocksTrack', 'StackedLineTrack')}
+}}
 
 \item{\code{list_chart_types(col_width = 80)}}{List charts types registered in epivizr with their default settings and colors. 
  Returns a \code{data.frame} listing available chart types and a summary of the 
@@ -44,10 +47,7 @@ See \code{is_closed} method in class \code{\link[epivizrServer]{EpivizServer}}.}
   \item{col_width}{Maximum length of settings list displayed.}
 }}
 
-\item{\code{list_chart_type_settings(chart_type)}}{List available settings for a specific chart type.
-\describe{
-  \item{chart_type}{the name for a chart type in R (e.g., 'BlocksTrack', 'StackedLineTrack')}
-}}
+\item{\code{list_charts()}}{Return \code{data.frame} describing charts loaded by chart manager}
 
 \item{\code{num_charts()}}{Return the number of charts currently loaded through manager.}
 
@@ -91,6 +91,12 @@ See \code{is_closed} method in class \code{\link[epivizrServer]{EpivizServer}}.}
     (e.g. 'epiviz.plugins.charts.BlocksTrack'). If missing it is taken from the \code{chart_type} argument}
   \item{js_chart_settings}{custom settings that can be applied to this chart type in JS.}
   \item{js_chart_colors}{default color palette applied to this chart type in JS.}
+}}
+
+\item{\code{revisualize(chart_type, chart, ...)}}{Revisualize uses data the given chart and replots it in the given chart type. The argument \code{chart} must be non-\code{NULL}.
+\describe{
+\item{chart_type}{a chart type registered using the \code{register_chart_type} method}
+\item{chart}{a chart that includes measurements to be used in a new chart}
 }}
 
 \item{\code{rm_all_charts()}}{Remove all charts loaded by chart manager.}
