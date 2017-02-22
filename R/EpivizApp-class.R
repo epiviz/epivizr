@@ -268,6 +268,20 @@ EpivizApp$methods(
       stop(e)
     })
   },
+  load_workspace=function(workspace_id=NULL) {
+    "load an epiviz workspace.
+
+    \\describe{
+      \\item{workspace_id}{Workspace id to load from the database.}
+    }"
+    callback=function(data) {
+      cat("workspace: ", workspace_id  ," is being loaded \n")
+    }
+    
+    request_data <- list(action = "loadWorkspace", workspaceId=workspace_id)
+    .self$server$send_request(request_data, callback)
+    invisible()
+  },
   print_workspace=function(file_name=NULL, file_type="pdf"){
     "Save epiviz workspace as a pdf or png."
     callback=function(data) {
