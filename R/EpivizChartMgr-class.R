@@ -457,11 +457,6 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
       chart_type <- measurement_object$get_default_chart_type()
       .self$visualize(chart_type, datasource=measurement_object, settings=settings, colors=colors, send_request=send_request)
     },
-    redraw = function() {
-      
-      .self$.mgr$visualize(chart_type=chart_type, datasource=chart_ms, 
-        settings=chart$get_settings(), colors=chart$get_colors(), send_request=TRUE)
-    },
     .redraw = function(send_request = TRUE) {
       send_request <- !.self$is_server_closed() && isTRUE(send_request)      
       if (send_request) {
