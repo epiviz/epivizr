@@ -333,10 +333,10 @@ EpivizApp$methods(
       stop("The server for 'app' is closed")
     }
     
-    # TODO: Make copy of session, remove data, and save copy
+    # TODO: Deep copy app session, remove data, and save copy
     # (for this case to work)
     if(!stop_app & !include_data){
-      stop("Cannot remove data and continue session.")
+       stop("Cannot remove data and continue session.")
     }
     
     loc <- NULL
@@ -350,10 +350,14 @@ EpivizApp$methods(
     .self$.url_parms$end <- loc$end
   
     if (!include_data) {
-      .self$data_mgr$rm_all_measurements()
+      ms_obj_ids <- ls(envir=.self$data_mgr$.ms_list)
+      lapply(ms_obj_ids, function(id){
+        ms_obj <- .self$data_mgr$.get_ms_object(id)
+        ms_obj$.object <- NULL
+      })
     }
     
-    base::save(.self, file=file)
+    base::save(.self, file=file)   
     
     if (stop_app) {
       .self$stop_app()
