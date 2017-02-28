@@ -478,13 +478,26 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
           print(response_data)
           app_chart_id <- response_data$value$id
           
-         # chart$set_app_id(app_chart_id)
-
+          chart$set_app_id(app_chart_id)
+          
+          
+          settings <- NULL
+          if(!is.null(chart$get_settings())) {
+            settings <- chart$get_settings()
+          }
+          
+          colors <- NULL
+          if(!is.null(chart$get_colors())) {
+            colors <- chart$get_colors()
+          }
+          
+          chart$set(settings=settings, colors=colors)
+          
           if (.self$.server$.verbose) {
             cat("Chart ", chart$get_id(), "re-drawn\n")            
           }
         }
-
+        
         measurements <- NULL
         if (!is.null(chart$.measurements)) { 
           measurements = epivizrServer::json_writer(lapply(chart$.measurements, epivizrData::as.list)) 
@@ -497,17 +510,17 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
           datasourceGroup=chart$.datasourceGroup
         )
         .self$.server$send_request(request_data, callback)
-#        chart$set(settings=chart$get_settings(), colors=chart$get_colors())
       }
       
-    invisible()
+      invisible()
     },
     redraw_charts = function(send_request = TRUE){
       chart_ids <- ls(envir=.self$.chart_list)
-
+      
       for (id in chart_ids){
         chart_obj <- .self$.get_chart_object(id)
         .self$.redraw_chart(chart_obj, send_request)
+        .self$.server$wait_to_clear_requests()
       }
       invisible()
     }
