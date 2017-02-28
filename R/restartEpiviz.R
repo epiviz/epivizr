@@ -20,14 +20,6 @@ restartEpiviz <- function(file, open_browser=TRUE) {
     app$server$start_server()    
     app$service()
     
-    if (open_browser) {
-      app$.open_browser()
-      # Allows enough time to for browswer to
-      # load before reconnecting charts to UI
-      # TODO: Find alternative solution
-      Sys.sleep(5)
-    }
-    
     chart_ids <- ls(envir=app$chart_mgr$.chart_list)
     data_not_in_environment <- NULL
     
@@ -44,7 +36,11 @@ restartEpiviz <- function(file, open_browser=TRUE) {
           # instead of stopping here, this accumulates 
           # names of all datasources not in environment
           datasource_name <- ms_obj$get_source_name()
-          data_not_in_environment <<- c(data_not_in_environment, datasource_name)
+          
+          if (!(datasource_name %in% data_not_in_environment)){
+            data_not_in_environment <<- c(data_not_in_environment, datasource_name)    
+          }
+        
           return(NULL)
         })
         
@@ -61,7 +57,17 @@ restartEpiviz <- function(file, open_browser=TRUE) {
       stop("Load data in environment before restarting: ", datasource_names)
     }
     
+    if (open_browser) {
+      app$.open_browser()
+      # Allows enough time to for browswer to
+      # load before reconnecting charts to UI
+      # TODO: Find alternative solution
+      Sys.sleep(5)
+    }
+    
     app$server$wait_to_clear_requests()
+    
+    # TODO: Suppress output of settings being applied 
     app$chart_mgr$redraw_charts()
     
     return(app)
