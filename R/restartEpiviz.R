@@ -22,55 +22,58 @@
 #'
 #' @export
 restartEpiviz <- function(file, open_browser=TRUE) {
-
-  if (!file.exists(file)) {
-    stop("File does not exist")
-  }
-
-  load(file=file)
-  app <- .self
-  app$server$.verbose <- TRUE
-  app$server$start_server()    
-  # app$service()
-
-  if (open_browser) {
-    app$.open_browser()
-    .wait_until_connected(server=app$server)
-  }
-  
-  chart_ids <- ls(envir=app$chart_mgr$.chart_list)
-  data_not_in_environment <- NULL
-  
-  for (id in chart_ids){
-    ms_obj <- app$get_ms_object(id)
+    if (!file.exists(file)) {
+      stop("File does not exist")
+    }
     
-    if (is.null(ms_obj$.object)) {
-      new_obj <- tryCatch({
-        eval(parse(text=ms_obj$get_source_name()))
-      }, error = function(e) {
-        # instead of stopping here, this accumulates 
-        # names of all datasources not in environment
-        datasource_name <- ms_obj$get_source_name()
-        data_not_in_environment <<- c(data_not_in_environment, datasource_name)
-        return(NULL)
-      })
+    load(file=file)
+    app <- .self
+    app$server$start_server()    
+    app$service()
+    
+    if (open_browser) {
+      app$.open_browser()
+      # Allows enough time to for browswer to
+      # load before reconnecting charts to UI
+      # TODO: Find alternative solution
+      Sys.sleep(5)
+    }
+    
+    chart_ids <- ls(envir=app$chart_mgr$.chart_list)
+    data_not_in_environment <- NULL
+    
+    # If file is saved without data, this will
+    # update data into Epiviz App if it exists
+    # in environment
+    for (id in chart_ids){
+      ms_obj <- app$get_ms_object(id)
       
-      if (!is.null(new_obj)) {
-        ms_obj$update(new_obj)
-      }
-      
-    } 
+      if (is.null(ms_obj$.object)) {
+        new_obj <- tryCatch({
+          eval(parse(text=ms_obj$get_source_name()))
+        }, error = function(e) {
+          # instead of stopping here, this accumulates 
+          # names of all datasources not in environment
+          datasource_name <- ms_obj$get_source_name()
+          data_not_in_environment <<- c(data_not_in_environment, datasource_name)
+          return(NULL)
+        })
+        
+        if (!is.null(new_obj)) {
+          ms_obj$update(new_obj)
+        }
+        
+      } 
+    }
+    
+    if (!is.null(data_not_in_environment)) {
+      datasource_names <- paste(data_not_in_environment, collapse=", ")
+      app$server$stop_server()
+      stop("Load data in environment before restarting: ", datasource_names)
+    }
+    
+    app$server$wait_to_clear_requests()
+    app$chart_mgr$redraw_charts()
+    
+    return(app)
   }
-  
-  if (!is.null(data_not_in_environment)) {
-    datasource_names <- paste(data_not_in_environment, collapse=", ")
-    app$server$stop_server()
-    stop("Load data in environment before restarting: ", datasource_names,".")
-  }
-  
- app$server$wait_to_clear_requests()
- 
- app$chart_mgr$redraw_charts(send_request=TRUE)
- 
- return(app)
-}
