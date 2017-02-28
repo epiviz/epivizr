@@ -132,11 +132,13 @@ EpivizApp$methods(
       \\item{...}{Additional arguments passed to \\code{add_measurements} method for class
         \\code{\\link[epivizrData]{EpivizData}}}
     }"
+    datasource_origin_name <- deparse(substitute(data_object))
     if (missing(datasource_name)) {
-      datasource_name <- deparse(substitute(data_object))
+      datasource_name <- datasource_origin_name
     }
     ms_obj <- .self$data_mgr$add_measurements(data_object, 
                                               datasource_name=datasource_name,
+                                              datasource_origin_name=datasource_origin_name,
                                               send_request=send_request, ...)
     .self$server$wait_to_clear_requests()
     
