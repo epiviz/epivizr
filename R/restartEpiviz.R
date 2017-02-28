@@ -1,14 +1,3 @@
-.wait_until_connected <- function(server, timeout=60L) {
-  ptm <- proc.time()
-  while (!server$is_socket_connected() && (proc.time() - ptm < timeout)["elapsed"]) {
-    Sys.sleep(0.001)
-    server$service()
-  }
-  if (!server$is_socket_connected()) {
-    stop("[epivizrStandalone] Error starting app. UI unable to connect to websocket server.")
-  }
-  invisible()
-}
 
 #' Restart epiviz app connection and workspace.
 #'

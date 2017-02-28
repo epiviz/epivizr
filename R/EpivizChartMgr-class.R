@@ -475,7 +475,6 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
       
       if (send_request) {
         callback <- function(response_data) {
-          print(response_data)
           app_chart_id <- response_data$value$id
           
           chart$set_app_id(app_chart_id)
