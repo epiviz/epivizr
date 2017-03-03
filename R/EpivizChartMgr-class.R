@@ -479,7 +479,6 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
           
           chart$set_app_id(app_chart_id)
           
-          
           settings <- NULL
           if(!is.null(chart$get_settings())) {
             settings <- chart$get_settings()
