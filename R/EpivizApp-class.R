@@ -334,13 +334,7 @@ EpivizApp$methods(
     if (.self$is_server_closed()) {
       stop("The server for 'app' is closed")
     }
-    
-    # TODO: Deep copy app session, remove data, and save copy
-    # (for this case to work)
-    if(!stop_app & !include_data){
-       stop("Cannot remove data and continue session.")
-    }
-    
+
     loc <- NULL
     .self$get_current_location(function(response) {
       if (response$success) {
@@ -352,8 +346,18 @@ EpivizApp$methods(
     .self$.url_parms$end <- loc$end
   
     if (!include_data) {
-      ms_obj_ids <- ls(envir=.self$data_mgr$.ms_list)
-      lapply(ms_obj_ids, function(id){
+      ms_ids <- ls(envir=.self$data_mgr$.ms_list)
+      
+      # If user wants to exclude data but contiue session
+      # pair ms id with its data to add back to ms object
+      if (!stop_app){
+        ms_ids_objs <- lapply(ms_ids, function(id){
+          ms_obj <- .self$data_mgr$.get_ms_object(id)
+          c(id, ms_obj$.object)
+        })
+      }
+
+      lapply(ms_ids, function(id){
         ms_obj <- .self$data_mgr$.get_ms_object(id)
         ms_obj$.object <- NULL
       })
@@ -363,6 +367,14 @@ EpivizApp$methods(
     
     if (stop_app) {
       .self$stop_app()
+    } else if (!include_data) {
+      # Add data back to ms object
+     for (id_obj in ms_ids_objs){
+       id <- id_obj[[1]]
+       obj <- id_obj[[2]]
+       ms_obj <- .self$data_mgr$.get_ms_object(id)
+       ms_obj$.object <- obj
+     }
     }
 })
 
