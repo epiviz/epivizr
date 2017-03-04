@@ -70,8 +70,8 @@ restartEpiviz <- function(file, open_browser=TRUE, host=NULL) {
     app$.open_browser()
     
     callback <- function(response_data) {
-      if (app$server$.verbose == TRUE){
-        if(response_data$success == TRUE){
+      if (app$server$.verbose){
+        if(response_data$success){
           cat("UI is READY \n")       
         } else {
           cat("UI is NOT READY \n")
