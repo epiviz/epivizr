@@ -40,6 +40,14 @@ restartEpiviz <- function(file, open_browser=TRUE, host=NULL) {
         # instead of stopping here, this accumulates 
         # names of all datasources not in environment
         datasource_name <- ms_obj$get_source_name()
+        
+        expression_pattern <- "\\[[[:print:]]*\\]"
+        is_datasource_an_expression <- grepl(expression_pattern, datasource_name)
+        
+        if (is_datasource_an_expression) {
+          datasource_name <- gsub(expression_pattern, "", datasource_name)
+        }
+       
         data_not_in_environment <<- c(data_not_in_environment, datasource_name)    
         
         return(NULL)
@@ -63,16 +71,27 @@ restartEpiviz <- function(file, open_browser=TRUE, host=NULL) {
     
     callback <- function(response_data) {
       if (app$server$.verbose == TRUE){
-        cat("UI is READY \n")  
+        if(response_data$success == TRUE){
+          cat("UI is READY \n")       
+        } else {
+          cat("UI is NOT READY \n")
+        }
       }
     }
     
-    request_data=list(action="uiStatus")
-    app$server$send_request(request_data, callback = callback)
-    app$server$wait_to_clear_requests()
+    request_data <- list(action="uiStatus")
+    app$server$send_request(request_data, callback)
+  
+    tryCatch({
+      app$server$wait_to_clear_requests()
+    }, error = function(e) {
+      app$server$stop_server()
+      stop(e)
+    })
+    
   }
   
-  app$chart_mgr$redraw_charts(send_request=TRUE)
+  app$chart_mgr$redraw_charts()
   
   return(app)
 }
