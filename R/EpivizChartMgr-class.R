@@ -398,12 +398,13 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
       }
       
       datasource_id <- measurements[[1]]@datasourceId
+      datasource_name <- measurements[[1]]@datasourceName
       
       chart_obj <- EpivizChart$new(
         .measurements=measurements,
         .datasource=datasource_id,
         .datasourceGroup=datasource_id,
-        .datasourceOriginName=datasource$get_source_name(),
+        .datasourceOriginName=datasource_name,
         .mgr=.self,
         .type=js_chart_type,
         .settings=js_chart_settings,

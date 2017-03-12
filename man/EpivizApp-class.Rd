@@ -66,10 +66,12 @@ for this type of data.
 
 \item{\code{print_workspace(file_name = NULL, file_type = "pdf")}}{Save epiviz workspace as a pdf or png.}
 
-\item{\code{save(file, stop_server = TRUE)}}{Save EpivizApp object representation of a workspace into .RData file.
+\item{\code{save(file, include_data = TRUE)}}{Save EpivizApp object representation of a workspace into .RData file.
 
     \describe{
       \item{file}{(character) The name of the file to save the EpivizApp object into, ending in .rda.}
+      \item{stop_app}{(logical) Stop the EpivizApp session.}
+      \item{include_data}{(logical) Include EpivizApp's data when saving the EpivizApp object.}
     }}
 
 \item{\code{service(verbose = TRUE)}}{Block interactive R session to service websocket requests.}

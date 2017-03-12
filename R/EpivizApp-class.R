@@ -319,7 +319,7 @@ EpivizApp$methods(
 
 # save method
 EpivizApp$methods(
-  save = function(file, stop_app=TRUE, include_data=TRUE) {
+  save = function(file, include_data=TRUE) {
     "Save EpivizApp object representation of a workspace into .RData file.
 
     \\describe{
@@ -331,50 +331,42 @@ EpivizApp$methods(
       stop("'app' must be an 'EpivizApp' object")
     }
     
-    if (.self$is_server_closed()) {
-      stop("The server for 'app' is closed")
+    if (.self$server$is_interactive() && !.self$is_server_closed()) {
+      .self$get_current_location(function(response) {
+        if (response$success) {
+          loc <- response$value
+          .self$.url_parms$chr <- loc$seqName
+          .self$.url_parms$start <- loc$start
+          .self$.url_parms$end <- loc$end
+        }
+      })
     }
-
-    loc <- NULL
-    .self$get_current_location(function(response) {
-      if (response$success) {
-        loc <<- response$value
-      }
-    })
-    .self$.url_parms$chr <- loc$seqName
-    .self$.url_parms$start <- loc$start
-    .self$.url_parms$end <- loc$end
-  
+    
     if (!include_data) {
       ms_ids <- ls(envir=.self$data_mgr$.ms_list)
       
-      # If user wants to exclude data but contiue session
-      # pair ms id with its data to add back to ms object
-      if (!stop_app){
-        ms_ids_objs <- lapply(ms_ids, function(id){
-          ms_obj <- .self$data_mgr$.get_ms_object(id)
-          c(id, ms_obj$.object)
-        })
-      }
+      ms_ids_objs <- lapply(ms_ids, function(id) {
+        ms_obj <- .self$data_mgr$.get_ms_object(id)
+        c(id, ms_obj$.object)
+      })
 
-      lapply(ms_ids, function(id){
+      lapply(ms_ids, function(id) {
         ms_obj <- .self$data_mgr$.get_ms_object(id)
         ms_obj$.object <- NULL
       })
     }
     
-    base::save(.self, file=file)   
+    app <- .self
+    base::save(app, file=file)   
     
-    if (stop_app) {
-      .self$stop_app()
-    } else if (!include_data) {
+    if (!include_data) {
       # Add data back to ms object
-     for (id_obj in ms_ids_objs){
-       id <- id_obj[[1]]
-       obj <- id_obj[[2]]
-       ms_obj <- .self$data_mgr$.get_ms_object(id)
-       ms_obj$.object <- obj
-     }
+       for (id_obj in ms_ids_objs) {
+         id <- id_obj[[1]]
+         obj <- id_obj[[2]]
+         ms_obj <- .self$data_mgr$.get_ms_object(id)
+         ms_obj$.object <- obj
+      }
     }
 })
 

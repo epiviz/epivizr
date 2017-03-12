@@ -21,6 +21,8 @@ Class encapsulating a chart in epiviz app
 
 \item{\code{get_settings()}}{Get custom settings for the chart.}
 
+\item{\code{get_source_name()}}{Get chart's id assigned by chart manager}
+
 \item{\code{is_connected()}}{Returns \code{TRUE} if chart is connected to a chart on epiviz app.}
 
 \item{\code{print_info()}}{Print settings and color currently used in chart object.}
