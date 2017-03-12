@@ -1,8 +1,12 @@
 context("restart epiviz")
 
 test_that("restartEpiviz restarts connection and workspace from file", {
-  app <- startEpiviz(non_interactive=TRUE)
-  app$server$start_server()
+  server <- epivizrServer::createServer()
+  data_mgr <- epivizrData::createMgr(server)
+  chart_mgr <- EpivizChartMgr$new(server)
+  app <- EpivizApp$new(server=server,
+                       data_mgr=data_mgr,
+                       chart_mgr=chart_mgr)
   
   gr1 <- GenomicRanges::GRanges(seqnames="chr1", ranges=IRanges::IRanges(start=1:10, width=100))
   gr2 <- GenomicRanges::GRanges(seqnames="chr1", ranges=IRanges::IRanges(start=seq(1,100,by=25), width=1), score=rnorm(length(seq(1,100,by=25))))
@@ -20,34 +24,37 @@ test_that("restartEpiviz restarts connection and workspace from file", {
   chart2 <- app$chart_mgr$visualize("LineChart", datasource=dev2)
   chart3 <- app$chart_mgr$visualize("ScatterChart", datasource=dev3)
   
-  file_name <- "test-restartEpiviz.rda"
+  file_name <- tempfile(fileext=".rda")
   
-  expect_false(app$server$is_closed())
+  #expect_false(app$server$is_closed())
   expect_false(file.exists(file_name))
   
-  app$save(file=file_name,include_data=TRUE)
-
-  expect_true(file.exists(file_name))
-  expect_true(app$server$is_closed())
-  expect_equal(app$chart_mgr$num_charts(), 0)  
-  
-  app <- restartEpiviz(file_name, open_browser=FALSE)
-
-  expect_false(app$server$is_closed())
-  expect_is(app, "EpivizApp")
-  expect_is(app$server, "EpivizServer")
-  expect_is(app$chart_mgr, "EpivizChartMgr")
-  expect_is(app$data_mgr, "EpivizDataMgr")
-
-  expect_equal(app$chart_mgr$num_charts(), 3)  
-  
+  app$save(file=file_name, include_data=TRUE)
   app$stop_app()
-  file.remove(file_name)
+  
+  expect_true(file.exists(file_name))
+  
+  app2 <- restartEpiviz(file_name, open_browser=FALSE)
+  
+  expect_is(app2, "EpivizApp")
+  expect_is(app2$server, "EpivizServer")
+  expect_is(app2$chart_mgr, "EpivizChartMgr")
+  expect_is(app2$data_mgr, "EpivizDataMgr")
+
+  expect_equal(app2$chart_mgr$num_charts(), 3)  
+  
+  #app$stop_app()
+  #file.remove(file_name)
 })
 
 test_that("restartEpiviz restarts connection and workspace from environment", {
-  app <- startEpiviz(non_interactive=TRUE)
-  app$server$start_server()
+  server <- epivizrServer::createServer()
+  data_mgr <- epivizrData::createMgr(server)
+  chart_mgr <- EpivizChartMgr$new(server)
+  app <- EpivizApp$new(server=server,
+                       data_mgr=data_mgr,
+                       chart_mgr=chart_mgr)
+  
   
   gr1 <- GenomicRanges::GRanges(seqnames="chr1", ranges=IRanges::IRanges(start=1:10, width=100))
   gr2 <- GenomicRanges::GRanges(seqnames="chr1", ranges=IRanges::IRanges(start=seq(1,100,by=25), width=1), score=rnorm(length(seq(1,100,by=25))))
@@ -65,26 +72,26 @@ test_that("restartEpiviz restarts connection and workspace from environment", {
   chart2 <- app$chart_mgr$visualize("LineChart", datasource=dev2)
   chart3 <- app$chart_mgr$visualize("ScatterChart", datasource=dev3)
   
-  file_name <- "test-restartEpiviz.rda"
+  file_name <- tempfile(fileext="rda")
   
-  expect_false(app$server$is_closed())
+  #expect_false(app$server$is_closed())
   expect_false(file.exists(file_name))
   
   app$save(file=file_name,include_data=FALSE)
+  app$stop_app()
   
   expect_true(file.exists(file_name))
-  expect_true(app$server$is_closed())
-  expect_equal(app$chart_mgr$num_charts(), 0)  
+  #expect_true(app$server$is_closed())
   
-  app <- restartEpiviz(file_name, open_browser=FALSE)
+  app2 <- restartEpiviz(file_name, open_browser=FALSE)
   
-  expect_false(app$server$is_closed())
-  expect_is(app, "EpivizApp")
-  expect_is(app$server, "EpivizServer")
-  expect_is(app$chart_mgr, "EpivizChartMgr")
-  expect_is(app$data_mgr, "EpivizDataMgr")
+  #expect_false(app$server$is_closed())
+  expect_is(app2, "EpivizApp")
+  expect_is(app2$server, "EpivizServer")
+  expect_is(app2$chart_mgr, "EpivizChartMgr")
+  expect_is(app2$data_mgr, "EpivizDataMgr")
   
-  expect_equal(app$chart_mgr$num_charts(), 3)  
+  expect_equal(app2$chart_mgr$num_charts(), 3)  
   
   chart_ids <- ls(envir=app$chart_mgr$.chart_list)
   chart_source_names <- lapply(chart_ids, function(id){
@@ -102,6 +109,6 @@ test_that("restartEpiviz restarts connection and workspace from environment", {
     expect_true(chart_source_name %in% data_mgr_origin_names)
   }
 
-  app$stop_app()
-  file.remove(file_name)
+  #app$stop_app()
+  #file.remove(file_name)
 })

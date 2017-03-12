@@ -2,11 +2,18 @@
 #'
 #' @param file (character) The name of the file that holds the EpivizApp object to be restarted, ending in .rda.
 #' @param open_browser (logical) browse to the epiviz URL before exiting function.
+#' @param host (character) name of epiviz app host to open at restart
+#' 
 #' @return An object of class \code{\link{EpivizApp}}
 #'
 #' @examples
 #' # see package vignette for example usage
-#' app <- restartEpiviz(file="app.rda")
+#' app <- startEpiviz(non_interactive=TRUE, open_browser=TRUE)
+#' file_name <- tempfile(fileext=".rda")
+#' app$save(file=file_name)
+#' app$stop_app()
+#' 
+#' app <- restartEpiviz(file=file_name, open_browser=FALSE)
 #'
 #' @export
 restartEpiviz <- function(file, open_browser=TRUE, host=NULL) {
@@ -14,14 +21,18 @@ restartEpiviz <- function(file, open_browser=TRUE, host=NULL) {
   if (!file.exists(file)) {
     stop("File does not exist")
   }
+
+  env <- new.env()  
+  load(file=file, envir=env)
+  app <- get("app", env)
   
-  load(file=file)
-  app <- .self
-  app$server$start_server()    
-  app$service()
+  if (open_browser) {
+    app$server$start_server()    
+    app$service()
+  }
   
   if(!is.null(host)) {
-    app$.url_parms$host = host
+    app$.url_parms$host <- host
   }
   
   ms_ids <- ls(envir=app$data_mgr$.ms_list)
@@ -48,7 +59,7 @@ restartEpiviz <- function(file, open_browser=TRUE, host=NULL) {
           datasource_name <- gsub(expression_pattern, "", datasource_name)
         }
        
-        data_not_in_environment <<- c(data_not_in_environment, datasource_name)    
+        data_not_in_environment <- c(data_not_in_environment, datasource_name)    
         
         return(NULL)
       })
@@ -56,7 +67,6 @@ restartEpiviz <- function(file, open_browser=TRUE, host=NULL) {
       if (!is.null(new_obj)) {
         ms_obj$update(new_obj)
       }
-      
     } 
   }
   
@@ -70,7 +80,7 @@ restartEpiviz <- function(file, open_browser=TRUE, host=NULL) {
     app$.open_browser()
     
     callback <- function(response_data) {
-      if (app$server$.verbose){
+      if (app$server$.verbose) {
         if(response_data$success){
           cat("UI is READY \n")       
         } else {
@@ -92,6 +102,5 @@ restartEpiviz <- function(file, open_browser=TRUE, host=NULL) {
   }
   
   app$chart_mgr$redraw_charts()
-  
   return(app)
 }
