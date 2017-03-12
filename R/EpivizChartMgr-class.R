@@ -403,6 +403,7 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
         .measurements=measurements,
         .datasource=datasource_id,
         .datasourceGroup=datasource_id,
+        .datasourceOriginName=datasource$get_source_name(),
         .mgr=.self,
         .type=js_chart_type,
         .settings=js_chart_settings,
@@ -466,6 +467,58 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
         }
         request_data <- list(action="redraw")
         .self$.server$send_request(request_data, callback)
+      }
+      invisible()
+    },
+    .redraw_chart = function(chart, send_request = TRUE){
+      send_request <- !.self$is_server_closed() && isTRUE(send_request)      
+      
+      if (send_request) {
+        callback <- function(response_data) {
+          app_chart_id <- response_data$value$id
+          
+          chart$set_app_id(app_chart_id)
+          
+          settings <- NULL
+          if(!is.null(chart$get_settings())) {
+            settings <- chart$get_settings()
+          }
+          
+          colors <- NULL
+          if(!is.null(chart$get_colors())) {
+            colors <- chart$get_colors()
+          }
+          
+          chart$set(settings=settings, colors=colors)
+          
+          if (.self$.server$.verbose) {
+            cat("Chart ", chart$get_id(), "re-drawn\n")            
+          }
+        }
+        
+        measurements <- NULL
+        if (!is.null(chart$.measurements)) { 
+          measurements = epivizrServer::json_writer(lapply(chart$.measurements, epivizrData::as.list)) 
+        }
+        
+        request_data <- list(action="addChart",
+          type=chart$.type,
+          measurements=measurements,
+          datasource=chart$.datasource,
+          datasourceGroup=chart$.datasourceGroup
+        )
+        .self$.server$send_request(request_data, callback)
+      }
+      
+      invisible()
+    },
+    redraw_charts = function(send_request = TRUE){
+      chart_ids <- ls(envir=.self$.chart_list)
+      
+      for (id in chart_ids){
+        chart_obj <- .self$.get_chart_object(id)
+        .self$.redraw_chart(chart_obj, send_request)
+        .self$.server$wait_to_clear_requests()
       }
       invisible()
     }

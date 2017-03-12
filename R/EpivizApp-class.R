@@ -132,11 +132,13 @@ EpivizApp$methods(
       \\item{...}{Additional arguments passed to \\code{add_measurements} method for class
         \\code{\\link[epivizrData]{EpivizData}}}
     }"
+    datasource_origin_name <- deparse(substitute(data_object))
     if (missing(datasource_name)) {
-      datasource_name <- deparse(substitute(data_object))
+      datasource_name <- datasource_origin_name
     }
     ms_obj <- .self$data_mgr$add_measurements(data_object, 
                                               datasource_name=datasource_name,
+                                              datasource_origin_name=datasource_origin_name,
                                               send_request=send_request, ...)
     .self$server$wait_to_clear_requests()
     
@@ -315,3 +317,65 @@ EpivizApp$methods(
   }
 )
 
+# save method
+EpivizApp$methods(
+  save = function(file, stop_app=TRUE, include_data=TRUE) {
+    "Save EpivizApp object representation of a workspace into .RData file.
+
+    \\describe{
+      \\item{file}{(character) The name of the file to save the EpivizApp object into, ending in .rda.}
+      \\item{stop_app}{(logical) Stop the EpivizApp session.}
+      \\item{include_data}{(logical) Include EpivizApp's data when saving the EpivizApp object.}
+    }"
+    if (!is(.self, "EpivizApp")) {
+      stop("'app' must be an 'EpivizApp' object")
+    }
+    
+    if (.self$is_server_closed()) {
+      stop("The server for 'app' is closed")
+    }
+
+    loc <- NULL
+    .self$get_current_location(function(response) {
+      if (response$success) {
+        loc <<- response$value
+      }
+    })
+    .self$.url_parms$chr <- loc$seqName
+    .self$.url_parms$start <- loc$start
+    .self$.url_parms$end <- loc$end
+  
+    if (!include_data) {
+      ms_ids <- ls(envir=.self$data_mgr$.ms_list)
+      
+      # If user wants to exclude data but contiue session
+      # pair ms id with its data to add back to ms object
+      if (!stop_app){
+        ms_ids_objs <- lapply(ms_ids, function(id){
+          ms_obj <- .self$data_mgr$.get_ms_object(id)
+          c(id, ms_obj$.object)
+        })
+      }
+
+      lapply(ms_ids, function(id){
+        ms_obj <- .self$data_mgr$.get_ms_object(id)
+        ms_obj$.object <- NULL
+      })
+    }
+    
+    base::save(.self, file=file)   
+    
+    if (stop_app) {
+      .self$stop_app()
+    } else if (!include_data) {
+      # Add data back to ms object
+     for (id_obj in ms_ids_objs){
+       id <- id_obj[[1]]
+       obj <- id_obj[[2]]
+       ms_obj <- .self$data_mgr$.get_ms_object(id)
+       ms_obj$.object <- obj
+     }
+    }
+})
+
+  
