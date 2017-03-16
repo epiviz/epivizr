@@ -36,7 +36,7 @@ restartEpiviz <- function(file, open_browser=TRUE, host=NULL) {
   }
   
   ms_ids <- ls(envir=app$data_mgr$.ms_list)
-  data_not_in_environment <- NULL
+  data_not_in_envir <- FALSE
   
   # If file is saved without data, this will
   # update data into Epiviz App if it exists
@@ -48,32 +48,24 @@ restartEpiviz <- function(file, open_browser=TRUE, host=NULL) {
       new_obj <- tryCatch({
         eval(parse(text=ms_obj$get_source_name()))
       }, error = function(e) {
-        # instead of stopping here, this accumulates 
-        # names of all datasources not in environment
+        # instead of stopping here, this warns 
+        # of all datasources not in environment
         datasource_name <- ms_obj$get_source_name()
-        
-        expression_pattern <- "\\[[[:print:]]*\\]"
-        is_datasource_an_expression <- grepl(expression_pattern, datasource_name)
-        
-        if (is_datasource_an_expression) {
-          datasource_name <- gsub(expression_pattern, "", datasource_name)
-        }
-       
-        data_not_in_environment <- c(data_not_in_environment, datasource_name)    
-        
+        warning("Couldn't evaluate the expression: ", datasource_name)     
         return(NULL)
       })
       
-      if (!is.null(new_obj)) {
+      if (is.null(new_obj)) {
+        data_not_in_envir <- TRUE
+      } else {
         ms_obj$update(new_obj)
       }
     } 
   }
   
-  if (!is.null(data_not_in_environment)) {
-    datasource_names <- paste(data_not_in_environment, collapse=", ")
+  if (data_not_in_envir) {
     app$server$stop_server()
-    stop("Load data in environment before restarting: ", datasource_names,".")
+    stop("Load data in environment before restarting.")
   }
   
   if (open_browser) {
