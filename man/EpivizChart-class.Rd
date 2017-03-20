@@ -2,8 +2,8 @@
 % Please edit documentation in R/EpivizChart-class.R
 \docType{class}
 \name{EpivizChart-class}
-\alias{EpivizChart}
 \alias{EpivizChart-class}
+\alias{EpivizChart}
 \title{Class encapsulating a chart in epiviz app}
 \description{
 Class encapsulating a chart in epiviz app

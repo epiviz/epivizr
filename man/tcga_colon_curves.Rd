@@ -30,4 +30,3 @@ of TCGA 450k beadarray samples. This object contains probe cluster level methyla
 \code{\link[minfi]{blockFinder}}.
 }
 \keyword{datasets}
-

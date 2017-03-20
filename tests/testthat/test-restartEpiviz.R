@@ -72,7 +72,7 @@ test_that("restartEpiviz restarts connection and workspace from environment", {
   chart2 <- app$chart_mgr$visualize("LineChart", datasource=dev2)
   chart3 <- app$chart_mgr$visualize("ScatterChart", datasource=dev3)
   
-  file_name <- tempfile(fileext="rda")
+  file_name <- tempfile(fileext=".rda")
   
   #expect_false(app$server$is_closed())
   expect_false(file.exists(file_name))

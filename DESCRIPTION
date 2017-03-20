@@ -2,7 +2,7 @@ Package: epivizr
 Maintainer: Hector Corrada Bravo <hcorrada@gmail.com>
 Author: Hector Corrada Bravo, Florin Chelaru, Llewellyn Smith, Naomi
     Goldstein, Jayaram Kancherla, Morgan Walter, Brian Gottfried
-Version: 2.5.5
+Version: 2.5.6
 License: Artistic-2.0
 Title: R Interface to epiviz web app
 Description: This package provides connections to the
@@ -44,4 +44,4 @@ Collate:
     'vignette_data.R'
 biocViews: Visualization, Infrastructure, GUI
 Video: https://www.youtube.com/watch?v=099c4wUxozA
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1

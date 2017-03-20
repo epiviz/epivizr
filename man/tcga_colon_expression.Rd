@@ -25,4 +25,3 @@ counts from RNAseq data for colon tumor and normal tissue from the TCGA project.
 Only exons in human chromosome 11 are included.
 }
 \keyword{datasets}
-

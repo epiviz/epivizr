@@ -4,7 +4,8 @@
 \alias{restartEpiviz}
 \title{Restart epiviz app connection and workspace.}
 \usage{
-restartEpiviz(file, open_browser = TRUE, host = NULL)
+restartEpiviz(file, open_browser = TRUE, host = NULL,
+  envir = parent.frame())
 }
 \arguments{
 \item{file}{(character) The name of the file that holds the EpivizApp object to be restarted, ending in .rda.}
@@ -12,6 +13,8 @@ restartEpiviz(file, open_browser = TRUE, host = NULL)
 \item{open_browser}{(logical) browse to the epiviz URL before exiting function.}
 
 \item{host}{(character) name of epiviz app host to open at restart}
+
+\item{envir}{(environment) environment in which to evaluate expressions needed to reconstruct data sources}
 }
 \value{
 An object of class \code{\link{EpivizApp}}
@@ -29,4 +32,3 @@ app$stop_app()
 app <- restartEpiviz(file=file_name, open_browser=FALSE)
 
 }
-

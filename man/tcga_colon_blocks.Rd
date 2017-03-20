@@ -34,4 +34,3 @@ of TCGA 450k beadarray samples. This object contains large regions of methylatio
 and normal samples obtained from \code{\link[minfi]{blockFinder}}.
 }
 \keyword{datasets}
-

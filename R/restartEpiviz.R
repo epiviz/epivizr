@@ -3,6 +3,7 @@
 #' @param file (character) The name of the file that holds the EpivizApp object to be restarted, ending in .rda.
 #' @param open_browser (logical) browse to the epiviz URL before exiting function.
 #' @param host (character) name of epiviz app host to open at restart
+#' @param envir (environment) environment in which to evaluate expressions needed to reconstruct data sources
 #' 
 #' @return An object of class \code{\link{EpivizApp}}
 #'
@@ -16,15 +17,15 @@
 #' app <- restartEpiviz(file=file_name, open_browser=FALSE)
 #'
 #' @export
-restartEpiviz <- function(file, open_browser=TRUE, host=NULL) {
+restartEpiviz <- function(file, open_browser=TRUE, host=NULL, envir=parent.frame()) {
   
   if (!file.exists(file)) {
     stop("File does not exist")
   }
 
-  env <- new.env()  
-  load(file=file, envir=env)
-  app <- get("app", env)
+  load_env <- new.env()  
+  load(file=file, envir=load_env)
+  app <- get("app", load_env)
   
   if (open_browser) {
     app$server$start_server()    
@@ -46,7 +47,7 @@ restartEpiviz <- function(file, open_browser=TRUE, host=NULL) {
     
     if (is.null(ms_obj$.object)) {
       new_obj <- tryCatch({
-        eval(parse(text=ms_obj$get_source_name()))
+        eval(parse(text=ms_obj$get_source_name()), envir=envir)
       }, error = function(e) {
         # instead of stopping here, this warns 
         # of all datasources not in environment

@@ -16,4 +16,3 @@ Nothing, this function is called for its side-effects
 \description{
 Print information about EpivizChart
 }
-

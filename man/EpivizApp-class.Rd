@@ -2,8 +2,8 @@
 % Please edit documentation in R/EpivizApp-class.R
 \docType{class}
 \name{EpivizApp-class}
-\alias{EpivizApp}
 \alias{EpivizApp-class}
+\alias{EpivizApp}
 \title{Class managing connection to epiviz application.}
 \description{
 Class managing connection to epiviz application.
@@ -17,6 +17,7 @@ Class managing connection to epiviz application.
 
 \item{\code{chart_mgr}}{An object of class \code{EpivizChartMgr} used to manage charts added to epiviz app session.}
 }}
+
 \section{Methods}{
 
 \describe{

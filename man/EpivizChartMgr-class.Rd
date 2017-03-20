@@ -2,8 +2,8 @@
 % Please edit documentation in R/EpivizChartMgr-class.R
 \docType{class}
 \name{EpivizChartMgr-class}
-\alias{EpivizChartMgr}
 \alias{EpivizChartMgr-class}
+\alias{EpivizChartMgr}
 \title{Class providing chart manager for epiviz app}
 \description{
 Class providing chart manager for epiviz app
