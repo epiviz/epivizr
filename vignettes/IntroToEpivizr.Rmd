@@ -309,6 +309,39 @@ se_chart <- app$plot(sumexp, datasource_name="Mean by Sample Type", columns=c("n
 ```
 Again, the `columns` argument specifies what data will be displayed along which axis.
 
+# Visualizing data available from epiviz webserver
+
+## Load remote measurements
+
+Epiviz web server (http://epiviz.cbcb.umd.edu) currently hosts data sets from several sources including Gene Expression Barcode project. We provide a way to load these remotely hosted datasets and integrate/analyze with your current workflow and local data. For this, Lets first get the list of measurements available from the webserver 
+
+
+```{r, eval=FALSE, echo=TRUE}
+app$load_remote_measurements()
+remote_measurements <- app$data_mgr$get_remote_measurements()
+```
+
+## Query measurements and add charts
+`remote_measurements` is a list of `EpivizMeasurement` objects. We can query this list to choose the datasets we would like to load from the webserver. For the purpose of this vignette, lets find measurements to visualize data from gene expression barcode project for tumor and normal samples from lung, colon and breast tissues.
+
+```{r, eval=FALSE, echo=TRUE}
+measurementList <- lapply(remote_measurements, function(m) {
+  if(m@name %in% c("colon normal", "lung normal", "breast normal", "colon tumor", "lung tumor", "breast tumor") && m@datasourceId == "gene_expression_barcode_subtype") {
+    m
+  }
+})
+
+measurements <- Filter(Negate(is.null), measurementList)
+```
+
+Now lets add a heatmap using the measurements we just selected. For this we use the `visualize` function from the `EpivizChartMgr` class.
+
+```{r, eval=FALSE, echo=TRUE}
+app$chart_mgr$visualize("HeatmapPlot", measurements = measurements)
+```
+
+Similarly other chart types registered with the current epivizr session can be used with the datasets from the webserver.
+
 # More application interactions
 
 ## Slideshow
