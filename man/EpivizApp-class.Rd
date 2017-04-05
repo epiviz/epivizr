@@ -41,6 +41,8 @@ in a given chart.
 
 \item{\code{is_server_closed()}}{Check if underlying server connection is closed.}
 
+\item{\code{load_remote_measurements()}}{Load remote measurements into R session.}
+
 \item{\code{load_workspace(workspace_id = NULL)}}{load an epiviz workspace.
 
     \describe{
