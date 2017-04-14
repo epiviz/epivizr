@@ -3,12 +3,14 @@
 
 \encoding{UTF-8}
 
-\section{Version 2.5}
+\section{Version 2.5.x}{
   \itemize{
     \item Add 'revisualize' method to add a new visualization using the same measurements as an existing visualization
     \item can save an 'EpivizApp' to disk as an 'rda' file and restart it using the 'restartEpiviz' function
     \item can use measurements from a remote epiviz UI server session to create visualizations from R. With this, remote epiviz UI sessions are now fully scriptable through R.
   }
+}
+
 \section{Version 2.0.0}{
   This is not a backwards-compatible version. 
   \itemize{
