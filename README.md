@@ -7,8 +7,9 @@ The `epivizr` Bioconductor package implements two-way communication between the 
 Epivizr is available as part of the [Bioconductor](http://bioconductor.org) project as of version 2.13. To install the release version of `epivizr`:
 
 ```{r}
-source("http://bioconductor.org/biocLite.R")
-biocLite("epivizr")
+if (!requireNamespace("BiocManager", quietly=TRUE))
+    install.packages("BiocManager")
+BiocManager::install("epivizr")
 ```
 
 ## Development version
