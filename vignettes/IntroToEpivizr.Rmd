@@ -96,7 +96,7 @@ This opens a websocket connection between the interactive `R` session and the br
 
 *Windows users:* In Windows platforms we need to use the `service` function to let the interactive `R` session connect to the `epiviz` web app and serve data requests. We then escape (using `ctl-c` or `esc` depending on your environment) to continue with the interactive `R` session. This is required anytime you want `epivizr` to serve data to the web app, for example, when interacting with the UI. (We are actively developing support for non-blocking sessions in Windows platforms).
 
-```{r, eval=TRUE}
+```{r, eval=FALSE}
 app$server$service()
 ```
 
