@@ -7,3 +7,5 @@ inst/www-full
 ^update_remotes.sh
 
 ^vignettes/figure
+^doc$
+^Meta$

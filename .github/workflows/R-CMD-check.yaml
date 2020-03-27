@@ -19,13 +19,9 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: windows-latest, r: '3.6' }
-          - {os: macOS-latest, r: '3.6' }
-          - {os: ubuntu-16.04, r: '3.6', cran: "https://demo.rstudiopm.com/all/__linux__/xenial/latest" }
           - {os: macOS-latest, r: 'devel' }
  	  - {os: ubuntu-16.04, r: 'devel', cran: "https://demo.rstudiopm.com/all/__linux__/xenial/latest" }
  	  - {os: windows-latest, r: 'devel' }
-
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
       CRAN: ${{ matrix.conig.cran }}
@@ -54,11 +50,16 @@ jobs:
           Rscript -e "install.packages('remotes')" -e "remotes::install_github('r-hub/sysreqs')"
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           sudo -s eval "$sysreqs"
-          
-      - name: Install dependencies
-        run: Rscript -e "install.packages('remotes')" -e "remotes::install_deps(dependencies=TRUE)" -e "remotes::install_cran('rcmdcheck')"
+      - name: Install Rcpp from github
+        run: Rscript -e "install.packages('remotes')" -e "remotes::install_github('RcppCore/Rcpp')"
 
-        
+      - name: Install SummarizedExperiment to get bioconductor going
+        run: Rscript -e "remotes::install_bioc('SummarizedExperiment')"
+          
+      - name: Install other dependencies
+        run: Rscript -e "remotes::install_deps(dependencies=TRUE)" -e "remotes::install_cran('rcmdcheck')"
+ 
       - name: Check
-        run: Rscript -e "rcmdcheck::rcmdcheck(args = '--no-vignettes --timings', error_on = 'error')"
+        run: Rscript -e "rcmdcheck::rcmdcheck(build_args = c('--keep-empty-dirs', '--no-resave-data'), args=c('--no-vignettes', '--timings'), error_on = 'error')"
+          
 
