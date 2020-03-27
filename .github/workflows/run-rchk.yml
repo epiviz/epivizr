@@ -1,0 +1,15 @@
+on:
+  push:
+    branches:
+      - rchk
+
+name: run-rchk
+
+jobs:
+  run-rchk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: r-lib/actions/run-rchk@master
+        with:
+          package: Rcsdp
