@@ -3,7 +3,8 @@
 on: 
   push:
     branches:
-      - master
+      - check-release
+      - check-devel
   pull_request:
     branches:
       - master
@@ -19,16 +20,16 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: macOS-latest, r: 'devel' }
- 	  - {os: ubuntu-16.04, r: 'devel', cran: "https://demo.rstudiopm.com/all/__linux__/xenial/latest" }
- 	  - {os: windows-latest, r: 'devel' }
+          #- {os: macOS-latest, r: 'devel' }
+          - {os: macOS-latest, r: '3.6'}
+ 	        #- {os: ubuntu-16.04, r: 'devel', cran: "https://demo.rstudiopm.com/all/__linux__/xenial/latest" }
+ 	        #- {os: windows-latest, r: 'devel' }
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
       CRAN: ${{ matrix.conig.cran }}
       
     steps:
-      - uses: actions/checkout@v1
-      
+      - uses: actions/checkout@v2
       - uses: r-lib/actions/setup-r@master
         with:
           r-version: ${{ matrix.config.r }}
@@ -53,11 +54,14 @@ jobs:
       - name: Install Rcpp from github
         run: Rscript -e "install.packages('remotes')" -e "remotes::install_github('RcppCore/Rcpp')"
 
-      - name: Install SummarizedExperiment to get bioconductor going
-        run: Rscript -e "remotes::install_bioc('SummarizedExperiment')"
-          
-      - name: Install other dependencies
-        run: Rscript -e "remotes::install_deps(dependencies=TRUE)" -e "remotes::install_cran('rcmdcheck')"
+      - name: Install BiocManager
+        run: Rscript -e "remotes::install_cran('BiocManager')"
+        
+      - name: Install this package and dependencies
+        run: Rscript -e "BiocManager::install('epivizr', dependencies=TRUE)"
+        
+      - name: Install rcmdcheck
+        run: Rscript -e "remotes::install_cran('rcmdcheck')"
  
       - name: Check
         run: Rscript -e "rcmdcheck::rcmdcheck(build_args = c('--keep-empty-dirs', '--no-resave-data'), args=c('--no-vignettes', '--timings'), error_on = 'error')"
