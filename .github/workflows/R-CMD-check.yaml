@@ -58,6 +58,9 @@ jobs:
       - name: Install this package and dependencies
         run: Rscript -e "BiocManager::install('epivizr', dependencies=TRUE)"
         
+      - name: Install tinytex to build manual
+        run: Rscript -e "remotes::install_cran('tinytex')"
+        
       - name: Install rcmdcheck
         run: Rscript -e "remotes::install_cran('rcmdcheck')"
  
