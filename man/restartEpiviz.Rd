@@ -4,8 +4,7 @@
 \alias{restartEpiviz}
 \title{Restart epiviz app connection and workspace.}
 \usage{
-restartEpiviz(file, open_browser = TRUE, host = NULL,
-  envir = parent.frame())
+restartEpiviz(file, open_browser = TRUE, host = NULL, envir = parent.frame())
 }
 \arguments{
 \item{file}{(character) The name of the file that holds the EpivizApp object to be restarted, ending in .rda.}

@@ -4,12 +4,26 @@
 \alias{startEpiviz}
 \title{Start epiviz app and create \code{\link{EpivizApp}} object to manage connection.}
 \usage{
-startEpiviz(host = NULL, http_port = NULL, path = NULL,
-  use_devel = FALSE, chr = "chr11", start = 99800000, end = 103383180,
-  debug = FALSE, workspace = NULL, scripts = NULL, gists = NULL,
-  use_cookie = TRUE, register_function = .register_all_the_epiviz_things,
-  open_browser = TRUE, server = NULL, browser_fun = utils::browseURL,
-  ws_host = "localhost", ...)
+startEpiviz(
+  host = NULL,
+  http_port = NULL,
+  path = NULL,
+  use_devel = FALSE,
+  chr = "chr11",
+  start = 99800000,
+  end = 103383180,
+  debug = FALSE,
+  workspace = NULL,
+  scripts = NULL,
+  gists = NULL,
+  use_cookie = TRUE,
+  register_function = .register_all_the_epiviz_things,
+  open_browser = TRUE,
+  server = NULL,
+  browser_fun = utils::browseURL,
+  ws_host = "localhost",
+  ...
+)
 }
 \arguments{
 \item{host}{(character) use a host for the epiviz app other than the cbcb.umd.edu hosts.}

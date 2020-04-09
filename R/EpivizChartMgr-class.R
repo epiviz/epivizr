@@ -32,7 +32,7 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
     },
     is_server_closed = function() { 
       "Returns \\code{TRUE} if underlying server is closed.
-      See \\code{is_closed} method in class \\code{\\link[epivizrServer]{EpivizServer}}."
+      See \\code{is_closed} method in class \\code{\\link{EpivizServer}}."
       is.null(.self$.server) || .self$.server$is_closed()
     },
     .get_chart_object = function(chart_object_or_id) {
@@ -368,14 +368,14 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
     visualize = function(chart_type, measurements = NULL, datasource = NULL, 
                          settings=NULL, colors=NULL, send_request=TRUE, ...) {
       "Visualize data use the given chart type. One of arguments \\code{measurements} or \\code{datasource} must be non-\\code{NULL}. If \\code{measurements}
-      is \\code{NULL}, the \\code{get_measurements} method in class \\code{\\link[epivizrData]{EpivizData}}
+      is \\code{NULL}, the \\code{get_measurements} method in class \\code{\\link{EpivizData}}
       is used to decide which measurements are used in the chart
       
       \\describe{
         \\item{chart_type}{a chart type registered using the \\code{register_chart_type} method}
-        \\item{measurements}{a list of \\code{\\link[epivizrData]{EpivizMeasurement}} objects
+        \\item{measurements}{a list of \\code{\\link{EpivizMeasurement}} objects
           describing measurements to include in the chart}
-        \\item{datasource}{an object of class \\code{\\link[epivizrData]{EpivizData}}, all available
+        \\item{datasource}{an object of class \\code{\\link{EpivizData}}, all available
           measurements from datasource are used as appropriate}
       }"
       
@@ -443,12 +443,12 @@ EpivizChartMgr <- setRefClass("EpivizChartMgr",
         .self$visualize(chart_type = chart_type, measurements = measurements, ...)
     },
     plot = function(measurement_object, settings=NULL, colors=NULL, send_request=TRUE) {
-      "Visualize data in an \\code{\\link[epivizrData]{EpivizData}} object using its default chart type.
-      The method \\code{get_default_chart_type} in class \\code{\\link[epivizrData]{EpivizData}} is used
+      "Visualize data in an \\code{\\link{EpivizData}} object using its default chart type.
+      The method \\code{get_default_chart_type} in class \\code{\\link{EpivizData}} is used
       to determine which chart type is used.
 
       \\describe{
-        \\item{measurement_object}{an object of class \\code{\\link[epivizrData]{EpivizData}}}
+        \\item{measurement_object}{an object of class \\code{\\link{EpivizData}}}
         \\item{settings}{list of settings to use in chart (uses default chart settings if NULL)}
         \\item{colors}{character vector of HEX colors to use in chart (uses default chart colors if NULL)}
       }"

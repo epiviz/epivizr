@@ -23,7 +23,9 @@ Imports:
     epivizrData (>= 1.3.4),
     GenomicRanges,
     S4Vectors,
-    IRanges
+    IRanges,
+    bumphunter,
+    GenomeInfoDb
 Suggests:
     testthat,
     roxygen2,
@@ -33,7 +35,8 @@ Suggests:
     antiProfilesData,
     hgu133plus2.db,
     Mus.musculus,
-    BiocStyle
+    BiocStyle,
+    minfi
 Collate:
     'EpivizChartMgr-class.R'
     'EpivizApp-class.R'
@@ -44,4 +47,4 @@ Collate:
     'vignette_data.R'
 biocViews: Visualization, Infrastructure, GUI
 Video: https://www.youtube.com/watch?v=099c4wUxozA
-RoxygenNote: 6.0.1
+RoxygenNote: 7.1.0

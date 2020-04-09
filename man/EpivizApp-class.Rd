@@ -11,11 +11,11 @@ Class managing connection to epiviz application.
 \section{Fields}{
 
 \describe{
-\item{\code{server}}{An object of class \code{\link[epivizrServer]{EpivizServer}} used to communicate with epiviz app.}
+\item{\code{server}}{An object of class \code{\link{EpivizServer}} used to communicate with epiviz app.}
 
-\item{\code{data_mgr}}{An object of class \code{\link[epivizrData]{EpivizDataMgr}} used to serve data to epiviz app.}
+\item{\code{data_mgr}}{An object of class \code{\link{EpivizDataMgr}} used to serve data to epiviz app.}
 
-\item{\code{chart_mgr}}{An object of class \code{EpivizChartMgr} used to manage charts added to epiviz app session.}
+\item{\code{chart_mgr}}{An object of class \code{\link{EpivizChartMgr}} used to manage charts added to epiviz app session.}
 }}
 
 \section{Methods}{
@@ -51,8 +51,14 @@ in a given chart.
 
 \item{\code{navigate(chr, start, end)}}{Navigate to given position on the epiviz app.}
 
-\item{\code{plot(data_object, datasource_name = NULL, send_request = TRUE,
-  settings = NULL, colors = NULL, ...)}}{Visualize data on epiviz app using its default chart type. Measurements from the \code{data-object} 
+\item{\code{plot(
+  data_object,
+  datasource_name = NULL,
+  send_request = TRUE,
+  settings = NULL,
+  colors = NULL,
+  ...
+)}}{Visualize data on epiviz app using its default chart type. Measurements from the \code{data-object} 
 are first added to the epiviz app using the \code{add_measurements} method for class 
 \code{\link[epivizrData]{EpivizData}}. See documentation for \code{\link[epivizrData]{register}}
 for information on supported data types and the \code{\link[epivizrData]{EpivizData}} class

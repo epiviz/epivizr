@@ -50,9 +50,9 @@
 
 #' Class managing connection to epiviz application.
 #' 
-#' @field server An object of class \code{\link[epivizrServer]{EpivizServer}} used to communicate with epiviz app.
-#' @field data_mgr An object of class \code{\link[epivizrData]{EpivizDataMgr}} used to serve data to epiviz app.
-#' @field chart_mgr An object of class \code{EpivizChartMgr} used to manage charts added to epiviz app session.
+#' @field server An object of class [`EpivizServer`] used to communicate with epiviz app.
+#' @field data_mgr An object of class [`EpivizDataMgr`] used to serve data to epiviz app.
+#' @field chart_mgr An object of class [`EpivizChartMgr`] used to manage charts added to epiviz app session.
 #' 
 #' @importClassesFrom epivizrServer EpivizServer
 #' @importClassesFrom epivizrData EpivizDataMgr EpivizMeasurement EpivizData
@@ -63,6 +63,7 @@
 #' 
 #' @include EpivizChartMgr-class.R
 #' @exportClass EpivizApp
+#' @md
 EpivizApp <- setRefClass("EpivizApp",
   fields=list(
     .url_parms="list",

@@ -30,7 +30,7 @@ Class providing chart manager for epiviz app
 }}
 
 \item{\code{is_server_closed()}}{Returns \code{TRUE} if underlying server is closed.
-See \code{is_closed} method in class \code{\link[epivizrServer]{EpivizServer}}.}
+See \code{is_closed} method in class \code{\link{EpivizServer}}.}
 
 \item{\code{list_chart_type_colors(chart_type)}}{List colors currently used in given chart type}
 
@@ -51,19 +51,17 @@ See \code{is_closed} method in class \code{\link[epivizrServer]{EpivizServer}}.}
 
 \item{\code{num_charts()}}{Return the number of charts currently loaded through manager.}
 
-\item{\code{plot(measurement_object, settings = NULL, colors = NULL,
-  send_request = TRUE)}}{Visualize data in an \code{\link[epivizrData]{EpivizData}} object using its default chart type.
-      The method \code{get_default_chart_type} in class \code{\link[epivizrData]{EpivizData}} is used
+\item{\code{plot(measurement_object, settings = NULL, colors = NULL, send_request = TRUE)}}{Visualize data in an \code{\link{EpivizData}} object using its default chart type.
+      The method \code{get_default_chart_type} in class \code{\link{EpivizData}} is used
       to determine which chart type is used.
 
       \describe{
-        \item{measurement_object}{an object of class \code{\link[epivizrData]{EpivizData}}}
+        \item{measurement_object}{an object of class \code{\link{EpivizData}}}
         \item{settings}{list of settings to use in chart (uses default chart settings if NULL)}
         \item{colors}{character vector of HEX colors to use in chart (uses default chart colors if NULL)}
       }}
 
-\item{\code{print_chart(chart_object_or_id, file_name = NULL, file_type = c("pdf",
-  "png"))}}{Print specific chart to file.
+\item{\code{print_chart(chart_object_or_id, file_name = NULL, file_type = c("pdf", "png"))}}{Print specific chart to file.
 \describe{
  \item{chart_object_or_id}{An object of class \code{\link{EpivizChart}} or a 
    string indicating the chart's id assigned by chart manager.}
@@ -82,9 +80,12 @@ See \code{is_closed} method in class \code{\link[epivizrServer]{EpivizServer}}.}
   \item{chart_type}{the name for a chart type in R (e.g., 'BlocksTrack', 'StackedLineTrack')}
 }}
 
-\item{\code{register_chart_type(chart_type,
+\item{\code{register_chart_type(
+  chart_type,
   js_chart_type = paste0("epiviz.plugins.charts.", chart_type),
-  js_chart_settings = list(), js_chart_colors = character())}}{Register a chart type name to a JavaScript chart type in the epiviz app.
+  js_chart_settings = list(),
+  js_chart_colors = character()
+)}}{Register a chart type name to a JavaScript chart type in the epiviz app.
 \describe{
   \item{chart_type}{the name to use for chart type in R (e.g., 'BlocksTrack')}
   \item{js_chart_type}{the full JavaScript class name of the corresponding chart type 
@@ -116,16 +117,23 @@ See \code{is_closed} method in class \code{\link[epivizrServer]{EpivizServer}}.}
   \item{colors}{a list of (HEX code) colors to use in the chart}
 }}
 
-\item{\code{visualize(chart_type, measurements = NULL, datasource = NULL,
-  settings = NULL, colors = NULL, send_request = TRUE, ...)}}{Visualize data use the given chart type. One of arguments \code{measurements} or \code{datasource} must be non-\code{NULL}. If \code{measurements}
-is \code{NULL}, the \code{get_measurements} method in class \code{\link[epivizrData]{EpivizData}}
+\item{\code{visualize(
+  chart_type,
+  measurements = NULL,
+  datasource = NULL,
+  settings = NULL,
+  colors = NULL,
+  send_request = TRUE,
+  ...
+)}}{Visualize data use the given chart type. One of arguments \code{measurements} or \code{datasource} must be non-\code{NULL}. If \code{measurements}
+is \code{NULL}, the \code{get_measurements} method in class \code{\link{EpivizData}}
 is used to decide which measurements are used in the chart
 
 \describe{
   \item{chart_type}{a chart type registered using the \code{register_chart_type} method}
-  \item{measurements}{a list of \code{\link[epivizrData]{EpivizMeasurement}} objects
+  \item{measurements}{a list of \code{\link{EpivizMeasurement}} objects
     describing measurements to include in the chart}
-  \item{datasource}{an object of class \code{\link[epivizrData]{EpivizData}}, all available
+  \item{datasource}{an object of class \code{\link{EpivizData}}, all available
     measurements from datasource are used as appropriate}
 }}
 }}
