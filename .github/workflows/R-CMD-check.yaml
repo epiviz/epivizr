@@ -65,6 +65,6 @@ jobs:
         run: Rscript -e "remotes::install_cran('rcmdcheck')"
  
       - name: Check
-        run: Rscript -e "rcmdcheck::rcmdcheck(build_args = c('--keep-empty-dirs', '--no-resave-data'), args=c('--no-vignettes', '--timings'), error_on = 'error')"
+        run: Rscript -e "rcmdcheck::rcmdcheck(build_args = c('--keep-empty-dirs', '--no-resave-data'), args=c('--no-vignettes', '--timings', '--no-manual'), error_on = 'error')"
           
 
