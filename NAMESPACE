@@ -3,6 +3,8 @@
 export(restartEpiviz)
 export(startEpiviz)
 exportClasses(EpivizApp)
+exportClasses(EpivizChart)
+exportClasses(EpivizChartMgr)
 exportMethods(show)
 import(GenomicRanges)
 import(IRanges)

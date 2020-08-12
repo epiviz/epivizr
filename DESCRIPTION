@@ -47,4 +47,4 @@ Collate:
     'vignette_data.R'
 biocViews: Visualization, Infrastructure, GUI
 Video: https://www.youtube.com/watch?v=099c4wUxozA
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1

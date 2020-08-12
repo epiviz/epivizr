@@ -2,6 +2,7 @@
 #' 
 #' @import methods
 #' @importClassesFrom epivizrServer EpivizServer
+#' @exportClass EpivizChartMgr
 EpivizChartMgr <- setRefClass("EpivizChartMgr",
   fields=list(
     .chart_list = "environment",

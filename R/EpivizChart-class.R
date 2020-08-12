@@ -1,7 +1,7 @@
 #' Class encapsulating a chart in epiviz app
 #' 
 #' @import methods
-#' @include EpivizChartMgr-class.R
+#' @exportClass EpivizChart
 EpivizChart <- setRefClass("EpivizChart",
 	fields=list(
 		.measurements = "list",

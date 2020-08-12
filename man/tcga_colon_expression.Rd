@@ -5,7 +5,7 @@
 \alias{tcga_colon_expression}
 \title{Example exon-level RNAseq data from TCGA project for epivizr vignette.}
 \format{
-A \code{\link[SummarizedExperiment:RangedSummarizedExperiment]{SummarizedExperiment::RangedSummarizedExperiment}} object with 12,800 rows (exons) and 40 samples.
+A \code{\link[SummarizedExperiment:RangedSummarizedExperiment-class]{SummarizedExperiment::RangedSummarizedExperiment}} object with 12,800 rows (exons) and 40 samples.
 \describe{
 \item{\code{assay(tcga_colon_expression)}}{exon-level count matrix}
 \item{\code{colData(tcga_colon_expression)}}{a \code{DataFrame} containing sample information.
@@ -19,10 +19,10 @@ TCGA project: \url{https://tcga-data.nci.nih.gov/tcga/}
 data(tcga_colon_expression)
 }
 \value{
-A \code{\link[SummarizedExperiment:RangedSummarizedExperiment]{SummarizedExperiment::RangedSummarizedExperiment}} object.
+A \code{\link[SummarizedExperiment:RangedSummarizedExperiment-class]{SummarizedExperiment::RangedSummarizedExperiment}} object.
 }
 \description{
-A \code{\link[SummarizedExperiment:RangedSummarizedExperiment]{SummarizedExperiment::RangedSummarizedExperiment}} object containing exon-level
+A \code{\link[SummarizedExperiment:RangedSummarizedExperiment-class]{SummarizedExperiment::RangedSummarizedExperiment}} object containing exon-level
 counts from RNAseq data for colon tumor and normal tissue from the TCGA project.
 Only exons in human chromosome 11 are included.
 }
